@@ -3,10 +3,28 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import helmet from "helmet";
 import morgan from "morgan";
+import session from "express-session";
+import MongoStore from "connect-mongo";
+import passport from "passport";
+
+import globalRouter from "./routes/globalRouter.js";
+import gymRouter from "./routes/gymRouter.js";
+import postRouter from "./routes/postRouter.js";
+import userRouter from "./routes/userRouter.js";
+import cookieParser from "cookie-parser";
+
+import "./utils/passport.js";
+import setLoclas from "./utils/setLoclas.js";
+
 dotenv.config();
 
+const mongoUrl = process.env.DEV_MONGO_URL;
 const app = express();
 const port = process.env.PORT || 5050;
+
+mongoose.connect(mongoUrl);
+
+app.set("view engine", "pug");
 
 const errorHandler = () => {
   console.log("❌연결실패하였습니다.");
@@ -23,7 +41,27 @@ db.once("sucess", successHandler);
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(
+  session({
+    secret: process.env.COOKIE_SECRET,
+    resave: true,
+    saveUninitialized: false,
+    store: MongoStore.create({ mongoUrl }),
+    cookie: { maxAge: 3.6e6 * 24 }, // 24시간 유효
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(setLoclas);
+app.use("/static", express.static("static"));
+
+app.use("/", globalRouter);
+app.use("/gym", gymRouter);
+app.use("/post", postRouter);
+app.use("/user", userRouter);
 
 app.listen(port, () => {
-  console.log(`서버가 ${port}에서 실해중입니다.`);
+  console.log(`서버가 ${port}에서 실행중입니다.`);
 });

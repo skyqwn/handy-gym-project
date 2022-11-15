@@ -1,0 +1,7 @@
+extends includes/layout 
+
+block content 
+    if user 
+        h1=user.nickname 
+    else 
+        h1 로그인하세요.
