@@ -5,7 +5,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import session from "express-session";
 import MongoStore from "connect-mongo";
-import passport from "passport";
+import flash from "connect-flash";
 
 import globalRouter from "./routes/globalRouter.js";
 import gymRouter from "./routes/gymRouter.js";
@@ -14,7 +14,8 @@ import userRouter from "./routes/userRouter.js";
 import cookieParser from "cookie-parser";
 
 import "./utils/passport.js";
-import setLoclas from "./utils/setLoclas.js";
+import setLoclas from "./utils/setLocals.js";
+import passport from "./utils/passport.js";
 
 dotenv.config();
 
@@ -39,21 +40,23 @@ db.on("error", errorHandler);
 db.once("sucess", successHandler);
 
 app.use(morgan("dev"));
+app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(
   session({
     secret: process.env.COOKIE_SECRET,
-    resave: true,
-    saveUninitialized: false,
+    resave: false,
+    saveUninitialized: true,
     store: MongoStore.create({ mongoUrl }),
     cookie: { maxAge: 3.6e6 * 24 }, // 24시간 유효
   })
 );
 
-app.use(passport.initialize());
-app.use(passport.session());
+passport(app);
+app.use(flash());
+
 app.use(setLoclas);
 app.use("/static", express.static("static"));
 

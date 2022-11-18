@@ -1,7 +1,13 @@
 html 
     include head 
     body 
-        include nav 
-        block content 
-        include footer
+        if message 
+        .message-container 
+            if message.sucess 
+                p.message#success=message.success 
+            if message.error
+                p.message#message=message.error
+    include nav 
+    block content 
+    include footer
     

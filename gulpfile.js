@@ -1,7 +1,6 @@
 import gulpPkg from "gulp";
 const { src, dest, watch, series } = gulpPkg;
 import clean from "gulp-clean";
-// import cleanCss from "gulp-clean-css'";
 import cleanCss from "gulp-clean-css";
 import dotenv from "dotenv";
 dotenv.config();
