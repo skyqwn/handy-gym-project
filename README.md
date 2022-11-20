@@ -4,15 +4,15 @@
 
 - [x] 로그인
 
-- [x] SNS로그인
+- [x] SNS로그인 (구글,카카오)
 
 - [x] 로그아웃
 
 - [x] gulp
 
-- [ ] flash 알림
+- [x] flash 알림
 
-- [ ] CSRF Token
+- [x] CSRF Token
 
 - [ ] Email Verify
 

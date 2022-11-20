@@ -11,7 +11,7 @@ export const home = (req, res, next) => {
 };
 
 export const signin = (req, res, next) => {
-  res.render("signin");
+  res.render("signin", { csrfToken: req.csrfToken() });
 };
 
 export const signinPost = (req, res) => {
@@ -39,7 +39,7 @@ export const signinPost = (req, res) => {
   })(req, res);
 };
 export const signup = (req, res, next) => {
-  res.render("signup");
+  res.render("signup", { csrfToken: req.csrfToken() });
 };
 export const signupPost = async (req, res, next) => {
   const {
