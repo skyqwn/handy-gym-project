@@ -13,9 +13,10 @@ import postRouter from "./routes/postRouter.js";
 import userRouter from "./routes/userRouter.js";
 import cookieParser from "cookie-parser";
 
-import "./utils/passport.js";
 import setLoclas from "./utils/setLocals.js";
-import passport from "./utils/passport.js";
+import localPassport from "./utils/authLocal.js";
+import googlePassport from "./utils/outhGoogle.js";
+import kakaoPassport from "./utils/outhKakao.js";
 
 dotenv.config();
 
@@ -53,10 +54,10 @@ app.use(
     cookie: { maxAge: 3.6e6 * 24 }, // 24시간 유효
   })
 );
-
-passport(app);
+localPassport(app);
+googlePassport();
+kakaoPassport();
 app.use(flash());
-
 app.use(setLoclas);
 app.use("/static", express.static("static"));
 

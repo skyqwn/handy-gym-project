@@ -4,10 +4,10 @@ import passportLocalMongoose from "passport-local-mongoose";
 const UserSchema = new mongoose.Schema({
   nickname: String,
   email: String,
+  password: String,
   avatarUrl: String,
-  facebookId: Number,
-  kakaoId: Number,
-  naverId: Number,
+  socialId: Number,
+  socialType: String,
 });
 
 // passportLocalMongoose 적용함.

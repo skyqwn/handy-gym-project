@@ -6,6 +6,7 @@ import passport from "passport";
 dotenv.config();
 
 export const home = (req, res, next) => {
+  console.log(req.user);
   res.render("home");
 };
 
@@ -13,11 +14,30 @@ export const signin = (req, res, next) => {
   res.render("signin");
 };
 
-export const signinPost = passport.authenticate("local", {
-  successRedirect: "/",
-  failureRedirect: "/signin",
-  failureFlash: true,
-});
+export const signinPost = (req, res) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      req.flash("error", "로그인 문제 발생 잠시후 시도해주세요.");
+      return res.redirect("/signin");
+    }
+    if (!user) {
+      req.flash("error", info.message);
+      if (info.message === "등록된 유저가 아닙니다") {
+        return res.redirect("/signup");
+      } else {
+        return res.redirect("/signin");
+      }
+    }
+    req.logIn(user, (err) => {
+      if (err) {
+        req.flash("error", "로그인 문제 발생 잠시후 시도해주세요.");
+        return res.redirect("/signin");
+      }
+      req.flash("success", `안녕하세요 ${user.nickname}님`);
+      return res.redirect("/");
+    });
+  })(req, res);
+};
 export const signup = (req, res, next) => {
   res.render("signup");
 };
@@ -31,8 +51,16 @@ export const signupPost = async (req, res, next) => {
       console.log("비밀번호가 같지않습니다.");
       return res.redirect("/signin");
     }
-    const existUser = await User.exists({ email });
+    const existUser = await User.findOne({ email });
     if (existUser) {
+      if (existUser.socialId) {
+        console.log(`${existUser.socialType}}(으)로 등록된 아이디입니다.`);
+
+        req.flash(
+          "info",
+          `${existUser.socialType}}(으)로 등록된 아이디입니다.`
+        );
+      }
       req.flash("error", "이미 등록된 이메일입니다.");
       console.log("이미 등록된 이메일입니다.");
       return res.redirect("/signin");
@@ -46,10 +74,10 @@ export const signupPost = async (req, res, next) => {
     });
 
     await newUser.save();
-    const userInfo = { ...newUser._doc };
+    // const userInfo = { ...newUser._doc };
 
-    const { password, ...otherInfo } = userInfo;
-    req.session.user = otherInfo;
+    // const { password, ...otherInfo } = userInfo;
+    // req.session.user = otherInfo;
     req.flash("success", "회원가입성공!");
     console.log("회원가입성공");
     res.redirect("/signin");
@@ -60,10 +88,9 @@ export const signupPost = async (req, res, next) => {
 };
 
 export const logout = async (req, res, next) => {
-  req.logout(req.user, (err) => {
+  req.logout(function (err) {
     if (err) {
-      //flash 처리
-      return res.status(500);
+      return next(err);
     }
     res.redirect("/");
   });
