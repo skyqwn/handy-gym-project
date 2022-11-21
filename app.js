@@ -15,9 +15,9 @@ import userRouter from "./routes/userRouter.js";
 import cookieParser from "cookie-parser";
 
 import setLocals from "./utils/setLocals.js";
-import localPassport from "./utils/authLocal.js";
-import googlePassport from "./utils/outhGoogle.js";
-import kakaoPassport from "./utils/outhKakao.js";
+import localPassport from "./utils/oauthLocal.js";
+import googlePassport from "./utils/oauthGoogle.js";
+import kakaoPassport from "./utils/oauthKakao.js";
 
 dotenv.config();
 
