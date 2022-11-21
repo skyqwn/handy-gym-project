@@ -22,8 +22,9 @@ export default () => {
           });
           if (existUser) {
             existUser.socialId = profile.id;
-            existUser.socialType = "구글";
+            existUser.socialType = "Google";
             existUser.password = undefined;
+            existUser.emailVerify = true;
             await existUser.save();
             return done(null, existUser);
           } else {
@@ -33,6 +34,7 @@ export default () => {
               avatarUrl: profile._json.picture || undefined,
               socialId: profile.id || profile._json.sub,
               socialType: "Google",
+              emailVerify: true,
             });
             await newUser.save();
             return done(null, newUser);

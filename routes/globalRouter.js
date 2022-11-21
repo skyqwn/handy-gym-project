@@ -8,6 +8,7 @@ import {
   signinPost,
   signup,
   signupPost,
+  loginVerify,
 } from "../controllers/globalController.js";
 
 const globalRouter = express.Router();
@@ -49,5 +50,7 @@ globalRouter.get(
     failureRedirect: "/signin",
   })
 );
+
+globalRouter.get("/verify", loginVerify);
 
 export default globalRouter;

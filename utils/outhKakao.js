@@ -26,6 +26,7 @@ export default () => {
             existUser.socialId = profile.id;
             existUser.socialType = "카카오";
             existUser.password = undefined;
+            existUser.emailVerify = true;
             await existUser.save();
             return done(null, existUser);
           } else {
@@ -35,6 +36,7 @@ export default () => {
               avatarUrl: profile._json.properties.thumbnail_image || undefined,
               socialId: profile.id || profile._json.id,
               socialType: "Kakao",
+              emailVerify: true,
             });
             await newUser.save();
             return done(null, newUser);

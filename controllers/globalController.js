@@ -2,11 +2,12 @@ import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import passport from "passport";
+import nodeMailer from "nodemailer";
 
 dotenv.config();
 
 export const home = (req, res, next) => {
-  console.log(req.user);
+  console.log("홈화면 ", req.user);
   res.render("home");
 };
 
@@ -38,9 +39,11 @@ export const signinPost = (req, res) => {
     });
   })(req, res);
 };
+
 export const signup = (req, res, next) => {
   res.render("signup", { csrfToken: req.csrfToken() });
 };
+
 export const signupPost = async (req, res, next) => {
   const {
     body: { nickname, email, password: bodypassword, passwordRepeat },
@@ -62,7 +65,7 @@ export const signupPost = async (req, res, next) => {
         );
       }
       req.flash("error", "이미 등록된 이메일입니다.");
-      console.log("이미 등록된 이메일입니다.");
+
       return res.redirect("/signin");
     }
 
@@ -78,8 +81,25 @@ export const signupPost = async (req, res, next) => {
 
     // const { password, ...otherInfo } = userInfo;
     // req.session.user = otherInfo;
+
+    const transporter = nodeMailer.createTransport({
+      service: "gmail",
+      port: 465,
+      secure: true,
+      auth: { user: process.env.MAIL_USER, pass: process.env.MAIL_PW },
+    });
+
+    const mailOptions = {
+      to: email,
+      subject: "가입 인증 메일",
+
+      html: `<h1>링크를 클릭해야 회원가입이 완료됩니다.</h1>
+      <p>링크를 클릭하세요<a href="http://localhost:5050/verify?key=${newUser.emailVerifyString}">링크</a></p>
+      `,
+    };
+    await transporter.sendMail(mailOptions);
+
     req.flash("success", "회원가입성공!");
-    console.log("회원가입성공");
     res.redirect("/signin");
   } catch (error) {
     console.log(error);
@@ -94,4 +114,26 @@ export const logout = async (req, res, next) => {
     }
     res.redirect("/");
   });
+};
+
+export const loginVerify = async (req, res, next) => {
+  const {
+    query: { key },
+    user,
+  } = req;
+  try {
+    console.log(3, user);
+    const newUser = await User.findById(user._id);
+    if (newUser.emailVerifyString === key) {
+      newUser.emailVerify = true;
+      await newUser.save();
+
+      req.flash("success", `${newUser.nickname}님의 이메일 인증 성공`);
+      return res.redirect("/");
+    } else {
+      console.log("인증에 실패하였습니다.");
+    }
+  } catch (error) {
+    next(error);
+  }
 };

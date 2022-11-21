@@ -14,7 +14,7 @@ import postRouter from "./routes/postRouter.js";
 import userRouter from "./routes/userRouter.js";
 import cookieParser from "cookie-parser";
 
-import setLoclas from "./utils/setLocals.js";
+import setLocals from "./utils/setLocals.js";
 import localPassport from "./utils/authLocal.js";
 import googlePassport from "./utils/outhGoogle.js";
 import kakaoPassport from "./utils/outhKakao.js";
@@ -59,7 +59,9 @@ localPassport(app);
 googlePassport();
 kakaoPassport();
 app.use(flash());
-app.use(setLoclas);
+
+app.use(setLocals);
+
 app.use("/static", express.static("static"));
 
 app.use("/", globalRouter);
