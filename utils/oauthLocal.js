@@ -1,29 +1,11 @@
 import passport from "passport";
 import bcrypt from "bcrypt";
-import { Strategy } from "passport-local";
+import { Strategy as LocalStrategy } from "passport-local";
 import User from "../models/User.js";
 
-export default (app) => {
-  app.use(passport.initialize());
-  app.use(passport.session());
-
-  passport.serializeUser((user, done) => {
-    done(null, user);
-  });
-
-  passport.deserializeUser(async (_id, done) => {
-    try {
-      const user = await User.findOne({ _id });
-      done(null, user);
-    } catch (error) {
-      done(null, false, {
-        message: "서버에 문제가 발생하였습니다. 잠시 후 시도해주세요.",
-      });
-    }
-  });
-
+export default () => {
   passport.use(
-    new Strategy(
+    new LocalStrategy(
       {
         usernameField: "email",
       },

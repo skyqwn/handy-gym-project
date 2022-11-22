@@ -1,4 +1,3 @@
-import csurf from "csurf";
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
@@ -6,18 +5,16 @@ import helmet from "helmet";
 import morgan from "morgan";
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import cookieParser from "cookie-parser";
 import flash from "connect-flash";
 
 import globalRouter from "./routes/globalRouter.js";
 import gymRouter from "./routes/gymRouter.js";
 import postRouter from "./routes/postRouter.js";
 import userRouter from "./routes/userRouter.js";
-import cookieParser from "cookie-parser";
 
 import setLocals from "./utils/setLocals.js";
-import localPassport from "./utils/oauthLocal.js";
-import googlePassport from "./utils/oauthGoogle.js";
-import kakaoPassport from "./utils/oauthKakao.js";
+import passportInit from "./utils/passportInit.js";
 
 dotenv.config();
 
@@ -55,14 +52,12 @@ app.use(
     cookie: { maxAge: 3.6e6 * 24 }, // 24시간 유효
   })
 );
-localPassport(app);
-googlePassport();
-kakaoPassport();
+
+passportInit(app);
 app.use(flash());
 
-app.use(setLocals);
-
 app.use("/static", express.static("static"));
+app.use(setLocals);
 
 app.use("/", globalRouter);
 app.use("/gym", gymRouter);

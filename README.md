@@ -14,7 +14,7 @@
 
 - [x] CSRF Token
 
-- [ ] Email Verify
+- [x] Email Verify
 
 - [ ] Email 찾기
 

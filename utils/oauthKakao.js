@@ -11,6 +11,8 @@ export default () => {
         passReqToCallback: true,
       },
       async (request, accessToken, refreshToken, profile, done) => {
+        const redirectUrl = req.session.redirectUrl || "";
+        delete req.session.redirectUrl;
         try {
           const existUser = await User.findOne({
             $or: [
@@ -24,22 +26,22 @@ export default () => {
           });
           if (existUser) {
             existUser.socialId = profile.id;
-            existUser.socialType = "카카오";
+            existUser.socialType = "KaKao";
             existUser.password = undefined;
             existUser.emailVerify = true;
             await existUser.save();
-            return done(null, existUser);
+            return done(null, existUser, { redirectUrl });
           } else {
             const newUser = new User({
               nickname: profile.username,
               email: profile._json.kakao_account.email || undefined,
               avatarUrl: profile._json.properties.thumbnail_image || undefined,
               socialId: profile.id || profile._json.id,
-              socialType: "Kakao",
+              socialType: "KaKao",
               emailVerify: true,
             });
             await newUser.save();
-            return done(null, newUser);
+            return done(null, newUser, { redirectUrl });
           }
         } catch (error) {
           done(error);

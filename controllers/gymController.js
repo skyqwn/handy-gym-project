@@ -3,7 +3,7 @@ export const fetch = (req, res, next) => {
 };
 
 export const upload = (req, res) => {
-  res.send("upload");
+  res.render("home");
 };
 
 export const uploadPost = async (req, res, next) => {

@@ -7,14 +7,19 @@ import {
   upload,
   uploadPost,
 } from "../controllers/gymController.js";
+import { onlyEmailVerified, onlyUser } from "../utils/protectAuth.js";
 
 const gymRouter = express.Router();
 
 gymRouter.get("/", fetch);
 
-gymRouter.route("/upload").get(upload).post(uploadPost);
+gymRouter
+  .route("/upload")
+  .all(onlyUser, onlyEmailVerified)
+  .get(upload)
+  .post(uploadPost);
 
-gymRouter.route("/:gymId").get(detail).delete(remove);
+gymRouter.route("/:gymId").all(onlyUser).get(detail).delete(remove);
 
 gymRouter.route("/:gymId/update").get(update).post(uploadPost);
 

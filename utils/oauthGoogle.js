@@ -13,6 +13,8 @@ export default () => {
         passReqToCallback: true,
       },
       async (request, accessToken, refreshToken, profile, done) => {
+        const redirectUrl = req.session.redirectUrl || "";
+        delete req.session.redirectUrl;
         try {
           const existUser = await User.findOne({
             $or: [
@@ -26,7 +28,7 @@ export default () => {
             existUser.password = undefined;
             existUser.emailVerify = true;
             await existUser.save();
-            return done(null, existUser);
+            return done(null, existUser, { redirectUrl });
           } else {
             const newUser = new User({
               nickname: profile._json.name,
@@ -37,7 +39,7 @@ export default () => {
               emailVerify: true,
             });
             await newUser.save();
-            return done(null, newUser);
+            return done(null, newUser, { redirectUrl });
           }
         } catch (error) {
           done(error);
