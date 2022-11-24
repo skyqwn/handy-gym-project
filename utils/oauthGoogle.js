@@ -13,8 +13,8 @@ export default () => {
         passReqToCallback: true,
       },
       async (request, accessToken, refreshToken, profile, done) => {
-        const redirectUrl = req.session.redirectUrl || "";
-        delete req.session.redirectUrl;
+        const redirectUrl = request.session.redirectUrl || "";
+        delete request.session.redirectUrl;
         try {
           const existUser = await User.findOne({
             $or: [

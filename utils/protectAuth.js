@@ -1,11 +1,10 @@
 export const onlyUser = (req, res, next) => {
   if (req.user) {
     return next();
-  } else {
-    req.flash("error", "로그인을 먼저 해주세요.");
-    const redirectUrl = req.originalUrl || "";
-    return res.redirect(`/signin?redirectUrl=${redirectUrl}`);
   }
+  req.flash("error", "로그인을 해야 이용가능합니다.");
+  const redirectUrl = req.originalUrl || "";
+  return res.redirect(`/signin?redirectUrl=${redirectUrl}&disAllowedType=user`);
 };
 
 export const onlyEmailVerified = (req, res, next) => {
@@ -13,8 +12,10 @@ export const onlyEmailVerified = (req, res, next) => {
   if (emailVerified) {
     return next();
   } else {
-    req.flash("error", "이메일 인증을 해주세요.");
+    req.flash("error", "이메일 인증을 해야 이용가능합니다.");
     const redirectUrl = req.originalUrl || "";
-    return res.redirect(`/no-access?redirectUrl=${redirectUrl}`);
+    return res.redirect(
+      `/no-access?redirectUrl=${redirectUrl}&disAllowedType=email`
+    );
   }
 };

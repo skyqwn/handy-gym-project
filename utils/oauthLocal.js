@@ -12,6 +12,7 @@ export default () => {
       async (email, password, done) => {
         try {
           const user = await User.findOne({ email });
+
           if (!user) {
             return done(null, false, { message: "등록된 유저가 아닙니다" });
           }
@@ -19,7 +20,7 @@ export default () => {
           if (user.socialId) {
             return done(null, false, {
               message: `
-            이미 소셜로 가입되어있는 아이디입니다.
+            ${user.socialType}(으)로 이미 소셜로 가입되어있는 아이디입니다.
             `,
             });
           }

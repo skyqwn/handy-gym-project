@@ -1,6 +1,9 @@
 extends includes/layout
 
 block content 
-    h1=notice
-
-    a(href=`resend-email?redirectUrl=${redirectUrl}`) 이메일 재전송 
+    h1=ruleObj.message
+    if ruleObj.type === "email"
+        a(href=`/resend-email?redirectUrl=${redirectUrl}`) 이메일 인증 재전송
+    if ruleObj.type === "user"
+        a(href=`/signin?redirectUrl=${redirectUrl}`) 로그인
+        a(href=`/signup?redirectUrl=${redirectUrl}`) 회원가입

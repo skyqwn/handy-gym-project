@@ -1,12 +1,14 @@
 extends includes/layout
 
 block content 
-    form(action="/signup", method="post")
+    form(action=`/signup?redirectUrl=${redirectUrl}`, method="post")
         input(type="hidden" name="_csrf" value= csrfToken)
         input(type="text" name="nickname" placeholder="닉네임") 
         input(type="email" name="email",placeholder="이메일")
         input(type="password" name="password",placeholder="비밀번호")
         input(type="password" name="passwordRepeat" placeholder="비밀번호확인")
         input(type="submit" value="회원가입") 
+    a(href=`/auth/google?redirectUrl=${redirectUrl}`) 구글로 로그인하기
+    a(href=`/auth/kakao?redirectUrl=${redirectUrl}`) 카카오로 로그인하기  
 
     script(src="/static/js/formInvalid.js") 

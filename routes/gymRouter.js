@@ -2,7 +2,7 @@ import express from "express";
 import {
   detail,
   fetch,
-  remove,
+  gymRemove,
   update,
   upload,
   uploadPost,
@@ -19,7 +19,7 @@ gymRouter
   .get(upload)
   .post(uploadPost);
 
-gymRouter.route("/:gymId").all(onlyUser).get(detail).delete(remove);
+gymRouter.route("/:gymId").all(onlyUser).get(detail).delete(gymRemove);
 
 gymRouter.route("/:gymId/update").get(update).post(uploadPost);
 
