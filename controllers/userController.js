@@ -1,19 +1,19 @@
-export const findEmail = (req, res, next) => {
-  res.send("findEmail");
+export const findEmail = (req, res) => {
+  res.send("Find Email");
 };
 
 export const findEmailPost = (req, res) => {
-  res.send("findEmailPost");
+  res.send("Find Email Post");
 };
 
-export const detail = (req, res, next) => {
-  res.send("detail");
+export const detail = (req, res) => {
+  res.send("User Detail");
 };
 
-export const userUpdate = (req, res, next) => {
-  res.send("userUpdate");
+export const update = (req, res) => {
+  res.send("User Update");
 };
 
-export const userUpdatePost = async (req, res, next) => {
-  res.send("userUpdatePost");
+export const updatePost = (req, res) => {
+  res.send("User UpdatePost");
 };

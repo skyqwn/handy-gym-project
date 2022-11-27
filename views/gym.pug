@@ -1,13 +1,8 @@
 extends includes/layout
 
 block content 
-
     each gym in gyms 
-        a(href=`/gym/${gym.id}`)
-            img(src=gym.file, alt=gym.title,
-            crossorigin="anonymous")
-            h1 #{gym.title}
-            h3 작정자 : #{gym.creator.nickname}
+        h1=gym.name
+    div(id=totalPage, class="jsPageContainer")
 
-        a(href="/gym/upload") 헬스장 생성하기
-    script(src="/static/js/formInvalid.js") 
+    script(src="/static/js/pagination.js") 

@@ -1,72 +1,58 @@
 import Gym from "../models/Gym.js";
-export const fetch = async (req, res, next) => {
-  try {
-    const gyms = await Gym.find().populate("creator");
-    res.render("gym", { gyms });
-  } catch (error) {
-    next(error);
-  }
-};
 
-export const upload = async (req, res, next) => {
-  try {
-    const gyms = await Gym.find().populate("creator");
-    res.render("gymUpload", { gyms });
-  } catch (error) {}
-};
-
-export const uploadPost = async (req, res, next) => {
+export const fetch = async (req, res) => {
   const {
-    body: { title, desc },
+    query: { page },
   } = req;
   try {
-    const gym = new Gym({
-      title,
-      desc,
+    const LIMIT_SIZE = 1;
+    const SKIP_PAGE = (page - 1) * LIMIT_SIZE;
+    const TOTAL_GYMS = await Gym.countDocuments();
+    const TOTAL_PAGE = Math.ceil(TOTAL_GYMS / LIMIT_SIZE);
+    const gyms = await Gym.find({}).skip(SKIP_PAGE).limit(LIMIT_SIZE);
+    return res.render("gym", {
+      title: "체육관",
+      gyms,
+      totalPage: TOTAL_PAGE,
     });
-    await gym.save();
-    req.flash("success", "업로드 성공!!");
-    return res.redriect("/gym");
   } catch (error) {
-    next(error);
+    console.log(error);
   }
 };
 
-export const detail = async (req, res, next) => {
-  const {
-    params: { gymId },
-  } = req;
+export const upload = (req, res) => {
+  return res.render("gymUpload");
+};
+
+export const uploadPost = async (req, res) => {
+  const { body, files } = req;
   try {
-    const gym = await Gym.findById(gymId).populate("creator");
-    res.render("detail", { gym });
+    const returnPath = files.map((file) => {
+      return file.path;
+    });
+    const newGym = new Gym({
+      ...body,
+      photos: returnPath,
+    });
+    await newGym.save();
+    return res.redirect("/gym");
   } catch (error) {
-    next(error);
+    console.log(error);
   }
 };
 
-export const update = (req, res, next) => {
-  const {
-    params: { id },
-  } = req;
-  try {
-    res.render("gymUpdate", {});
-  } catch (error) {
-    next(error);
-  }
+export const detail = (req, res) => {
+  return res.render("gymDetail");
 };
 
-export const updatePost = async (req, res, next) => {
-  res.send("updatePost");
+export const update = (req, res) => {
+  return res.render("gymUpdate");
 };
 
-export const gymRemove = async (req, res, next) => {
-  const {
-    params: { id },
-  } = req;
-  try {
-    await Gym.findByIdAndDelete(id);
-    res.redriect("/gym");
-  } catch (error) {
-    next(error);
-  }
+export const updatePost = (req, res) => {
+  res.send("Gym UpdatePost");
+};
+
+export const remove = (req, res) => {
+  res.send("Gym Remove");
 };

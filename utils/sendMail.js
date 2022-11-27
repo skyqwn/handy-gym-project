@@ -1,25 +1,27 @@
-import nodeMailer from "nodemailer";
+import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 dotenv.config();
 
-const transporter = nodeMailer.createTransport({
+const transport = nodemailer.createTransport({
   service: "gmail",
+  host: "smtp.gmail.com",
   port: 465,
-  secure: true,
-  auth: { user: process.env.MAIL_USER, pass: process.env.MAIL_PW },
+  secure: false,
+  requireTLS: true,
+  auth: {
+    user: process.env.NODEMAILER_MAIL,
+    pass: process.env.NODEMAILER_PASSWORD,
+  },
 });
 
-const sendMail = (email, userId, emailVerifyString, redirectUrl) => {
-  const mailOptions = {
+const sendMail = (email, verifyString, userId, redirectUrl) => {
+  return transport.sendMail({
     to: email,
-    subject: "가입 인증 메일",
-    html: `<h1>링크를 클릭해야 회원가입이 완료됩니다.</h1>
-              <p>링크를 클릭하세요<a href="http://localhost:5050/verify?key=${emailVerifyString}&id=${userId}&redirectUrl=${
+    subject: "핸디짐에서 보낸 인증메일입니다",
+    html: `<h1>아래링크를 눌러줘야 이메일인증이 완료됩니다</h1><a href="http://localhost:5050/verify?key=${verifyString}&id=${userId}&redirectUrl=${
       redirectUrl || ""
-    }">인증링크</a></p>
-              `,
-  };
-  return transporter.sendMail(mailOptions);
+    }">인증링크</a>`,
+  });
 };
 
 export default sendMail;

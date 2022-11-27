@@ -1,24 +1,26 @@
 import express from "express";
-import protectCSRFToken from "../utils/protectCSRFToken.js";
 import passport from "passport";
 import {
-  logout,
+  googleCallback,
   home,
+  kakaoCallback,
+  logout,
   signin,
   signinPost,
   signup,
   signupPost,
-  emailVerify,
+  verifyEmail,
+  resendEmail,
   noAccess,
-  resendMail,
-  googleCallback,
-  kakaoCallback,
 } from "../controllers/globalController.js";
+import { onlyEmailVerified, onlyUser } from "../utils/protectAuth.js";
+import protectCSRFToken from "../utils/protectCSRFToken.js";
 import saveRedirectUrl from "../utils/saveRedirectUrl.js";
 
 const globalRouter = express.Router();
 
 globalRouter.get("/", home);
+
 globalRouter
   .route("/signin")
   .all(protectCSRFToken)
@@ -33,9 +35,13 @@ globalRouter
 
 globalRouter.get("/logout", logout);
 
-globalRouter.get("/resend-email", resendMail);
+globalRouter.get("/verify", verifyEmail);
+
+globalRouter.get("/resend-email", resendEmail);
 
 globalRouter.get("/no-access", noAccess);
+
+// GOOGLE Login
 
 globalRouter.get(
   "/auth/google",
@@ -45,6 +51,8 @@ globalRouter.get(
 
 globalRouter.get("/auth/google/callback", googleCallback);
 
+// KAKAO LOGIN
+
 globalRouter.get(
   "/auth/kakao",
   saveRedirectUrl,
@@ -52,7 +60,5 @@ globalRouter.get(
 );
 
 globalRouter.get("/auth/kakao/callback", kakaoCallback);
-
-globalRouter.get("/verify", emailVerify);
 
 export default globalRouter;

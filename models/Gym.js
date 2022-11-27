@@ -1,36 +1,20 @@
-import mongoose, { SchemaType } from "mongoose";
+import mongoose from "mongoose";
 
-const Schema = mongoose.Schema;
-
-const GymSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
+const GymSchema = mongoose.Schema(
+  {
+    name: String,
+    address: String,
+    location: String,
+    photos: [String],
+    title: String,
+    description: String,
+    creator: { type: mongoose.SchemaTypes.ObjectId, ref: "User" },
+    category: [String],
   },
-  address: {
-    type: String,
-    required: true,
-  },
-  location: {
-    type: String,
-    required: true,
-  },
-  photo: [String],
-  title: {
-    type: String,
-    required: true,
-  },
-  description: {
-    type: String,
-    required: true,
-  },
-  creator: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
-  category: [String],
-});
+  {
+    timestamp: true,
+  }
+);
 
 const Gym = mongoose.model("Gym", GymSchema);
 

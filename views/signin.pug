@@ -1,14 +1,14 @@
 extends includes/layout
 
-block content 
-    form(action=`/signin?redirectUrl=${redirectUrl}`, method="post")
-        input(type="hidden" name="_csrf" value= csrfToken)
-        input(type="email" name="email",placeholder="이메일")
-        input(type="password" name="password",placeholder="비밀번호")
+block content
+    form(action=`/signin?redirectUrl=${redirectUrl}` method="post")
+        input(type="hidden" name="_csrf" value=csrfToken)
+        input(type="email" name="email" placeholder="이메일")
+        input(type="password" name="password" placeholder="비밀번호")
         input(type="submit" value="로그인")
-    a(href=`/signup?redirectUrl=${redirectUrl}`) 회원이 아니신가요? 회원가입하러 가기! 
-    a(href=`/auth/google?redirectUrl=${redirectUrl}`) 구글 로그인
-    a(href=`/auth/kakao?redirectUrl=${redirectUrl}`) 카카오 로그인 
+    a(href=`/signup?redirectUrl=${redirectUrl}`) 회원이 아니신가요? 회원가입하러 가기
+    a(href=`/auth/google?redirectUrl=${redirectUrl}`) 구글로 로그인하기
+    a(href=`/auth/kakao?redirectUrl=${redirectUrl}`) 카카오로 로그인하기
 
 
     script(src="/static/js/formInvalid.js") 

@@ -1,17 +1,14 @@
+import passport from "passport";
+import bcrypt from "bcrypt";
+
 import User from "../models/User.js";
 import sendMail from "../utils/sendMail.js";
-import bcrypt from "bcrypt";
-import dotenv from "dotenv";
-import passport from "passport";
 
-dotenv.config();
-
-export const home = (req, res, next) => {
-  console.log("홈화면 ", req.user);
+export const home = (req, res) => {
   res.render("home");
 };
 
-export const signin = (req, res, next) => {
+export const signin = (req, res) => {
   const {
     query: { redirectUrl },
   } = req;
@@ -27,30 +24,31 @@ export const signinPost = (req, res) => {
   } = req;
   passport.authenticate("local", (err, user, info) => {
     if (err) {
-      req.flash("error", "로그인 문제 발생 잠시후 시도해주세요.");
-      return res.redirect("/signin");
+      req.flash("error", "로그인 오류 발생");
+      return res.redirect("/signup");
     }
+
     if (!user) {
       req.flash("error", info.message);
-      if (info.message === "등록된 유저가 아닙니다") {
+      if (info.message === "이메일로 가입된 유저가 없습니다") {
         return res.redirect("/signup");
-      } else {
-        return res.redirect("/signin");
       }
+
+      return res.redirect("/signin");
     } else {
       req.logIn(user, (err) => {
         if (err) {
-          req.flash("error", "로그인 문제 발생 잠시후 시도해주세요.");
+          req.flash("error", "로그인 오류 발생");
           return res.redirect("/signin");
         }
-        req.flash("success", `안녕하세요 ${user.nickname}님`);
+        req.flash("success", `${user.nickname}님 안녕하세요👋`);
         return res.redirect(redirectUrl || "/");
       });
     }
   })(req, res);
 };
 
-export const signup = (req, res, next) => {
+export const signup = (req, res) => {
   const {
     query: { redirectUrl },
   } = req;
@@ -60,44 +58,40 @@ export const signup = (req, res, next) => {
   });
 };
 
-export const signupPost = async (req, res, next) => {
+export const signupPost = async (req, res) => {
   const {
-    body: { nickname, email, password: bodypassword, passwordRepeat },
+    body: { nickname, email, password, passwordRepeat },
     query: { redirectUrl },
   } = req;
   try {
-    if (bodypassword !== passwordRepeat) {
-      req.flash("error", "비밀번호가 같지않습니다.");
-      return res.redirect("/signin");
+    if (password !== passwordRepeat) {
+      req.flash("error", "비밀번호가 틀립니다");
+      return res.status(500);
     }
     const existUser = await User.findOne({ email });
     if (existUser) {
       if (existUser.socialId) {
-        console.log(`${existUser.socialType}(으)로 등록된 아이디입니다.`);
-
-        req.flash("info", `${existUser.socialType}(으)로 등록된 아이디입니다.`);
+        req.flash(
+          "info",
+          `${existUser.socialType}(으)로 로그인한 이메일입니다`
+        );
       }
-      req.flash("error", "이미 등록된 이메일입니다.");
-
+      req.flash("info", `이메일로 가입한 유저가 있습니다`);
       return res.redirect("/signin");
     }
+    const hashedPassword = bcrypt.hashSync(password, 10);
 
-    const hashedPassword = bcrypt.hashSync(bodypassword, +process.env.BCRYPT);
-    const newUser = new User({
+    const user = new User({
       nickname,
       email,
       password: hashedPassword,
     });
 
-    await newUser.save();
-    // const userInfo = { ...newUser._doc };
+    sendMail(email, user.email_verify_string, user._id);
 
-    // const { password, ...otherInfo } = userInfo;
-    // req.session.user = otherInfo;
+    await user.save();
 
-    sendMail(email, newUser._id, newUser.emailVerifyString);
-
-    req.flash("success", "회원가입성공!");
+    req.flash("success", "회원가입 성공! 이메일 인증");
     if (redirectUrl) {
       return res.redirect(`/signin?redirectUrl=${redirectUrl}`);
     } else {
@@ -105,14 +99,54 @@ export const signupPost = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error);
-    next(error);
+    if (
+      error.message === "A user with the given username is already registered"
+    ) {
+      console.log("유저가 있음");
+    }
   }
 };
 
-export const logout = async (req, res, next) => {
+export const googleCallback = async (req, res) => {
+  passport.authenticate("google", (err, user, info) => {
+    if (err) {
+      req.flash("error", "구글로그인 오류 발생");
+      return res.redirect("/signin");
+    }
+
+    req.logIn(user, (err) => {
+      if (err) {
+        req.flash("error", "구글로그인 오류 발생");
+        return res.redirect("/signin");
+      }
+      req.flash("success", `${user.nickname}님 안녕하세요👋`);
+      return res.redirect(info.redirectUrl || "/");
+    });
+  })(req, res);
+};
+
+export const kakaoCallback = async (req, res) => {
+  passport.authenticate("kakao", (err, user, info) => {
+    if (err) {
+      req.flash("error", "카카오로그인 오류 발생");
+      return res.redirect("/signin");
+    }
+
+    req.logIn(user, (err) => {
+      if (err) {
+        req.flash("error", "카카오로그인 오류 발생");
+        return res.redirect("/signin");
+      }
+      req.flash("success", `${user.nickname}님 안녕하세요👋`);
+      return res.redirect(info.redirectUrl);
+    });
+  })(req, res);
+};
+
+export const logout = (req, res) => {
   req.logout(req.user, (err) => {
     if (err) {
-      req.flash("error", "로그아웃 실페");
+      req.flash("error", "로그아웃 실패");
       return res.status(500);
     }
     req.flash("success", "로그아웃 성공");
@@ -120,68 +154,36 @@ export const logout = async (req, res, next) => {
   });
 };
 
-export const emailVerify = async (req, res, next) => {
+export const verifyEmail = async (req, res) => {
   const {
     query: { key, id, redirectUrl },
   } = req;
   try {
-    const newUser = await User.findById(id);
-    if (newUser.emailVerifyString === key) {
-      newUser.emailVerify = true;
-      await newUser.save();
-
-      req.flash("success", `${newUser.nickname}님의 이메일 인증 성공`);
+    const findUser = await User.findById(id);
+    if (findUser.email_verify_string === key) {
+      findUser.email_verified = true;
+      await findUser.save();
+      req.flash("success", `${findUser.nickname}님의 이메일 인증 성공👋`);
       return res.redirect(redirectUrl || "/");
     } else {
-      console.log("인증에 실패하였습니다.");
+      req.flash("error", "잘못된접근입니다");
+      return res.redirect("/");
     }
   } catch (error) {
-    next(error);
+    console.log(error);
   }
 };
 
-export const googleCallback = async (req, res, next) => {
-  passport.authenticate("google", (err, user, info) => {
-    if (err) {
-      req.flash("error", "로그인 문제 발생 잠시후 시도해주세요.");
-      return res.redirect("/signin");
-    }
-    req.logIn(user, (err) => {
-      if (err) {
-        req.flash("error", "로그인 문제 발생 잠시후 시도해주세요.");
-        return res.redirect("/signin");
-      }
-      req.flash("success", `안녕하세요 ${user.nickname}님`);
-      return res.redirect(info.redirectUrl || "/");
-    });
-  })(req, res);
-};
-
-export const kakaoCallback = async (req, res, next) => {
-  passport.authenticate("kakao", (err, user, info) => {
-    if (err) {
-      req.flash("error", "로그인 문제 발생 잠시후 시도해주세요.");
-      return res.redirect("/signin");
-    }
-    req.logIn(user, (err) => {
-      if (err) {
-        req.flash("error", "로그인 문제 발생 잠시후 시도해주세요.");
-        return res.redirect("/signin");
-      }
-      req.flash("success", `안녕하세요 ${user.nickname}님`);
-      return res.redirect(info.redirectUrl || "/");
-    });
-  })(req, res);
-};
-
-export const resendMail = async (req, res, next) => {
+export const resendEmail = async (req, res) => {
   const {
-    user: { email, _id, emailVerifyString },
+    user: { email, _id, email_verify_string },
     query: { redirectUrl },
   } = req;
   try {
-    sendMail(email, _id, emailVerifyString, redirectUrl);
-    req.flash("success", `인증 이메일을 ${email}으로 전송하였습니다.`);
+    sendMail(email, email_verify_string, _id, redirectUrl);
+
+    req.flash("success", `인증이메일을 보냈습니다 ${email}을 확인하세요`);
+
     return res.redirect(
       `/no-access?redirectUrl=${redirectUrl}&disAllowedType=resendEmail`
     );

@@ -2,29 +2,23 @@ import passport from "passport";
 
 import LocalPassport from "./oauthLocal.js";
 import GooglePassport from "./oauthGoogle.js";
-import KakaoPassport from "./oauthGoogle.js";
+import KakakoPassport from "./oauthKakao.js";
 import User from "../models/User.js";
 
 export default (app) => {
-  passport.serializeUser((user, done) => {
-    done(null, user);
-  });
+  app.use(passport.initialize());
+  app.use(passport.session());
 
-  passport.deserializeUser(async (_id, done) => {
-    try {
-      const user = await User.findOne({ _id });
-      done(null, user);
-    } catch (error) {
-      done(null, false, {
-        message: "서버에 문제가 발생하였습니다. 잠시후 시도해주세요.",
-      });
-    }
+  passport.serializeUser(function (user, done) {
+    done(null, user._id);
+  });
+  passport.deserializeUser(function (_id, done) {
+    User.findById({ _id }, function (err, user) {
+      done(err, user);
+    });
   });
 
   LocalPassport();
   GooglePassport();
-  KakaoPassport();
-
-  app.use(passport.initialize());
-  app.use(passport.session());
+  KakakoPassport();
 };

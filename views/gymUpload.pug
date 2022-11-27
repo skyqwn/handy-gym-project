@@ -1,9 +1,19 @@
 extends includes/layout
 
 block content 
+    form(action="/gym/upload" method="POST" enctype="multipart/form-data")
+        input(type="text" name="name" placeholder="이름")
+        input(type="text" name="title" placeholder="한 줄로 표현해보세요")
+        input(type="file" name="photos" multiple)
+        input(type="hidden" name="address")
+        input(type="hidden" name="location")
+        #result
+        #kakaoMap
+            h1 로딩중
+        input(type="button" id="searchAddressBtn" value="주소 검색")
+        #postcodeLayer
+        #postcodeCancelBtn ❌
+        textarea(name="description" placeholder="세부내용")
+        input(type="submit" value="생성")
 
-    form(action="/gym/upload", method="post" enctype="multipart/form-data")
-        input(type="file" name="file")
-        input(type="text" name="title" placeholder="제목")
-        input(type="text" name="desc" placeholder="내용")
-        input(type="submit" value="업로드")
+    script(src="/static/js/daumAddress.js")

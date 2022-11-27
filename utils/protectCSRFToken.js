@@ -1,3 +1,3 @@
 import csurf from "csurf";
 
-export default csurf({ cookie: false });
+export default csurf({ cookie: true });

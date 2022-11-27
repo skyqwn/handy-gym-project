@@ -1,47 +1,64 @@
 import express from "express";
 import dotenv from "dotenv";
+dotenv.config();
 import mongoose from "mongoose";
-import helmet from "helmet";
 import morgan from "morgan";
+import helmet from "helmet";
+import cookieParser from "cookie-parser";
 import session from "express-session";
 import MongoStore from "connect-mongo";
-import cookieParser from "cookie-parser";
 import flash from "connect-flash";
 
 import globalRouter from "./routes/globalRouter.js";
 import gymRouter from "./routes/gymRouter.js";
 import postRouter from "./routes/postRouter.js";
 import userRouter from "./routes/userRouter.js";
-
 import setLocals from "./utils/setLocals.js";
 import passportInit from "./utils/passportInit.js";
 
-dotenv.config();
-
 const mongoUrl = process.env.DEV_MONGO_URL;
 const app = express();
-const port = process.env.PORT || 5050;
+const port = process.env.PORT || 5000;
 
 mongoose.connect(mongoUrl);
 
+const db = mongoose.connection;
+
+const handleDBError = () => console.log("❌DB연결 실패");
+const handleDBSuccess = () => console.log(`✅DB연결 성공`);
+
+db.on("error", handleDBError);
+db.once("open", handleDBSuccess);
+
 app.set("view engine", "pug");
 
-const errorHandler = () => {
-  console.log("❌연결실패하였습니다.");
+// var corsOptions = {
+//     origin: "//t1.daumcdn.net",
+//     optionsSuccessStatus: 200,
+// };
+// app.use(cors(corsOptions));
+
+// console.log(corsOptions);
+
+const cspOptions = {
+  directives: {
+    ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+    "default-src": ["'self'", "*.kakao.com"],
+    "script-src": ["'self'", "*.daumcdn.net", "*.kakao.com"],
+    "frame-src": ["'self'", "*.map.daum.net"],
+    "img-src": ["'self'", "*.daumcdn.net"],
+  },
 };
 
-const successHandler = () => {
-  console.log("✅연결되었습니다.");
-};
-
-const db = mongoose.connection;
-db.on("error", errorHandler);
-db.once("sucess", successHandler);
-
+app.use(
+  helmet({
+    contentSecurityPolicy: cspOptions,
+    crossOriginEmbedderPolicy: false,
+  })
+);
 app.use(morgan("dev"));
-app.use(helmet());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(
   session({
@@ -54,8 +71,8 @@ app.use(
 );
 
 passportInit(app);
-app.use(flash());
 
+app.use(flash());
 app.use("/static", express.static("static"));
 app.use(setLocals);
 
@@ -64,6 +81,6 @@ app.use("/gym", gymRouter);
 app.use("/post", postRouter);
 app.use("/user", userRouter);
 
-app.listen(port, () => {
-  console.log(`서버가 ${port}에서 실행중입니다.`);
-});
+const handleListen = () => console.log(`✅서버가 ${port}에서 실행중입니다`);
+
+app.listen(port, handleListen);
