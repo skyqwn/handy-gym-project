@@ -2,7 +2,8 @@ extends includes/layout
 
 block content 
     each gym in gyms 
-        h1=gym.name
+        a(href=`/gym/${gym._id}`)
+            h1=gym.name        
     div(id=totalPage, class="jsPageContainer")
 
     script(src="/static/js/pagination.js") 

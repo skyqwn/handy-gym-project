@@ -1,4 +1,20 @@
 extends includes/layout
 
 block content 
-    h1 gym update
+    form(action=`/gym/${gym._id}/update` method="post" enctype="multipart/form-data")
+        input(type="hidden" name="_csrf" value=csrfToken)
+        input(type="text" name="name" placeholder="이름" value=gym.name)
+        input(type="text" name="title" placeholder="한 줄로 표현해보세요" value=gym.title)
+        input(type="file" name="photos" multiple )
+        input(type="hidden" name="address" value=gym.address)
+        input(type="hidden" name="location" value=gym.location)
+        #result
+        #kakaoMap
+            h1 로딩중
+        input(type="button" id="searchAddressBtn" value="주소 검색")
+        #postcodeLayer
+        #postcodeCancelBtn ❌
+        textarea(name="description" placeholder="세부내용")=gym.description
+        input(type="submit" value="생성")
+
+    script(src="/static/js/daumAddress.js")

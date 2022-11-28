@@ -11,7 +11,7 @@ export default () => {
     new KakaoStrategy(
       {
         clientID: process.env.KAKAO_CLIENT,
-        callbackURL: "http://localhost:5000/auth/kakao/callback",
+        callbackURL: "http://localhost:5050/auth/kakao/callback",
         passReqToCallback: true,
       },
       async (req, authToken, refreshToken, profile, done) => {

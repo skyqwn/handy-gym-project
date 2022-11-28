@@ -16,13 +16,13 @@
 
 - [x] Email Verify
 
-- [ ] Daum주소 API
+- [x] Daum주소 API
 
 - [ ] Email 찾기
 
 - [ ] 비밀번호 변경
 
-- [ ] GYM CRUD
+- [x] GYM CRUD
 
 - [ ] USER CRUD
 
@@ -32,7 +32,7 @@
 
 - [ ] POST 필터
 
-- [ ] PageNation
+- [x] PageNation
 
 ---
 

@@ -5,6 +5,7 @@ const cancelBtn = document.getElementById("postcodeCancelBtn");
 const addressInput = document.querySelector("input[name=address]");
 const locationInput = document.querySelector("input[name=location]");
 const mapContainer = document.getElementById("kakaoMap");
+var geocoder = new daum.maps.services.Geocoder();
 
 const mapOption = {
   center: new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심좌표
@@ -18,11 +19,6 @@ let marker = new daum.maps.Marker({
   map: map,
 });
 
-const loadingMap = () => {
-  //   //   mapContainer.style.display = "none";
-  //   //   const div = document.createElement("div");
-};
-
 const paintMap = (lat, lng) => {
   mapContainer.style.display = "block";
   map.relayout();
@@ -32,12 +28,16 @@ const paintMap = (lat, lng) => {
 };
 
 const paintInitMap = () => {
-  loadingMap();
-  navigator.geolocation.getCurrentPosition((position) => {
-    let lng = position.coords.longitude;
-    let lat = position.coords.latitude;
-    paintMap(lat, lng);
-  });
+  paintAddress(addressInput.value);
+  if (addressInput.value) {
+    geocoder.addressSearch(addressInput.value, handleGeocoder);
+  } else {
+    navigator.geolocation.getCurrentPosition((position) => {
+      let lng = position.coords.longitude;
+      let lat = position.coords.latitude;
+      paintMap(lat, lng);
+    });
+  }
 };
 
 const paintAddress = (address) => {
@@ -55,16 +55,14 @@ const handleGeocoder = (results, status) => {
   const result = results[0];
   const lat = result.y;
   const lng = result.x;
-  loadingMap();
   paintMap(lat, lng);
 };
 
 const show = () => {
   new daum.Postcode({
     oncomplete: function (data) {
-      var geocoder = new daum.maps.services.Geocoder();
-      //   geocoder.addressSearch(data.address, handleGeocoder);
       geocoder.addressSearch(data.address, handleGeocoder);
+
       paintAddress(data.roadAddress);
       addressInput.value = data.roadAddress;
       locationInput.value = `${data.sido} ${data.sigungu} ${data.bname}`;

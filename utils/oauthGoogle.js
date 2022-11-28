@@ -12,7 +12,7 @@ export default () => {
       {
         clientID: process.env.GOOGLE_CLIENT,
         clientSecret: process.env.GOOGLE_SECRET,
-        callbackURL: "http://localhost:5000/auth/google/callback",
+        callbackURL: "http://localhost:5050/auth/google/callback",
         passReqToCallback: true,
       },
       async (req, authToken, refreshToken, profile, done) => {

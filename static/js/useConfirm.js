@@ -1,0 +1,1 @@
+"use strict";var deleteBtn=document.getElementById("deleteBtn"),_ref=new URL(window.location),pathname=_ref.pathname,gymId=pathname.split("/")[2],handleDelete=function(){confirm("정말 삭제 하시겠습니까?")&&(window.location="gym/"+gymId+"/remove")};deleteBtn.addEventListener("click",handleDelete);

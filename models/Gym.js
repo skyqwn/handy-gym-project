@@ -12,7 +12,7 @@ const GymSchema = mongoose.Schema(
     category: [String],
   },
   {
-    timestamp: true,
+    timestamps: true,
   }
 );
 

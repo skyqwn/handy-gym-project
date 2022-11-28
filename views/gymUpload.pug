@@ -1,7 +1,8 @@
 extends includes/layout
 
 block content 
-    form(action="/gym/upload" method="POST" enctype="multipart/form-data")
+    form(action="/gym/upload" method="post" enctype="multipart/form-data")
+        input(type="hidden" name="_csrf" value=csrfToken)
         input(type="text" name="name" placeholder="이름")
         input(type="text" name="title" placeholder="한 줄로 표현해보세요")
         input(type="file" name="photos" multiple)
