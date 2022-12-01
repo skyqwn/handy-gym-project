@@ -52,7 +52,6 @@ export const detail = async (req, res) => {
   const {
     params: { gymId },
   } = req;
-  console.log(gymId);
   try {
     const gym = await Gym.findById(gymId).populate("creator");
     return res.render("gymDetail", { title: gym.name, gym });

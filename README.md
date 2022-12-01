@@ -18,19 +18,21 @@
 
 - [x] Daum주소 API
 
+- [ ] Rich Text POST
+
 - [ ] Email 찾기
 
 - [ ] 비밀번호 변경
 
-- [x] GYM CRUD
-
 - [ ] USER CRUD
 
-- [ ] Rich Text POST
+- [x] GYM CRUD
+
+- [ ] POST CRUD
 
 - [ ] GYM Filter
 
-- [ ] POST 필터
+- [ ] POST Filter
 
 - [x] PageNation
 

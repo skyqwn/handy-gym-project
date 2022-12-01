@@ -14,7 +14,10 @@ block content
         input(type="button" id="searchAddressBtn" value="주소 검색")
         #postcodeLayer
         #postcodeCancelBtn ❌
-        textarea(name="description" placeholder="세부내용")
+        //- textarea(name="description" placeholder="세부내용")
+        textarea
         input(type="submit" value="생성")
 
     script(src="/static/js/daumAddress.js")
+    script(type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js")
+    script(src="/static/js/useRichText.js")

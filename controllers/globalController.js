@@ -41,7 +41,7 @@ export const signinPost = (req, res) => {
           req.flash("error", "로그인 오류 발생");
           return res.redirect("/signin");
         }
-        req.flash("success", `${user.nickname}님 안녕하세요👋`);
+        req.flash("success", `${user.nickname}님 안녕하세요`);
         return res.redirect(redirectUrl || "/");
       });
     }

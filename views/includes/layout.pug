@@ -8,8 +8,10 @@ html
           if message.error
               div.message#error=message.error
           if message.info
-              div.message#error=message.info
-    include nav
-    block content
+              div.message#info=message.info
+    .bodyWrapper
+      include nav
+      block content
+    
     include footer
     

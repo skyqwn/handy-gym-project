@@ -1,0 +1,23 @@
+@import "../config/veriable.scss";
+
+.home {
+  &__main {
+    position: relative;
+    &__img {
+      img {
+        height: calc(100% - $navHeight);
+        width: 100%;
+        object-fit: cover;
+      }
+    }
+    &__text {
+      position: absolute;
+      z-index: 5;
+      bottom: 30px;
+      right: 30px;
+      font-size: 40px;
+      line-height: 58px;
+      font-weight: 700;
+    }
+  }
+}

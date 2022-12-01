@@ -1,0 +1,1 @@
+new FroalaEditor("textarea");

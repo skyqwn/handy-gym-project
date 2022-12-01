@@ -1,9 +1,14 @@
-nav 
-    ul  
-        if user 
-            a(href="/logout") 로그아웃 
-            a(href="/gym") 헬스장
-            a(href="/gym/upload") 헬스장 등록
-        else 
-            a(href="/signin") 로그인 
-            a(href="/signup") 회원가입 
+nav.wideContainer
+    .container.navContainer
+        .navContainer__item
+            a(href="/") 홈 
+        .navContainer__item
+            if user 
+                a(href="/logout") 로그아웃 
+                a(href="/gym") 헬스장
+                a(href="/gym/upload") 헬스장 등록
+                a(href="/post/") 포스트
+                a(href="/post/upload") 포스트 업로드 
+            else 
+                a(href="/signin") 로그인 
+                a(href="/signup") 회원가입 

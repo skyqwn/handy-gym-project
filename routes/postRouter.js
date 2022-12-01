@@ -8,15 +8,31 @@ import {
   upload,
   uploadPost,
 } from "../controllers/postController.js";
+import { postUpload } from "../utils/fileUpload.js";
+import { onlyEmailVerified, onlyUser } from "../utils/protectAuth.js";
+import protectCSRFToken from "../utils/protectCSRFToken.js";
 
 const postRouter = express.Router();
 
 postRouter.get("/", fetch);
 
-postRouter.route("/upload").get(upload).post(uploadPost);
+postRouter
+  .route("/upload")
+  .all(onlyUser, onlyEmailVerified)
+  .get(protectCSRFToken, upload)
+  .post(postUpload.array("photos", 10), protectCSRFToken, uploadPost);
 
-postRouter.route("/:gymId").get(detail).delete(remove);
+postRouter.route("/:postId").all(onlyUser).get(detail);
 
-postRouter.route("/:gymId/update").get(update).delete(updatePost);
+postRouter
+  .route("/:postId/update")
+  .all(onlyUser, onlyEmailVerified)
+  .get(protectCSRFToken, update)
+  .post(postUpload.array("photos", 10), protectCSRFToken, updatePost);
+
+postRouter
+  .route("/:postId/remove")
+  .all(onlyUser, onlyEmailVerified)
+  .get(remove);
 
 export default postRouter;

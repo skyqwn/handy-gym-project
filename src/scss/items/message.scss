@@ -1,0 +1,45 @@
+@import "../config/veriable";
+
+@keyframes message {
+  0% {
+    transform: translateY(-200px);
+  }
+  10% {
+    transform: translateY(20px);
+  }
+  90% {
+    transform: translateY(20px);
+  }
+  100% {
+    transform: translateY(-200px);
+  }
+}
+
+.messageContainer {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  transform: translateY(-200px);
+  justify-content: center;
+  align-items: center;
+  animation: message 3s ease-in-out;
+  .message {
+    width: fit-content;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    font-weight: 600;
+    padding: 0px 20px;
+  }
+  #success {
+    background-color: #0c2461;
+    color: white;
+  }
+  #error {
+    background-color: #e74c3c;
+    color: white;
+  }
+}

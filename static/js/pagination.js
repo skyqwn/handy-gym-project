@@ -1,1 +1,51 @@
-"use strict";var pageContainer=document.querySelector(".jsPageContainer"),params=new URLSearchParams(window.location.search),PAGE=Number(params.get("page"))||1,TOTAL_PAGE=Number(pageContainer.id),PAGE_CONTAINER_SIZE=5,CURRENT_PAGE_CONTAINER=Math.ceil(PAGE/PAGE_CONTAINER_SIZE),TOTAL_PAGE_CONTAINER=Math.ceil(TOTAL_PAGE/PAGE_CONTAINER_SIZE),paintPage=function(e){var a=document.createElement("a");a.href="/gym?page="+e,a.innerHTML=e,pageContainer.appendChild(a)},paintPagination=function(e){var a;1<CURRENT_PAGE_CONTAINER&&((a=document.createElement("a")).href="/gym?page="+(CURRENT_PAGE_CONTAINER-1)*PAGE_CONTAINER_SIZE,a.innerHTML="Prev",pageContainer.appendChild(a));for(var E=1;E<=e;E++){var n=Math.ceil(E/PAGE_CONTAINER_SIZE);CURRENT_PAGE_CONTAINER===n&&paintPage(E),console.log(E),console.log(e),E===e&&PAGE_CONTAINER_SIZE<e&&CURRENT_PAGE_CONTAINER!==TOTAL_PAGE_CONTAINER&&((n=document.createElement("a")).href="/gym?page="+(CURRENT_PAGE_CONTAINER*PAGE_CONTAINER_SIZE+1),n.innerHTML="Next",pageContainer.appendChild(n))}},init=function(){TOTAL_PAGE<PAGE&&(window.location.href="/gym?page="+TOTAL_PAGE),paintPagination(TOTAL_PAGE)};init();
+"use strict";
+
+var pageContainer = document.querySelector(".jsPageContainer");
+var params = new URLSearchParams(window.location.search);
+
+var PAGE = Number(params.get("page")) || 1;
+var TOTAL_PAGE = Number(pageContainer.id);
+var PAGE_CONTAINER_SIZE = 5;
+var CURRENT_PAGE_CONTAINER = Math.ceil(PAGE / PAGE_CONTAINER_SIZE);
+var TOTAL_PAGE_CONTAINER = Math.ceil(TOTAL_PAGE / PAGE_CONTAINER_SIZE);
+
+var paintPage = function paintPage(page) {
+  var pageLink = document.createElement("a");
+  pageLink.href = "/gym?page=" + page;
+  pageLink.innerHTML = page;
+  pageContainer.appendChild(pageLink);
+};
+
+var paintPagination = function paintPagination(TOTAL_PAGE) {
+  if (1 < CURRENT_PAGE_CONTAINER) {
+    var pageLink = document.createElement("a");
+    pageLink.href = "/gym?page=" + (CURRENT_PAGE_CONTAINER - 1) * PAGE_CONTAINER_SIZE;
+    pageLink.innerHTML = "Prev";
+    pageContainer.appendChild(pageLink);
+  }
+
+  for (var i = 1; i <= TOTAL_PAGE; i++) {
+    var iPageContainer = Math.ceil(i / PAGE_CONTAINER_SIZE);
+    if (CURRENT_PAGE_CONTAINER === iPageContainer) {
+      paintPage(i);
+    }
+    console.log(i);
+    console.log(TOTAL_PAGE);
+
+    if (i === TOTAL_PAGE && TOTAL_PAGE > PAGE_CONTAINER_SIZE && CURRENT_PAGE_CONTAINER !== TOTAL_PAGE_CONTAINER) {
+      var _pageLink = document.createElement("a");
+      _pageLink.href = "/gym?page=" + (CURRENT_PAGE_CONTAINER * PAGE_CONTAINER_SIZE + 1);
+      _pageLink.innerHTML = "Next";
+      pageContainer.appendChild(_pageLink);
+    }
+  }
+};
+
+var init = function init() {
+  if (PAGE > TOTAL_PAGE) {
+    window.location.href = "/gym?page=" + TOTAL_PAGE;
+  }
+  paintPagination(TOTAL_PAGE);
+};
+
+init();
