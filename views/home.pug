@@ -1,10 +1,34 @@
 extends includes/layout 
 
 block content 
+    //- .container.home
+    //-     #quotesDiv 
+    //-         span
     .container.home
-        .home__main
-            .home__main__img
-                img(src="/static/images/main_image.webp", alt="")
-            .home__main__text
-                div " 운동은 최고의 제테크입니다
-                div 행복한 미래를 위한 저축입니다 "
+        .box
+            .box__item.row.first
+                .box__item__img
+                    img(src="/static/images/main-img4.png", alt="")
+                .box__item__text
+                    p 무한의 바다무한의 바다무한의
+                    a(href="/post/upload")
+                        .btn.primary 무한의바다 보러가기
+        .box
+            .box__item.column.second
+                .box__item__img
+                    img(src="/static/images/main-img.png", alt="")
+                .box__item__text
+                    p 근처 체육관
+                    a(href="/gym")
+                        .btn.primary 가자
+            .box__item.column.third
+                .box__item__img
+                    img(src="/static/images/main-img2.png", alt="")
+                .box__item__text
+                    p 내가 체육관 등록
+                    a(href="/gym/upload")
+                        .btn.primary 가자
+
+      
+
+    script(src="/static/js/lifeQuotes.js") 

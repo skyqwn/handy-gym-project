@@ -1,8 +1,14 @@
 @import "../config/veriable.scss";
 
 nav {
-  border-bottom: 1px solid rgba(238, 238, 238, 0.903);
+  border-bottom: 1px solid black;
   height: $navHeight;
+  position: fixed;
+  z-index: 10;
+  background-color: $bgColor;
+  img {
+    width: 100px;
+  }
   .navContainer {
     display: flex;
     align-items: center;

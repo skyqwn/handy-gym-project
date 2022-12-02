@@ -1,23 +1,66 @@
 @import "../config/veriable.scss";
 
 .home {
-  &__main {
-    position: relative;
-    &__img {
-      img {
-        height: calc(100% - $navHeight);
-        width: 100%;
-        object-fit: cover;
-      }
+  height: calc(100% - $navHeight);
+  .box {
+    display: flex;
+    &:first-child {
+      height: 40%;
     }
-    &__text {
-      position: absolute;
-      z-index: 5;
-      bottom: 30px;
-      right: 30px;
-      font-size: 40px;
-      line-height: 58px;
-      font-weight: 700;
+    &:last-child {
+      height: 60%;
+    }
+    &__item {
+      display: flex;
+      width: 100%;
+      &.row {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+        .box__item__img {
+          height: 90%;
+          img {
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+      }
+      &.column {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+
+        .box__item__img {
+          height: 52%;
+          img {
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+      }
+      &__text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        p {
+          font-size: 32px;
+        }
+      }
+      &.first {
+        background-color: $accentColor;
+        color: white;
+      }
+      &.second {
+        background-color: $borderColor;
+        color: white;
+      }
+      &.third {
+        background-color: $accentHoverColor;
+        color: white;
+      }
     }
   }
 }

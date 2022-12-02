@@ -1,17 +1,17 @@
-
 extends includes/layout
 
 block content 
-    h1=gym.name
-    h1=gym.creator._id 
-    h1=user._id
+    .container
+        h1=gym.name
+        h1=gym.creator._id 
+        h1=user._id
 
-    if `${gym.creator._id}` === `${user._id}` 
-        a(href=`/gym/${gym._id}/update`) 수정
-        //- #deleteBtn 삭제
-        a(href=`/gym/${gym._id}/remove`) 삭제
-    script(src="/static/js/useConfirm.js") 
-        
+        if `${gym.creator._id}` === `${user._id}` 
+            a(href=`/gym/${gym._id}/update`) 수정
+            //- #deleteBtn 삭제
+            a(href=`/gym/${gym._id}/remove`) 삭제
+        script(src="/static/js/useConfirm.js") 
+            
         
 
 

@@ -38,15 +38,17 @@ app.set("view engine", "pug");
 // };
 // app.use(cors(corsOptions));
 
-// console.log(corsOptions);
-
-// 'https://cdn.jsdelivr.net/npm/froala-editor@3.1.0/js/froala_editor.pkgd.min.js
-
 const cspOptions = {
   directives: {
     ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-    "default-src": ["'self'", "*.kakao.com"],
-    "script-src": ["'self'", "*.jsdelivr.net", "*.daumcdn.net", "*.kakao.com"],
+    "default-src": ["'self'", "*.kakao.com", "*.fontawesome.com"],
+    "script-src": [
+      "'self'",
+      "*.jsdelivr.net",
+      "*.daumcdn.net",
+      "*.kakao.com",
+      "*.fontawesome.com",
+    ],
     "frame-src": ["'self'", "*.map.daum.net"],
     "img-src": ["'self'", "*.daumcdn.net"],
   },
