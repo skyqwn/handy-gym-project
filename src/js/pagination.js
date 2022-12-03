@@ -9,19 +9,25 @@ const TOTAL_PAGE_CONTAINER = Math.ceil(TOTAL_PAGE / PAGE_CONTAINER_SIZE);
 
 const paintPage = (page) => {
   const pageLink = document.createElement("a");
+  const pageText = document.createElement("div");
   pageLink.href = `/gym?page=${page}`;
   pageLink.innerHTML = page;
+  pageText.classList.add("page");
+  if (PAGE === +page) {
+    pageText.classList.add("currentPage");
+  }
+  pageContainer.appendChild(pageLink);
   pageContainer.appendChild(pageLink);
 };
 
 const paintPagination = (TOTAL_PAGE) => {
   if (1 < CURRENT_PAGE_CONTAINER) {
-    const pageLink = document.createElement("a");
-    pageLink.href = `/gym?page=${
+    const nextLink = document.createElement("a");
+    nextLink.href = `/gym?page=${
       (CURRENT_PAGE_CONTAINER - 1) * PAGE_CONTAINER_SIZE
     }`;
-    pageLink.innerHTML = "Prev";
-    pageContainer.appendChild(pageLink);
+    nextLink.innerHTML = "Prev";
+    pageContainer.appendChild(nextLink);
   }
 
   for (let i = 1; i <= TOTAL_PAGE; i++) {
@@ -29,8 +35,6 @@ const paintPagination = (TOTAL_PAGE) => {
     if (CURRENT_PAGE_CONTAINER === iPageContainer) {
       paintPage(i);
     }
-    console.log(i);
-    console.log(TOTAL_PAGE);
 
     if (
       i === TOTAL_PAGE &&

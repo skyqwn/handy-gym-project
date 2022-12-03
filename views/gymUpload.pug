@@ -5,7 +5,7 @@ block content
         input(type="hidden" name="_csrf" value=csrfToken)
         input(type="text" name="name" placeholder="이름")
         input(type="text" name="title" placeholder="한 줄로 표현해보세요")
-        input(type="file" name="photos" multiple)
+        input(type="file" name="photos" multiple accept="image/*")
         input(type="hidden" name="address")
         input(type="hidden" name="location")
         #result
@@ -19,5 +19,7 @@ block content
         input(type="submit" value="생성")
 
     script(src="/static/js/daumAddress.js")
-    script(type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js")
-    script(src="/static/js/useRichText.js")
+    script(src="/static/js/imageCompress.js")
+    //- script(type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js")
+    //- script(src="/static/js/useRichText.js")
+    script(type="text/javascript" src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.0/dist/browser-image-compression.js")

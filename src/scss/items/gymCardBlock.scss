@@ -1,0 +1,17 @@
+@import "../config/veriable";
+
+.gymCard {
+  width: 100%;
+  height: auto;
+  img {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+  h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 2px 0;
+  }
+}

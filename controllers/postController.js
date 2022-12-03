@@ -14,7 +14,7 @@ export const fetch = async (req, res) => {
     const TOTAL_PAGE = Math.ceil(TOTAL_POSTS / LIMIT_SIZE) || 1;
     const posts = await Post.find({})
       .skip(SKIP_PAGE)
-      // .limit(LIMIT_SIZE)
+      .limit(LIMIT_SIZE)
       .sort({ createdAt: -1 });
     console.log(posts);
     return res.render("post", {

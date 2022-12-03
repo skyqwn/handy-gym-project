@@ -78,6 +78,7 @@ passportInit(app);
 
 app.use(flash());
 app.use("/static", express.static("static"));
+app.use("/uploads", express.static("uploads"));
 app.use(setLocals);
 
 app.use("/", globalRouter);
