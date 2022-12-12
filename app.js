@@ -50,7 +50,7 @@ const cspOptions = {
       "*.fontawesome.com",
     ],
     "frame-src": ["'self'", "*.map.daum.net"],
-    "img-src": ["'self'", "*.daumcdn.net"],
+    "img-src": ["'self'", "blob:", "*.daumcdn.net"],
   },
 };
 

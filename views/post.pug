@@ -4,4 +4,6 @@ block content
     each post in posts 
         a(href=`/post/${post.id}`) 
             h1=post.title
-    
+    div(id=totalPage, class="jsPageContainer")
+
+    script(src="/static/js/postPagination.js") 

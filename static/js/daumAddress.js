@@ -2,8 +2,6 @@
 
 var searchAddressBtn = document.getElementById("searchAddressBtn");
 var result = document.getElementById("result");
-var layer = document.getElementById("postcodeLayer");
-var cancelBtn = document.getElementById("postcodeCancelBtn");
 var addressInput = document.querySelector("input[name=address]");
 var locationInput = document.querySelector("input[name=location]");
 var mapContainer = document.getElementById("kakaoMap");
@@ -30,7 +28,7 @@ var paintMap = function paintMap(lat, lng) {
 };
 
 var paintInitMap = function paintInitMap() {
-  paintAddress(addressInput.value);
+  // paintAddress(addressInput.value);
   if (addressInput.value) {
     geocoder.addressSearch(addressInput.value, handleGeocoder);
   } else {
@@ -45,12 +43,9 @@ var paintInitMap = function paintInitMap() {
 var paintAddress = function paintAddress(address) {
   result.innerHTML = "";
   var div = document.createElement("div");
-  div.innerText = address;
+  div.innerText = "\uC8FC\uC18C: " + address;
+  div.style.paddingTop = "5px";
   result.appendChild(div);
-};
-
-var cancel = function cancel() {
-  layer.style.display = "none";
 };
 
 var handleGeocoder = function handleGeocoder(results, status) {
@@ -69,14 +64,12 @@ var show = function show() {
       addressInput.value = data.roadAddress;
       locationInput.value = data.sido + " " + data.sigungu + " " + data.bname;
     }
-  }).embed(layer);
-  layer.style.display = "block";
+  }).open();
 };
 
 var init = function init() {
   paintInitMap();
   searchAddressBtn.addEventListener("click", show);
-  cancelBtn.addEventListener("click", cancel);
 };
 
 init();

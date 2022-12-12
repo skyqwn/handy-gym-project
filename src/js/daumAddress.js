@@ -1,7 +1,5 @@
 const searchAddressBtn = document.getElementById("searchAddressBtn");
 const result = document.getElementById("result");
-const layer = document.getElementById("postcodeLayer");
-const cancelBtn = document.getElementById("postcodeCancelBtn");
 const addressInput = document.querySelector("input[name=address]");
 const locationInput = document.querySelector("input[name=location]");
 const mapContainer = document.getElementById("kakaoMap");
@@ -28,7 +26,7 @@ const paintMap = (lat, lng) => {
 };
 
 const paintInitMap = () => {
-  paintAddress(addressInput.value);
+  // paintAddress(addressInput.value);
   if (addressInput.value) {
     geocoder.addressSearch(addressInput.value, handleGeocoder);
   } else {
@@ -43,12 +41,9 @@ const paintInitMap = () => {
 const paintAddress = (address) => {
   result.innerHTML = "";
   const div = document.createElement("div");
-  div.innerText = address;
+  div.innerText = `주소: ${address}`;
+  div.style.paddingTop = "5px";
   result.appendChild(div);
-};
-
-const cancel = () => {
-  layer.style.display = "none";
 };
 
 const handleGeocoder = (results, status) => {
@@ -67,14 +62,12 @@ const show = () => {
       addressInput.value = data.roadAddress;
       locationInput.value = `${data.sido} ${data.sigungu} ${data.bname}`;
     },
-  }).embed(layer);
-  layer.style.display = "block";
+  }).open();
 };
 
 const init = () => {
   paintInitMap();
   searchAddressBtn.addEventListener("click", show);
-  cancelBtn.addEventListener("click", cancel);
 };
 
 init();
