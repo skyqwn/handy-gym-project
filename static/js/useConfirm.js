@@ -13,4 +13,11 @@ var handleDelete = function handleDelete() {
     window.location = "gym/" + gymId + "/remove";
   }
 };
-deleteBtn.addEventListener("click", handleDelete);
+
+var init = function init() {
+  deleteBtn.addEventListener("click", handleDelete);
+};
+
+if (deleteBtn) {
+  init();
+}

@@ -2,15 +2,35 @@ extends includes/layout
 
 block content 
     .container
-        h1=gym.name
-        h1=gym.creator._id 
-        h1=user._id
-
-        if `${gym.creator._id}` === `${user._id}` 
-            a(href=`/gym/${gym._id}/update`) 수정
-            //- #deleteBtn 삭제
-            a(href=`/gym/${gym._id}/remove`) 삭제
+        .gymDetail
+            h1=gym.name
+            h1=gym.creator._id
+            - let i = 0;
+            .gymDetail__imgLayout 
+                while i < 4
+                    if i === 0 || i === 1
+                        .imgContainer
+                            img(src=`/${gym.photos[i]}`,)
+                    if i === 2
+                        .imgContainer
+                            img(src=`/${gym.photos[i]}`,)
+                            img(src=`/${gym.photos[i+1]}`,)
+                    if i === 3
+                        span
+                    - ++i
+            //- .slideContainer
+            //-     .imgContainer
+            //-         each photo in gym.photos 
+            //-             img(src=`/${photo}`, alt="" class="gymImg")
+            //- #nextSlide 다음
+            //- #prevSlide 이전
+            h1=gym.desc
+            if `${gym.creator._id}` === `${user._id}` 
+                a(href=`/gym/${gym._id}/update`) 수정
+            #deleteBtn 삭제
+                a(href=`/gym/${gym._id}/remove`) 삭제
         script(src="/static/js/useConfirm.js") 
+        script(src="/static/js/imgSlide.js")
             
         
 

@@ -1,0 +1,44 @@
+// .gymDetail {
+//   .slideContainer {
+//     max-width: 480px;
+//     aspect-ratio: 3 / 4;
+//     overflow: hidden;
+//     .imgContainer {
+//       display: flex;
+//       width: 100%;
+//       height: 100%;
+//       transition: all ease-in-out 0.2s;
+//     }
+//     img {
+//       width: 100%;
+//       height: 100%;
+//       object-fit: cover;
+//     }
+//   }
+// }
+.gymDetail {
+  &__imgLayout {
+    display: flex;
+    max-width: 75%;
+    aspect-ratio: 7.5 / 4;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+    .imgContainer {
+      &:first-child {
+        aspect-ratio: 3 / 4;
+        width: 40%;
+      }
+      &:nth-child(2) {
+        aspect-ratio: 3 / 4;
+        width: 40%;
+      }
+      &:nth-child(3) {
+        width: 20%;
+        display: flex;
+        flex-direction: column;
+      }
+    }
+  }
+}
