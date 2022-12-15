@@ -4,14 +4,116 @@ html {
   background-color: $bgColor;
   color: $textColor;
   font-family: $fontFamily;
+  position: relative;
   font-size: 16px;
-  .bodyWrapper {
-    height: auto;
-    min-height: calc(100% - $navHeight);
-    padding-top: $navHeight;
-    // margin-bottom: $footerHeight;
+  .showModal {
+    display: block;
+  }
+  .modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    position: absolute;
+    z-index: 101;
+    bottom: 0;
+    display: none;
+    &__body {
+      width: 95%;
+      height: 100%;
+      margin: 0px 20px;
+      // border: 1px solid red;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      &__next {
+        border: 1px solid white;
+        border-radius: 50%;
+        padding: 15px;
+        font-weight: 700;
+        font-size: 16px;
+        position: absolute;
+        color: white;
+        right: -3;
+        z-index: 103;
+        &:hover {
+          cursor: pointer;
+          background-color: rgb(81, 79, 79);
+        }
+      }
+      &__prev {
+        border: 1px solid white;
+        border-radius: 50%;
+        padding: 15px;
+        font-weight: 700;
+        font-size: 16px;
+        position: absolute;
+        color: white;
+        left: -3;
+        z-index: 103;
+        &:hover {
+          cursor: pointer;
+          background-color: rgb(81, 79, 79);
+        }
+      }
+      &__content {
+        width: 40%;
+        height: 70%;
+        border: 1px solid red;
+      }
+    }
+    &__head {
+      display: flex;
+      // border: 1px solid red;
+      width: 95%;
+      height: 40px;
+      margin: 40px 40px 20px;
+      position: relative;
+      &__content {
+        width: 55%;
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+
+        .xBtn {
+          width: 9%;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          // border: 2px solid white;
+          border-radius: 5px;
+          color: white;
+          padding: 8px 14px;
+          &:hover {
+            cursor: pointer;
+            background-color: rgb(81, 79, 79);
+          }
+        }
+        .headLine {
+          width: 10%;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 5px;
+          color: white;
+        }
+      }
+    }
   }
 }
+.bodyWrapper {
+  height: auto;
+  min-height: calc(100% - $navHeight);
+  padding-top: $navHeight;
+  // margin-bottom: $footerHeight;
+}
+
 input,
 button,
 .btn {
@@ -69,9 +171,14 @@ textarea {
   width: 100%;
   margin: 0 auto;
   padding: 0 5px;
+  position: relative;
 }
 
 .wideContainer {
   width: 100%;
   margin: 0 auto;
+}
+
+.show {
+  display: block;
 }

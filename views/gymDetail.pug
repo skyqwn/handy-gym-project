@@ -12,9 +12,11 @@ block content
                         .imgContainer
                             img(src=`/${gym.photos[i]}`,)
                     if i === 2
-                        .imgContainer
+                        .imgContainer 
                             img(src=`/${gym.photos[i]}`,)
                             img(src=`/${gym.photos[i+1]}`,)
+                            #viewMore + 사진5개 모두보기
+                                span 
                     if i === 3
                         span
                     - ++i
@@ -29,6 +31,7 @@ block content
                 a(href=`/gym/${gym._id}/update`) 수정
             #deleteBtn 삭제
                 a(href=`/gym/${gym._id}/remove`) 삭제
+        script(src="/static/js/viewMore.js")
         script(src="/static/js/useConfirm.js") 
         script(src="/static/js/imgSlide.js")
             
