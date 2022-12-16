@@ -49,7 +49,7 @@ var handleImageUpload = async function handleImageUpload(event) {
 
   var compressOptions = {
     maxSizeMB: 1,
-    maxWidthOrHeight: 760,
+    maxWidthOrHeight: 960,
     initalQuality: 0.8,
     useWebWorker: false
   };

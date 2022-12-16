@@ -45,7 +45,7 @@ const handleImageUpload = async (event) => {
 
   const compressOptions = {
     maxSizeMB: 1,
-    maxWidthOrHeight: 760,
+    maxWidthOrHeight: 960,
     initalQuality: 0.8,
     useWebWorker: false,
   };
