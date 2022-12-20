@@ -10,6 +10,7 @@ var slideContainer = document.querySelector(".slideContainer");
 var imgs = document.querySelectorAll(".gymImg");
 var nextBtn = document.getElementById("nextSlide");
 var prevBtn = document.getElementById("prevSlide");
+var slideNumber = document.getElementById("slideNumber");
 
 var modalOpen = function modalOpen() {
   modalContainer.style.transform = "translateY(0)";
@@ -29,9 +30,10 @@ var SLIDE_INDEX = 0;
 var paintImgsSlide = function paintImgsSlide(index) {
   for (var i = 0; i < imgs.length; i++) {
     if (index === i) {
-      imgs[i].style.display = "block";
+      imgs[i].style.opacity = "1";
+      slideNumber.innerText = i + 1 + "  / " + imgs.length;
     } else {
-      imgs[i].style.display = "none";
+      imgs[i].style.opacity = "0";
     }
   }
   // const percent = -100 * index;

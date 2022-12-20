@@ -33,6 +33,7 @@ export const upload = (req, res) => {
 
 export const uploadPost = async (req, res) => {
   const { body, files } = req;
+  console.log(body);
   try {
     const returnPath = files.map((file) => {
       return file.path;

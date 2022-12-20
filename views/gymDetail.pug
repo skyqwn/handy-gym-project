@@ -17,14 +17,37 @@ block content
                     i.fa-solid.fa-chevron-right#nextSlide
             .modal__bottom.modalColumnWrapper
                 .modal__item 
-                .modal__item 1 / 5
+                .modal__item#slideNumber
                 .modal__item 
     .container
         .gymDetail
-            h1=gym.name
-            h1=gym.creator._id
-            - let i = 0;
-            .gymDetail__imgLayout 
+            .gymDetail__section
+                h1=gym.name
+            .gymDetail__section
+                if gym.yearRound === "네"
+                    .infoBtn.yes 연중무휴
+                if gym.yearRound === "아니오"
+                    .infoBtn.no 연중무휴 불가능
+                if gym.yearRound === "모름"
+                    .infoBtn 연중무휴 여부: 모름
+
+
+                if gym.oneday === "가능"
+                    .infoBtn 일일입장가능
+                        if gym.onedayPay === "모름"
+                            span 가격: #{gym.onedayPay}
+                        else 
+                            span 가격: #{gym.onedayPay}원
+
+                if gym.oneday === "불가능"
+                    .infoBtn.no 일일입장 불가능 
+                if gym.oneday === "모름"
+                    .infoBtn 일일입장 모름
+
+
+            
+            .gymDetail__imgLayout.gymDetail__section
+                - let i = 0;
                 while i < 4
                     if i === 0 || i === 1
                         .imgContainer
@@ -34,16 +57,21 @@ block content
                             img(src=`/${gym.photos[i]}`,)
                             img(src=`/${gym.photos[i+1]}`,)
                             #viewMore + 사진 더보기
-                                span 
                     if i === 3
                         span
                     - ++i
-            h1=gym.desc
-            if `${gym.creator._id}` === `${user._id}` 
-                a(href=`/gym/${gym._id}/update`) 수정
-            #deleteBtn 삭제
+            .gymDetail__section
+                p=gym.description
+            
+            .gymDetail__section
+                #kakaoMap
+                    #jsAddress #{gym.address}
+                if `${gym.creator._id}` === `${user._id}` 
+                    a(href=`/gym/${gym._id}/update`).btn 수정
+                #deleteBtn.btn 삭제
         script(src="/static/js/viewMore.js")
         script(src="/static/js/useConfirm.js") 
+        script(src="/static/js/kakaoMap.js")
             
         
 

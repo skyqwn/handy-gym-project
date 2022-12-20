@@ -1,6 +1,6 @@
 const onedayRadios = document.querySelectorAll("input[name=oneday]");
 const jsOnedayPay = document.getElementById("jsOnedayPay");
-const onedayPayInput = document.querySelector("input[name=onedaypay]");
+const onedayPayInput = document.querySelector("input[name=onedayPay]");
 const onedayPayCheckBox = document.getElementById("onedayPayCheckBox");
 
 const handleRadio = (e) => {
@@ -19,11 +19,11 @@ const handleRadio = (e) => {
 
 const handleCheckBox = (e) => {
   if (e.target.checked) {
-    onedayPayInput.disabled = true;
+    // onedayPayInput.disabled = true;
     return (onedayPayInput.value = "모름");
   }
   onedayPayInput.value = "";
-  onedayPayInput.disabled = false;
+  // onedayPayInput.disabled = false;
 };
 
 const onlyNumber = (e) => {

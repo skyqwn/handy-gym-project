@@ -10,7 +10,7 @@ var gymId = pathname.split("/")[2];
 var handleDelete = function handleDelete() {
   var ok = confirm("정말 삭제 하시겠습니까?");
   if (ok) {
-    window.location = "gym/" + gymId + "/remove";
+    window.location = "/gym/" + gymId + "/remove";
   }
 };
 

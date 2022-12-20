@@ -8,6 +8,7 @@ const slideContainer = document.querySelector(".slideContainer");
 const imgs = document.querySelectorAll(".gymImg");
 const nextBtn = document.getElementById("nextSlide");
 const prevBtn = document.getElementById("prevSlide");
+const slideNumber = document.getElementById("slideNumber");
 
 const modalOpen = () => {
   modalContainer.style.transform = "translateY(0)";
@@ -27,9 +28,10 @@ let SLIDE_INDEX = 0;
 const paintImgsSlide = (index) => {
   for (let i = 0; i < imgs.length; i++) {
     if (index === i) {
-      imgs[i].style.display = "block";
+      imgs[i].style.opacity = "1";
+      slideNumber.innerText = `${i + 1}  / ${imgs.length}`;
     } else {
-      imgs[i].style.display = "none";
+      imgs[i].style.opacity = "0";
     }
   }
   // const percent = -100 * index;

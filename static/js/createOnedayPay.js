@@ -2,7 +2,7 @@
 
 var onedayRadios = document.querySelectorAll("input[name=oneday]");
 var jsOnedayPay = document.getElementById("jsOnedayPay");
-var onedayPayInput = document.querySelector("input[name=onedaypay]");
+var onedayPayInput = document.querySelector("input[name=onedayPay]");
 var onedayPayCheckBox = document.getElementById("onedayPayCheckBox");
 
 var handleRadio = function handleRadio(e) {
@@ -22,11 +22,11 @@ var handleRadio = function handleRadio(e) {
 
 var handleCheckBox = function handleCheckBox(e) {
   if (e.target.checked) {
-    onedayPayInput.disabled = true;
+    // onedayPayInput.disabled = true;
     return onedayPayInput.value = "모름";
   }
   onedayPayInput.value = "";
-  onedayPayInput.disabled = false;
+  // onedayPayInput.disabled = false;
 };
 
 var onlyNumber = function onlyNumber(e) {

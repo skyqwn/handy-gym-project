@@ -100,10 +100,27 @@
           position: absolute;
           top: 0;
           right: 0;
-          cursor: pointer;
-          color: red;
-          z-index: 50;
-          font-size: 20px;
+          display: flex;
+          gap: 2px;
+          div {
+            cursor: pointer;
+            z-index: 50;
+            background-color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .fa-pen {
+              color: blue;
+              font-size: 10px;
+            }
+            .fa-xmark {
+              color: red;
+              font-size: 14px;
+            }
+          }
         }
       }
     }
