@@ -89,6 +89,8 @@ export const updatePost = async (req, res) => {
     const returnPath = files.map((file) => {
       return file.path;
     });
+    console.log(gym);
+    console.log(gymId);
     const updatedGym = await Gym.findByIdAndUpdate(gymId, {
       ...body,
       photos: returnPath.length > 0 ? returnPath : gym.photos,

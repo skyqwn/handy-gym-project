@@ -2,7 +2,7 @@ extends includes/layout
 
 block content 
     .container
-        form(action="/gym/upload" method="post" enctype="multipart/form-data").uploadContainer
+        form(action=`/gym/${gym._id}/update` method="post" enctype="multipart/form-data").uploadContainer
             input(type="hidden" name="address" value=gym.address)
             input(type="hidden" name="location" value=gym.location)
             input(type="hidden" name="_csrf" value=csrfToken)
@@ -69,7 +69,7 @@ block content
                         input(type="checkbox", id="onedayPayCheckBox")
                         div 모름
            
-            input(type="submit" value="생성" class="btn primary")
+            input(type="submit" value="변경" class="btn primary")
 
     script(src="/static/js/imageCompress.js")
     script(src="/static/js/daumAddress.js")
