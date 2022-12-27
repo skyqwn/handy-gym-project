@@ -7,10 +7,22 @@ const PAGE_CONTAINER_SIZE = 5;
 const CURRENT_PAGE_CONTAINER = Math.ceil(PAGE / PAGE_CONTAINER_SIZE);
 const TOTAL_PAGE_CONTAINER = Math.ceil(TOTAL_PAGE / PAGE_CONTAINER_SIZE);
 
+const setHref = (aEle, pageNum) => {
+  let queryString = `?page=${pageNum}`;
+  const searchTerm = params.get("searchTerm");
+  const yearRound = params.get("yearRound");
+  const oneday = params.get("oneday");
+  if (searchTerm) queryString += `&searchTerm=${searchTerm}`;
+  if (yearRound) queryString += `&yearRound=${yearRound}`;
+  if (oneday) queryString += `&oneday=${oneday}`;
+  aEle.href = `/gym${queryString}`;
+};
+
 const paintPage = (page) => {
   const pageLink = document.createElement("a");
   const pageText = document.createElement("div");
-  pageLink.href = `/gym?page=${page}`;
+  // pageLink.href = `/gym?page=${page}`;
+  setHref(pageLink, page);
   pageLink.innerHTML = page;
   pageText.classList.add("page");
   if (PAGE === +page) {
@@ -22,12 +34,13 @@ const paintPage = (page) => {
 
 const paintPagination = (TOTAL_PAGE) => {
   if (1 < CURRENT_PAGE_CONTAINER) {
-    const nextLink = document.createElement("a");
-    nextLink.href = `/gym?page=${
-      (CURRENT_PAGE_CONTAINER - 1) * PAGE_CONTAINER_SIZE
-    }`;
-    nextLink.innerHTML = "Prev";
-    pageContainer.appendChild(nextLink);
+    const prevLink = document.createElement("a");
+    // prevLink.href = `/gym?page=${
+    //   (CURRENT_PAGE_CONTAINER - 1) * PAGE_CONTAINER_SIZE
+    // }`;
+    setHref(prevLink, (CURRENT_PAGE_CONTAINER - 1) * PAGE_CONTAINER_SIZE);
+    prevLink.innerHTML = "Prev";
+    pageContainer.appendChild(prevLink);
   }
 
   for (let i = 1; i <= TOTAL_PAGE; i++) {
@@ -41,12 +54,13 @@ const paintPagination = (TOTAL_PAGE) => {
       TOTAL_PAGE > PAGE_CONTAINER_SIZE &&
       CURRENT_PAGE_CONTAINER !== TOTAL_PAGE_CONTAINER
     ) {
-      const pageLink = document.createElement("a");
-      pageLink.href = `/gym?page=${
-        CURRENT_PAGE_CONTAINER * PAGE_CONTAINER_SIZE + 1
-      }`;
-      pageLink.innerHTML = "Next";
-      pageContainer.appendChild(pageLink);
+      const nextLink = document.createElement("a");
+      // nextLink.href = `/gym?page=${
+      //   CURRENT_PAGE_CONTAINER * PAGE_CONTAINER_SIZE + 1
+      // }`;
+      setHref(nextLink, CURRENT_PAGE_CONTAINER * PAGE_CONTAINER_SIZE + 1);
+      nextLink.innerHTML = "Next";
+      pageContainer.appendChild(nextLink);
     }
   }
 };

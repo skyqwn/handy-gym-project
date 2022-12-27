@@ -7,7 +7,9 @@
   flex-direction: column;
   &__head {
     display: flex;
+    justify-content: space-between;
     margin: 10px 0;
+    gap: 20px;
   }
   &__middle {
     display: grid;

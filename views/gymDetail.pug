@@ -1,24 +1,24 @@
 extends includes/layout
 
 block content 
-    .modalContainer 
-        .modal
-            .modal__top.modalColumnWrapper
-                .modal__item 
-                .modal__item 
-                .modal__item#xBtn 취소
-            .modal__middle.modalColumnWrapper
-                .modal__item 
+    .viewMoreContainer 
+        .viewMore
+            .viewMore__top.viewMore__column
+                .viewMore__item 
+                .viewMore__item 
+                .viewMore__item#xBtn 취소
+            .viewMore__middle.viewMore__column
+                .viewMore__item 
                     i.fa-solid.fa-chevron-left#prevSlide
-                .modal__item.slideContainer 
+                .viewMore__item.slideContainer 
                     each photo in gym.photos 
                         img(src=`/${photo}`, alt="" class="gymImg")
-                .modal__item 
+                .viewMore__item 
                     i.fa-solid.fa-chevron-right#nextSlide
-            .modal__bottom.modalColumnWrapper
-                .modal__item 
-                .modal__item#slideNumber
-                .modal__item 
+            .viewMore__bottom.viewMore__column
+                .viewMore__item 
+                .viewMore__item#slideNumber
+                .viewMore__item 
     .container
         .gymDetail
             .gymDetail__section

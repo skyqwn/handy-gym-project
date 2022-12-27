@@ -16,8 +16,6 @@ const gymRouter = express.Router();
 
 gymRouter.get("/", fetch);
 
-gymRouter;
-
 gymRouter
   .route("/upload")
   .all(onlyUser, onlyEmailVerified)

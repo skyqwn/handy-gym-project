@@ -12,6 +12,49 @@ var generateRandomId = function generateRandomId() {
   return Math.random().toString(16).slice(2);
 };
 
+var updateChange = async function updateChange(e, targetId) {
+  try {
+    var file = await compressedFile(e.target.files[0]);
+    var newId = generateRandomId();
+    file.id = newId;
+    handleUpdateFile(file, targetId);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+var generateBtns2 = function generateBtns2(id) {
+  var deletePreview = function deletePreview(id) {
+    var container = document.getElementById(id);
+    container.remove();
+    var findIndexById = [].concat(_toConsumableArray(dataTransfer.files)).findIndex(function (file) {
+      return file.id === id;
+    });
+    dataTransfer.items.remove(findIndexById);
+    fileInput.files = dataTransfer.files;
+  };
+
+  var updatePreview = function updatePreview(id) {
+    var input = document.createElement("input");
+    input.type = "file";
+    input.click();
+    input.addEventListener("change", function (e) {
+      return updateChange(e, id);
+    });
+  };
+  var deleteBtn = document.createElement("div");
+  deleteBtn.innerHTML = "<i class=\"fa-solid fa-xmark fa-bg-white\"></i>";
+  deleteBtn.addEventListener("click", function (e) {
+    deletePreview(id);
+  });
+
+  var updateBtn = document.createElement("div");
+  updateBtn.innerHTML = "<i class=\"fa-solid fa-pen fa-bg-white\"></i>";
+  updateBtn.addEventListener("click", function (e) {
+    updatePreview(e, id);
+  });
+};
+
 var generateBtns = function generateBtns(id) {
   var deletePreview = function deletePreview(id) {
     var container = document.getElementById(id);
@@ -34,7 +77,7 @@ var generateBtns = function generateBtns(id) {
 
   var deleteBtn = document.createElement("div");
   deleteBtn.innerHTML = "<i class=\"fa-solid fa-xmark fa-bg-white\"></i>";
-  deleteBtn.addEventListener("click", function (e) {
+  deleteBtn.addEventListener("click", function () {
     deletePreview(id);
   });
 
@@ -109,17 +152,6 @@ var handleUpdateFile = function handleUpdateFile(file, targetId) {
     dataTransfer.items.add(updatedFiles[i]);
   }
   fileInput.files = dataTransfer.files;
-};
-
-var updateChange = async function updateChange(e, targetId) {
-  try {
-    var file = await compressedFile(e.target.files[0]);
-    var newId = generateRandomId();
-    file.id = newId;
-    handleUpdateFile(file, targetId);
-  } catch (error) {
-    console.log(error);
-  }
 };
 
 var paintPreview = function paintPreview(imgSrc, id) {

@@ -1,8 +1,8 @@
 "use strict";
 
 var viewMoreBtn = document.getElementById("viewMore");
-var modalContainer = document.querySelector(".modalContainer");
-var modal = document.querySelector(".modal");
+var viewMoreContainer = document.querySelector(".viewMoreContainer");
+var viewMore = document.querySelector(".viewMore");
 var xBtn = document.querySelector("#xBtn");
 var body = document.querySelector("body");
 
@@ -13,15 +13,15 @@ var prevBtn = document.getElementById("prevSlide");
 var slideNumber = document.getElementById("slideNumber");
 
 var modalOpen = function modalOpen() {
-  modalContainer.style.transform = "translateY(0)";
-  modalContainer.style.opacity = "1";
-  modal.style.top = window.scrollY + "px";
+  viewMoreContainer.style.transform = "translateY(0)";
+  viewMoreContainer.style.opacity = "1";
+  viewMore.style.top = window.scrollY + "px";
   body.style.overflowY = "hidden";
 };
 
 var modalClose = function modalClose() {
-  modalContainer.style.transform = "translateY(-100%)";
-  modalContainer.style.opacity = "0";
+  viewMoreContainer.style.transform = "translateY(-100%)";
+  viewMoreContainer.style.opacity = "0";
   body.style.overflowY = "scroll";
 };
 

@@ -4,15 +4,30 @@ export const fetch = async (req, res) => {
   const {
     query: { page = 1 },
   } = req;
+  const searchQuery = new Object();
+  if (req.query.searchTerm) {
+    searchQuery.$or = [
+      { name: { $regex: req.query.searchTerm } },
+      { location: { $regex: req.query.searchTerm } },
+    ];
+  }
+  if (req.query.oneday) {
+    searchQuery.oneday = "가능";
+  }
+  if (req.query.yearRound) {
+    searchQuery.yearRound = "네";
+  }
   try {
     if (Number(page) <= 0) {
       return res.redirect(`/gym?page=1`);
     }
-    const LIMIT_SIZE = 10;
+    const LIMIT_SIZE = 1;
     const SKIP_PAGE = (page - 1) * LIMIT_SIZE;
-    const TOTAL_GYMS = await Gym.countDocuments();
+    // const TOTAL_GYMS = await Gym.countDocuments();//수정부문
+    const TOTAL_GYMS = await Gym.countDocuments(searchQuery); //수정부문
     const TOTAL_PAGE = Math.ceil(TOTAL_GYMS / LIMIT_SIZE) || 1;
-    const gyms = await Gym.find({})
+    // const gyms = await Gym.find({})
+    const gyms = await Gym.find(searchQuery) //수정
       .populate("creator")
       .skip(SKIP_PAGE)
       .limit(LIMIT_SIZE)
@@ -122,3 +137,26 @@ export const remove = async (req, res) => {
     console.log(error);
   }
 };
+
+// export const search = async (req, res) => {
+//   const { query } = req;
+//   const searchQuery = new Object();
+//   if (query.searchTerm) {
+//     searchQuery.$or = [
+//       { name: { $regex: query.searchTerm } },
+//       { location: { $regex: query.searchTerm } },
+//     ];
+//   }
+//   if (query.oneday) {
+//     searchQuery.oneday = "가능";
+//   }
+//   if (query.yearRound) {
+//     searchQuery.yearRound = "네";
+//   }
+//   try {
+//     const searchedGym = await Gym.find(searchQuery).populate("creator");
+//     res.render("gym", { gyms: searchedGym });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };

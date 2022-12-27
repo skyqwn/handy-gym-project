@@ -1,6 +1,6 @@
 const viewMoreBtn = document.getElementById("viewMore");
-const modalContainer = document.querySelector(".modalContainer");
-const modal = document.querySelector(".modal");
+const viewMoreContainer = document.querySelector(".viewMoreContainer");
+const viewMore = document.querySelector(".viewMore");
 const xBtn = document.querySelector("#xBtn");
 const body = document.querySelector("body");
 
@@ -11,15 +11,15 @@ const prevBtn = document.getElementById("prevSlide");
 const slideNumber = document.getElementById("slideNumber");
 
 const modalOpen = () => {
-  modalContainer.style.transform = "translateY(0)";
-  modalContainer.style.opacity = "1";
-  modal.style.top = `${window.scrollY}px`;
+  viewMoreContainer.style.transform = "translateY(0)";
+  viewMoreContainer.style.opacity = "1";
+  viewMore.style.top = `${window.scrollY}px`;
   body.style.overflowY = "hidden";
 };
 
 const modalClose = () => {
-  modalContainer.style.transform = "translateY(-100%)";
-  modalContainer.style.opacity = "0";
+  viewMoreContainer.style.transform = "translateY(-100%)";
+  viewMoreContainer.style.opacity = "0";
   body.style.overflowY = "scroll";
 };
 

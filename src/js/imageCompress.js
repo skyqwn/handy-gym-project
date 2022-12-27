@@ -8,6 +8,47 @@ const generateRandomId = () => {
   return Math.random().toString(16).slice(2);
 };
 
+const updateChange = async (e, targetId) => {
+  try {
+    const file = await compressedFile(e.target.files[0]);
+    const newId = generateRandomId();
+    file.id = newId;
+    handleUpdateFile(file, targetId);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const generateBtns2 = (id) => {
+  const deletePreview = (id) => {
+    const container = document.getElementById(id);
+    container.remove();
+    const findIndexById = [...dataTransfer.files].findIndex(
+      (file) => file.id === id
+    );
+    dataTransfer.items.remove(findIndexById);
+    fileInput.files = dataTransfer.files;
+  };
+
+  const updatePreview = (id) => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.click();
+    input.addEventListener("change", (e) => updateChange(e, id));
+  };
+  const deleteBtn = document.createElement("div");
+  deleteBtn.innerHTML = `<i class="fa-solid fa-xmark fa-bg-white"></i>`;
+  deleteBtn.addEventListener("click", (e) => {
+    deletePreview(id);
+  });
+
+  const updateBtn = document.createElement("div");
+  updateBtn.innerHTML = `<i class="fa-solid fa-pen fa-bg-white"></i>`;
+  updateBtn.addEventListener("click", (e) => {
+    updatePreview(e, id);
+  });
+};
+
 const generateBtns = (id) => {
   const deletePreview = (id) => {
     const container = document.getElementById(id);
@@ -28,7 +69,7 @@ const generateBtns = (id) => {
 
   const deleteBtn = document.createElement("div");
   deleteBtn.innerHTML = `<i class="fa-solid fa-xmark fa-bg-white"></i>`;
-  deleteBtn.addEventListener("click", (e) => {
+  deleteBtn.addEventListener("click", () => {
     deletePreview(id);
   });
 
@@ -101,17 +142,6 @@ const handleUpdateFile = (file, targetId) => {
     dataTransfer.items.add(updatedFiles[i]);
   }
   fileInput.files = dataTransfer.files;
-};
-
-const updateChange = async (e, targetId) => {
-  try {
-    const file = await compressedFile(e.target.files[0]);
-    const newId = generateRandomId();
-    file.id = newId;
-    handleUpdateFile(file, targetId);
-  } catch (error) {
-    console.log(error);
-  }
 };
 
 const paintPreview = (imgSrc, id) => {
