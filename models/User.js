@@ -13,6 +13,7 @@ const UserSchema = new mongoose.Schema({
   },
   socialId: Number,
   socialType: String,
+  like_gyms: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Gym" }],
 });
 
 const User = mongoose.model("User", UserSchema);

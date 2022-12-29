@@ -6,7 +6,9 @@ import {
   update,
   updatePost,
   upload,
+  like,
   uploadPost,
+  fetchLikes,
 } from "../controllers/gymController.js";
 import { gymUpload } from "../utils/fileUpload.js";
 import { onlyEmailVerified, onlyUser } from "../utils/protectAuth.js";
@@ -16,13 +18,17 @@ const gymRouter = express.Router();
 
 gymRouter.get("/", fetch);
 
+gymRouter.get("/like", fetchLikes);
+
 gymRouter
   .route("/upload")
   .all(onlyUser, onlyEmailVerified)
   .get(protectCSRFToken, upload)
   .post(gymUpload.array("photos", 10), protectCSRFToken, uploadPost);
 
-gymRouter.route("/:gymId").all(onlyUser).get(detail).get(remove);
+gymRouter.route("/:gymId").all(onlyUser).get(detail);
+
+gymRouter.route("/:gymId/like").all(onlyUser).get(like);
 
 gymRouter
   .route("/:gymId/update")

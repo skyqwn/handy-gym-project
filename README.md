@@ -30,11 +30,17 @@
 
 - [ ] POST CRUD
 
-- [ ] GYM Filter
+- [x] GYM Filter
 
 - [ ] POST Filter
 
 - [x] PageNation
+
+- [ ] 좋아요 기능
+
+- [ ] 댓글 기능
+
+- [ ] 쪽지 기능
 
 ---
 

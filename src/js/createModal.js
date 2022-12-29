@@ -6,11 +6,9 @@ const openModal = () => {
 };
 
 const closeModal = (e) => {
-  const isContainer = e.target.classList.contains("modalContainer");
-  if (isContainer) {
+  if (e.target === modalContainer) {
     modalContainer.style.transform = "translateY(-100%)";
   }
-  return;
 };
 
 const init = () => {

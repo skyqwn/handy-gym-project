@@ -28,10 +28,12 @@ block content
                     _id:gym._id,
                     thumbnail:gym.photos[0],
                     name:gym.name,
-                    title:gym.title
+                    title:gym.title,
+                    isLike:gym.like_users.includes(String(user._id))
                 })
         .gymContainer__end
             div(id=totalPage, class="jsPageContainer")
 
         script(src="/static/js/pagination.js") 
         script(src="/static/js/createModal.js") 
+        script(src="/static/js/likeFunc.js") 

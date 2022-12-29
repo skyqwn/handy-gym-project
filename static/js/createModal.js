@@ -8,11 +8,9 @@ var openModal = function openModal() {
 };
 
 var closeModal = function closeModal(e) {
-  var isContainer = e.target.classList.contains("modalContainer");
-  if (isContainer) {
+  if (e.target === modalContainer) {
     modalContainer.style.transform = "translateY(-100%)";
   }
-  return;
 };
 
 var init = function init() {

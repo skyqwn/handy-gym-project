@@ -1,8 +1,12 @@
 mixin gymCardBlock(gym={})
-    a(href=`/gym/${gym._id}`).gymCard
-        img(src=`/${gym.thumbnail}`, alt=`${gym.name}`)
-        h3=gym.name 
-        h4=gym.title
-        
+    .gymCard
+        a(href=`/gym/${gym._id}`)
+            img(src=`/${gym.thumbnail}`, alt=`${gym.name}`)
+            h3=gym.name 
+            h4=gym.title
+        if gym.isLike
+            .likeBtn.fa-solid.fa-heart.like(id=`${gym._id}`)
+        else
+            .likeBtn.fa-regular.fa-heart(id=`${gym._id}`)
      
 

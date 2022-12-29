@@ -1,4 +1,5 @@
 import Gym from "../models/Gym.js";
+import User from "../models/User.js";
 
 export const fetch = async (req, res) => {
   const {
@@ -21,7 +22,7 @@ export const fetch = async (req, res) => {
     if (Number(page) <= 0) {
       return res.redirect(`/gym?page=1`);
     }
-    const LIMIT_SIZE = 1;
+    const LIMIT_SIZE = 10;
     const SKIP_PAGE = (page - 1) * LIMIT_SIZE;
     // const TOTAL_GYMS = await Gym.countDocuments();//수정부문
     const TOTAL_GYMS = await Gym.countDocuments(searchQuery); //수정부문
@@ -37,6 +38,19 @@ export const fetch = async (req, res) => {
       gyms,
       totalPage: TOTAL_PAGE,
     });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const fetchLikes = async (req, res) => {
+  const { user } = req;
+  try {
+    const currentUser = await User.findById(String(user._id)).populate(
+      "like_gyms"
+    );
+    const gyms = currentUser.like_gyms;
+    res.render("likeGyms", { title: "좋아요", gyms });
   } catch (error) {
     console.log(error);
   }
@@ -104,8 +118,7 @@ export const updatePost = async (req, res) => {
     const returnPath = files.map((file) => {
       return file.path;
     });
-    console.log(gym);
-    console.log(gymId);
+
     const updatedGym = await Gym.findByIdAndUpdate(gymId, {
       ...body,
       photos: returnPath.length > 0 ? returnPath : gym.photos,
@@ -133,6 +146,36 @@ export const remove = async (req, res) => {
       res.redirect(`/gym`);
       return;
     }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const like = async (req, res) => {
+  const {
+    params: { gymId },
+    user: { _id },
+  } = req;
+  const userId = String(_id);
+  try {
+    const user = await User.findById(userId);
+    const gym = await Gym.findById(gymId);
+    const existsUser = gym.like_users.includes(userId);
+    if (existsUser) {
+      const userArr = [...gym.like_users];
+      const gymArr = [...user.like_gyms];
+      const deletedUserArr = userArr.filter((user) => user !== userId);
+      const deletedGymArr = gymArr.filter((gym) => String(gym._id) !== gymId);
+      user.like_gyms = deletedGymArr;
+      gym.like_users = deletedUserArr;
+    } else {
+      user.like_gyms.push(gym);
+      gym.like_users.push(userId);
+    }
+    await gym.save();
+    await user.save();
+    console.log(user);
+    res.status(200).json(gymId);
   } catch (error) {
     console.log(error);
   }
