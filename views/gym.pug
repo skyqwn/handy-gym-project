@@ -29,7 +29,9 @@ block content
                     thumbnail:gym.photos[0],
                     name:gym.name,
                     title:gym.title,
-                    isLike:gym.like_users.includes(String(user._id))
+                    isLike:gym.like_users.includes(String(user._id)),
+                    totalComment:gym.comments.length,
+                    totalLike:gym.like_users.length
                 })
         .gymContainer__end
             div(id=totalPage, class="jsPageContainer")

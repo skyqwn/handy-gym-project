@@ -66,9 +66,18 @@ block content
             .gymDetail__section
                 #kakaoMap
                     #jsAddress #{gym.address}
-                if `${gym.creator._id}` === `${user._id}` 
-                    a(href=`/gym/${gym._id}/update`).btn 수정
-                #deleteBtn.btn 삭제
+            if `${gym.creator._id}` === `${user._id}` 
+                a(href=`/gym/${gym._id}/update`).btn 수정
+            #deleteBtn.btn 삭제
+            form(action=`/comment/${gym._id}`, method="post") 
+                input(type="text" name="text")
+                input(type="submit", value="댓글 작성")
+
+            each comment in comments 
+                h1=comment.text
+                h2=comment.creator.nickname
+                if `${comment.creator._id}` === `${user._id}` 
+                   a(href=`/comment/${gym._id}/remove/${comment._id}`) 삭제 
         script(src="/static/js/viewMore.js")
         script(src="/static/js/useConfirm.js") 
         script(src="/static/js/kakaoMap.js")

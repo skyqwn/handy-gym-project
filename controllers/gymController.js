@@ -1,5 +1,6 @@
 import Gym from "../models/Gym.js";
 import User from "../models/User.js";
+import Comment from "../models/Comment.js";
 
 export const fetch = async (req, res) => {
   const {
@@ -83,9 +84,12 @@ export const detail = async (req, res) => {
   const {
     params: { gymId },
   } = req;
+
   try {
     const gym = await Gym.findById(gymId).populate("creator");
-    return res.render("gymDetail", { title: gym.name, gym });
+    const comments = await Comment.find({ where: gymId }).populate("creator");
+
+    return res.render("gymDetail", { title: gym.name, gym, comments });
   } catch (error) {
     console.log(error);
   }

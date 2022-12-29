@@ -15,6 +15,7 @@ import postRouter from "./routes/postRouter.js";
 import userRouter from "./routes/userRouter.js";
 import setLocals from "./utils/setLocals.js";
 import passportInit from "./utils/passportInit.js";
+import commentRouter from "./routes/commentRouter.js";
 
 const mongoUrl = process.env.DEV_MONGO_URL;
 const app = express();
@@ -92,6 +93,7 @@ app.use("/", globalRouter);
 app.use("/gym", gymRouter);
 app.use("/post", postRouter);
 app.use("/user", userRouter);
+app.use("/comment", commentRouter);
 
 const handleListen = () => console.log(`✅서버가 ${port}에서 실행중입니다`);
 

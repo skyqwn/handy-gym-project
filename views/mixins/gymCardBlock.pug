@@ -4,6 +4,8 @@ mixin gymCardBlock(gym={})
             img(src=`/${gym.thumbnail}`, alt=`${gym.name}`)
             h3=gym.name 
             h4=gym.title
+            h4 댓글:#{gym.totalComment}
+            h4 좋아요:#{gym.totalLike}
         if gym.isLike
             .likeBtn.fa-solid.fa-heart.like(id=`${gym._id}`)
         else
