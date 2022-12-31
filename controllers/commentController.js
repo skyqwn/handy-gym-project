@@ -8,18 +8,19 @@ export const create = async (req, res) => {
     user: { _id: userId },
   } = req;
   try {
-    const newComment = await Comment.create({
+    const comment = await Comment.create({
       text,
       where: gymId,
       creator: userId,
     });
     await Gym.findOneAndUpdate(gymId, {
-      $push: { comments: String(newComment._id) },
+      $push: { comments: String(comment._id) },
     });
-
-    return res.redirect(`/gym/${gymId}`);
+    res.status(201).json({ comment, user: req.user });
+    // return res.redirect(`/gym/${gymId}`);
   } catch (error) {
     console.log(error);
+    return res.status(400).json();
   }
 };
 
@@ -33,8 +34,10 @@ export const remove = async (req, res) => {
     await Gym.findOneAndUpdate(gymId, {
       $pull: { comments: commentId },
     });
-    res.redirect(`/gym/${gymId}`);
+    return res.status(200).json({ Meseege: "Ok" });
+    // res.redirect(`/gym/${gymId}`);
   } catch (error) {
     console.log(error);
+    return res.status(400).json();
   }
 };

@@ -162,27 +162,57 @@ export const like = async (req, res) => {
   } = req;
   const userId = String(_id);
   try {
-    const user = await User.findById(userId);
     const gym = await Gym.findById(gymId);
     const existsUser = gym.like_users.includes(userId);
     if (existsUser) {
-      const userArr = [...gym.like_users];
-      const gymArr = [...user.like_gyms];
-      const deletedUserArr = userArr.filter((user) => user !== userId);
-      const deletedGymArr = gymArr.filter((gym) => String(gym._id) !== gymId);
-      user.like_gyms = deletedGymArr;
-      gym.like_users = deletedUserArr;
+      await Gym.findByIdAndUpdate(gymId, {
+        $pull: { like_users: userId },
+      });
+      await User.findByIdAndUpdate(userId, {
+        $pull: { like_gyms: gym._id },
+      });
     } else {
-      user.like_gyms.push(gym);
-      gym.like_users.push(userId);
+      await Gym.findByIdAndUpdate(gymId, {
+        $push: { like_users: userId },
+      });
+      await User.findOneAndUpdate(userId, {
+        $push: { like_gyms: gym._id },
+      });
     }
-    await gym.save();
-    await user.save();
-    console.log(user);
-    res.status(200).json(gymId);
+    res.status(200).json(gymId); // 이거 왜보내는거징?
   } catch (error) {
     console.log(error);
   }
+};
+
+export const like2 = async (req, res) => {
+  const {
+    params: { gymId },
+    user: { _id },
+  } = req;
+  const userId = String(_id);
+  try {
+    const currentUser = await User.findById(userId);
+    const currentGym = await Gym.findById(gymId);
+    const existsUser = currentGym.like_users.includes(userId);
+    if (existsUser) {
+      const deletedUserArr = currentGym.like_users.filter(
+        (user) => user !== userId
+      );
+      const deletedGymArr = currentUser.like_gyms.filter(
+        (gym) => String(gym._id) !== String(gymId)
+      );
+      currentGym.like_users = deletedUserArr;
+      currentUser.like_gyms = deletedGymArr;
+    } else {
+      currentGym.like_users.push(String(userId));
+      currentUser.like_gyms.push(currentGym._id);
+    }
+    await currentUser.save();
+    await currentGym.save();
+    return res.status(200).json();
+  } catch (error) {}
+  res.status(200).json({ message: `${req.params.gymId}로 좋아요 신청` });
 };
 
 // export const search = async (req, res) => {

@@ -69,18 +69,24 @@ block content
             if `${gym.creator._id}` === `${user._id}` 
                 a(href=`/gym/${gym._id}/update`).btn 수정
             #deleteBtn.btn 삭제
-            form(action=`/comment/${gym._id}`, method="post") 
+            //- form(action=`/comment/${gym._id}`, method="post") 
                 input(type="text" name="text")
                 input(type="submit", value="댓글 작성")
+            input(name="text" id=gym.id)
+            button#commentsBtn 댓글생성
 
-            each comment in comments 
-                h1=comment.text
-                h2=comment.creator.nickname
-                if `${comment.creator._id}` === `${user._id}` 
-                   a(href=`/comment/${gym._id}/remove/${comment._id}`) 삭제 
+            .commentsWrapper
+                each comment in comments 
+                    .comment
+                        div=comment.text
+                        div=comment.creator.nickname
+                        if `${comment.creator._id}` === `${user._id}` 
+                            button.deleteBtns(id=comment._id) 댓글삭제
+                    //- a(href=`/comment/${gym._id}/remove/${comment._id}`) 삭제 
         script(src="/static/js/viewMore.js")
         script(src="/static/js/useConfirm.js") 
         script(src="/static/js/kakaoMap.js")
+        script(src="/static/js/comment.js")
             
         
 
