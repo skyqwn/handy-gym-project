@@ -31,10 +31,10 @@ export const remove = async (req, res) => {
   try {
     await Comment.findByIdAndDelete(commentId);
 
-    await Gym.findOneAndUpdate(gymId, {
+    await Gym.findById(gymId, {
       $pull: { comments: commentId },
     });
-    return res.status(200).json({ Meseege: "Ok" });
+    return res.status(200).json({ Message: "Ok" });
     // res.redirect(`/gym/${gymId}`);
   } catch (error) {
     console.log(error);

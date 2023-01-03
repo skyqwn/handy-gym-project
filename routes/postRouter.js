@@ -8,7 +8,6 @@ import {
   upload,
   uploadPost,
 } from "../controllers/postController.js";
-import { postUpload } from "../utils/fileUpload.js";
 import { onlyEmailVerified, onlyUser } from "../utils/protectAuth.js";
 import protectCSRFToken from "../utils/protectCSRFToken.js";
 
@@ -20,7 +19,7 @@ postRouter
   .route("/upload")
   .all(onlyUser, onlyEmailVerified)
   .get(protectCSRFToken, upload)
-  .post(postUpload.array("photos", 10), protectCSRFToken, uploadPost);
+  .post(protectCSRFToken, uploadPost);
 
 postRouter.route("/:postId").all(onlyUser).get(detail);
 
@@ -28,7 +27,7 @@ postRouter
   .route("/:postId/update")
   .all(onlyUser, onlyEmailVerified)
   .get(protectCSRFToken, update)
-  .post(postUpload.array("photos", 10), protectCSRFToken, updatePost);
+  .post(protectCSRFToken, updatePost);
 
 postRouter
   .route("/:postId/remove")

@@ -1,17 +1,16 @@
 import mongoose from "mongoose";
 
-const PostSchema = mongoose.Schema(
+const GallerySchema = mongoose.Schema(
   {
     title: String,
-    description: String,
+    photo: [String],
     creator: { type: mongoose.SchemaTypes.ObjectId, ref: "User" },
-    category: String,
   },
   {
     timestamps: true,
   }
 );
 
-const Post = mongoose.model("Post", PostSchema);
+const Gallery = mongoose.model("Gallery", GallerySchema);
 
-export default Post;
+export default Gallery;

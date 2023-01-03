@@ -16,6 +16,7 @@ import userRouter from "./routes/userRouter.js";
 import setLocals from "./utils/setLocals.js";
 import passportInit from "./utils/passportInit.js";
 import commentRouter from "./routes/commentRouter.js";
+import galleryRouter from "./routes/galleryRouter.js";
 
 const mongoUrl = process.env.DEV_MONGO_URL;
 const app = express();
@@ -39,26 +40,27 @@ app.set("view engine", "pug");
 // };
 // app.use(cors(corsOptions));
 
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET,POST, PUT, PATCH, DELETE");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  next();
-});
+// app.use((req, res, next) => {
+//   res.setHeader("Access-Control-Allow-Origin", "*");
+//   res.setHeader("Access-Control-Allow-Methods", "GET,POST, PUT, PATCH, DELETE");
+//   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+//   next();
+// });
 
 const cspOptions = {
   directives: {
     ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-    "default-src": ["'self'", "*.kakao.com", "*.fontawesome.com"],
+    "default-src": ["'self'", "*.kakao.com", "*.fontawesome.com", "blob:"],
     "script-src": [
       "'self'",
       "*.jsdelivr.net",
       "*.daumcdn.net",
       "*.kakao.com",
       "*.fontawesome.com",
+      "https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js",
     ],
     "frame-src": ["'self'", "*.map.daum.net"],
-    "img-src": ["'self'", "blob:", "*.daumcdn.net"],
+    "img-src": ["'self'", "blob:", "*.daumcdn.net", "data:"],
   },
 };
 
@@ -91,6 +93,7 @@ app.use(setLocals);
 
 app.use("/", globalRouter);
 app.use("/gym", gymRouter);
+app.use("/gallery", galleryRouter);
 app.use("/post", postRouter);
 app.use("/user", userRouter);
 app.use("/comment", commentRouter);

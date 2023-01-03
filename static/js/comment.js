@@ -21,6 +21,7 @@ var createComment = async function createComment(e) {
       })
     });
     var data = await res.json();
+    console.log(data);
     return data;
   } catch (error) {
     console.log("댓글생성중 오류발생");
@@ -74,10 +75,11 @@ var handleDelete = async function handleDelete(e) {
         alert("삭제하는데 오류 발생");
       }
       var data = await res.json();
-      console.log(data);
       return data;
     }
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 var init = function init() {

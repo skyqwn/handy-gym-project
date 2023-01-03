@@ -1,53 +1,57 @@
-import Gym from "../models/Gym.js";
+import Gallery from "../models/Gallery.js";
 import User from "../models/User.js";
 import Comment from "../models/Comment.js";
 
 export const fetch = async (req, res) => {
-  const {
-    query: { page = 1 },
-  } = req;
-  const searchQuery = new Object();
-  if (req.query.searchTerm) {
-    searchQuery.$or = [
-      { name: { $regex: req.query.searchTerm } },
-      { location: { $regex: req.query.searchTerm } },
-    ];
-  }
-  if (req.query.oneday) {
-    searchQuery.oneday = "가능";
-  }
-  if (req.query.yearRound) {
-    searchQuery.yearRound = "네";
-  }
-  try {
-    if (Number(page) <= 0) {
-      return res.redirect(`/gym?page=1`);
-    }
-    const LIMIT_SIZE = 10;
-    const SKIP_PAGE = (page - 1) * LIMIT_SIZE;
-    // const TOTAL_GYMS = await Gym.countDocuments();//수정부문
-    const TOTAL_GYMS = await Gym.countDocuments(searchQuery); //수정부문
-    const TOTAL_PAGE = Math.ceil(TOTAL_GYMS / LIMIT_SIZE) || 1;
-    // const gyms = await Gym.find({})
-    const gyms = await Gym.find(searchQuery) //수정
-      .populate("creator")
-      .skip(SKIP_PAGE)
-      .limit(LIMIT_SIZE)
-      .sort({ createdAt: -1 });
-    return res.render("gym", {
-      title: "체육관",
-      gyms,
-      totalPage: TOTAL_PAGE,
-    });
-  } catch (error) {
-    console.log(error);
-  }
+  res.send("123123");
+  // const {
+  //   query: { page = 1 },
+  // } = req;
+  // const searchQuery = new Object();
+  // if (req.query.searchTerm) {
+  //   searchQuery.$or = [
+  //     { name: { $regex: req.query.searchTerm } },
+  //     { location: { $regex: req.query.searchTerm } },
+  //   ];
+  // }
+  // if (req.query.oneday) {
+  //   searchQuery.oneday = "가능";
+  // }
+  // if (req.query.yearRound) {
+  //   searchQuery.yearRound = "네";
+  // }
+  // try {
+  //   if (Number(page) <= 0) {
+  //     return res.redirect(`/gym?page=1`);
+  //   }
+  //   const LIMIT_SIZE = 10;
+  //   const SKIP_PAGE = (page - 1) * LIMIT_SIZE;
+  //   // const TOTAL_GYMS = await Gym.countDocuments();//수정부문
+  //   const TOTAL_GYMS = await Gym.countDocuments(searchQuery); //수정부문
+  //   const TOTAL_PAGE = Math.ceil(TOTAL_GYMS / LIMIT_SIZE) || 1;
+  //   // const gyms = await Gym.find({})
+  //   const gyms = await Gym.find(searchQuery) //수정
+  //     .populate("creator")
+  //     .skip(SKIP_PAGE)
+  //     .limit(LIMIT_SIZE)
+  //     .sort({ createdAt: -1 });
+  //   return res.render("gym", {
+  //     title: "체육관",
+  //     gyms,
+  //     totalPage: TOTAL_PAGE,
+  //   });
+  // } catch (error) {
+  //   console.log(error);
+  // }
 };
 
 export const fetchLikes = async (req, res) => {
   const { user } = req;
   try {
-    const gyms = await Gym.find({ like_users: { $in: `${user._id}` } });
+    const currentUser = await User.findById(String(user._id)).populate(
+      "like_gyms"
+    );
+    const gyms = currentUser.like_gyms;
     res.render("likeGyms", { title: "좋아요", gyms });
   } catch (error) {
     console.log(error);
@@ -55,38 +59,27 @@ export const fetchLikes = async (req, res) => {
 };
 
 export const upload = (req, res) => {
-  return res.render("gymUpload", { csrfToken: req.csrfToken() });
+  return res.render("galleryUpload", { csrfToken: req.csrfToken() });
 };
 
-export const uploadPost = async (req, res) => {
-  const { body, files } = req;
-  console.log(body);
-  try {
-    const returnPath = files.map((file) => {
-      return file.path;
-    });
-    const newGym = new Gym({
-      ...body,
-      photos: returnPath,
-      creator: req.user,
-    });
-    await newGym.save();
-    return res.redirect("/gym");
-  } catch (error) {
-    console.log(error);
-  }
-};
+export const uploadPost = async (req, res) => {};
 
 export const detail = async (req, res) => {
   const {
-    params: { gymId },
+    params: { galleryId },
   } = req;
 
   try {
-    const gym = await Gym.findById(gymId).populate("creator");
-    const comments = await Comment.find({ where: gymId }).populate("creator");
+    const gallery = await Gallery.findById(galleryId).populate("creator");
+    const comments = await Comment.find({ where: galleryId }).populate(
+      "creator"
+    );
 
-    return res.render("gymDetail", { title: gym.name, gym, comments });
+    return res.render("galleryDetail", {
+      title: gallery.name,
+      gallery,
+      comments,
+    });
   } catch (error) {
     console.log(error);
   }
@@ -165,9 +158,15 @@ export const like = async (req, res) => {
       await Gym.findByIdAndUpdate(gymId, {
         $pull: { like_users: userId },
       });
+      await User.findByIdAndUpdate(userId, {
+        $pull: { like_gyms: gym._id },
+      });
     } else {
       await Gym.findByIdAndUpdate(gymId, {
         $push: { like_users: userId },
+      });
+      await User.findOneAndUpdate(userId, {
+        $push: { like_gyms: gym._id },
       });
     }
     res.status(200).json(gymId); // 이거 왜보내는거징?

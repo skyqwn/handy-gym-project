@@ -1,9 +1,20 @@
 extends includes/layout
 
 block content 
-    each post in posts 
-        a(href=`/post/${post.id}`) 
-            h1=post.title
-    div(id=totalPage, class="jsPageContainer")
+    .container
+        each post in posts 
+            .post
+                .post__item
+                    h1=post.category
+                .post__item
+                    a(href=`/post/${post.id}`) 
+                        h1=post.title
+                .post__item
+                    h1=post.creator.nickname
+                .post__item
+                    .postCreatedAt #{post.createdAt}
 
+
+    div(id=totalPage, class="jsPageContainer")
     script(src="/static/js/postPagination.js") 
+    script(src="/static/js/convertDate.js") 

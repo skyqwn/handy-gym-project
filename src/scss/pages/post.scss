@@ -1,0 +1,24 @@
+@import "../config/veriable.scss";
+
+.post {
+  display: flex;
+  &__item {
+    &:nth-child(1) {
+      width: 250px;
+      background-color: red;
+      text-align: center;
+    }
+    &:nth-child(2) {
+      width: 100%;
+      background-color: blue;
+    }
+    &:nth-child(3) {
+      width: 150px;
+      background-color: orange;
+    }
+    &:nth-child(4) {
+      width: 150px;
+      background-color: orangered;
+    }
+  }
+}

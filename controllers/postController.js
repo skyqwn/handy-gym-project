@@ -6,17 +6,17 @@ export const fetch = async (req, res) => {
   } = req;
   try {
     if (Number(page) <= 0) {
-      return res.redirect(`/gym?page=1`);
+      return res.redirect(`/post?page=1`);
     }
-    const LIMIT_SIZE = 1;
+    const LIMIT_SIZE = 10;
     const SKIP_PAGE = (page - 1) * LIMIT_SIZE;
     const TOTAL_POSTS = await Post.countDocuments();
     const TOTAL_PAGE = Math.ceil(TOTAL_POSTS / LIMIT_SIZE) || 1;
     const posts = await Post.find({})
       .skip(SKIP_PAGE)
       .limit(LIMIT_SIZE)
-      .sort({ createdAt: -1 });
-    console.log(posts);
+      .sort({ createdAt: -1 })
+      .populate("creator");
     return res.render("post", {
       title: "포스트",
       posts,

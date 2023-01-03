@@ -4,10 +4,15 @@ block content
     form(action="/post/upload" method="post" enctype="multipart/form-data")
         input(type="hidden" name="_csrf" value=csrfToken)
         input(type="text", name="title" placeholder="제목")
-        input(type="text" name="category" placeholder="카테고리")
+        select(name="category")
+            option(value="자유") 자유
+            option(value="질문") 질문 
+            option(value="공유") 공유
+            option(value="사진") 사진
+            option(value="Flex") Flex 
         textarea(name="description")
         input(type="submit" value="업로드")
 
     script(type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js")
-    script(src="/static/js/useRichText.js")
+    //- script(src="/static/js/useRichText.js")
     script(type="text/javascript" src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.0/dist/browser-image-compression.js")
