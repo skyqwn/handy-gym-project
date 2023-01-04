@@ -1,0 +1,13 @@
+extends includes/layout
+
+block content 
+    each gallery in galleries 
+        a(href=`/gallery/${gallery._id}`) 
+            h1=gallery.title
+
+    div(id=totalPage, class="jsPageContainer")
+
+
+    script(src="/static/js/imageCompress.js")
+    script(src="/static/js/pagination.js") 
+    script(type="text/javascript" src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.0/dist/browser-image-compression.js")

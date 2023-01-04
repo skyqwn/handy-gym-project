@@ -1,0 +1,8 @@
+@import "../config/veriable";
+
+.cropperContainer {
+  height: calc(100% - 200px);
+  img {
+    max-height: 100%;
+  }
+}

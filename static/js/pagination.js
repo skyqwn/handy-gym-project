@@ -3,7 +3,9 @@
 var pageContainer = document.querySelector(".jsPageContainer");
 var params = new URLSearchParams(window.location.search);
 
+var PAGE_TYPE = window.location.href.split("?")[0].split("/").pop();
 var PAGE = Number(params.get("page")) || 1;
+
 var TOTAL_PAGE = Number(pageContainer.id);
 var PAGE_CONTAINER_SIZE = 5;
 var CURRENT_PAGE_CONTAINER = Math.ceil(PAGE / PAGE_CONTAINER_SIZE);
@@ -17,7 +19,7 @@ var setHref = function setHref(aEle, pageNum) {
   if (searchTerm) queryString += "&searchTerm=" + searchTerm;
   if (yearRound) queryString += "&yearRound=" + yearRound;
   if (oneday) queryString += "&oneday=" + oneday;
-  aEle.href = "/gym" + queryString;
+  aEle.href = "/" + PAGE_TYPE + queryString;
 };
 
 var paintPage = function paintPage(page) {
@@ -67,6 +69,7 @@ var init = function init() {
   if (PAGE > TOTAL_PAGE) {
     window.location.href = "/gym?page=" + TOTAL_PAGE;
   }
+
   paintPagination(TOTAL_PAGE);
 };
 

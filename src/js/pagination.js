@@ -1,7 +1,9 @@
 const pageContainer = document.querySelector(".jsPageContainer");
 const params = new URLSearchParams(window.location.search);
 
+const PAGE_TYPE = window.location.href.split("?")[0].split("/").pop();
 const PAGE = Number(params.get("page")) || 1;
+
 const TOTAL_PAGE = Number(pageContainer.id);
 const PAGE_CONTAINER_SIZE = 5;
 const CURRENT_PAGE_CONTAINER = Math.ceil(PAGE / PAGE_CONTAINER_SIZE);
@@ -15,7 +17,7 @@ const setHref = (aEle, pageNum) => {
   if (searchTerm) queryString += `&searchTerm=${searchTerm}`;
   if (yearRound) queryString += `&yearRound=${yearRound}`;
   if (oneday) queryString += `&oneday=${oneday}`;
-  aEle.href = `/gym${queryString}`;
+  aEle.href = `/${PAGE_TYPE}${queryString}`;
 };
 
 const paintPage = (page) => {
@@ -69,6 +71,7 @@ const init = () => {
   if (PAGE > TOTAL_PAGE) {
     window.location.href = `/gym?page=${TOTAL_PAGE}`;
   }
+
   paintPagination(TOTAL_PAGE);
 };
 
