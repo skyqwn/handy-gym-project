@@ -1,0 +1,31 @@
+extends includes/layout
+
+block content 
+    
+    .container 
+        .galleryDetail 
+            .galleryDetail__section 
+                h1=gallery.title
+            .galleryDetail__section.galleryDetail__imgLayout
+                - let i = 0;
+                while i < 4
+                    if i === 0 || i === 1
+                        .imgContainer
+                            img(src=`/${gallery.photos[i]}`,)
+                    if i === 2
+                        .imgContainer 
+                            img(src=`/${gallery.photos[i]}`,)
+                            img(src=`/${gallery.photos[i+1]}`,)
+                            #viewMore + 사진 더보기
+                    if i === 3
+                        span
+                    - ++i
+            .galleryDetail__section 
+                p=gallery.description
+            if `${gallery.creator._id}` === `${user._id}`
+                a(href=`/gallery/${gallery._id}/update`).btn 수정
+                #deleteBtn.btn 글삭제
+
+    script(src="/static/js/galleryRemove.js") 
+
+                        

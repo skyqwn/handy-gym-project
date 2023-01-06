@@ -28,11 +28,6 @@ galleryRouter
 
 galleryRouter.route("/:galleryId").all(onlyUser, onlyEmailVerified).get(detail);
 
-// galleryRouter
-//   .route("/:galleryId/like")
-//   .all(onlyUser, onlyEmailVerified)
-//   .get(like);
-
 galleryRouter
   .route("/:galleryId/update")
   .all(onlyUser, onlyEmailVerified)

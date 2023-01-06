@@ -42,11 +42,18 @@ export const uploadPost = async (req, res) => {
     const returnPath = files.map((file) => {
       return file.path;
     });
-    await Gallery.create({
-      title: body.title,
+    // await Gallery.create({
+    //   title: body.title,
+    //   description: body.description,
+    //   photos: returnPath,
+    //   creator: user,
+    // });
+    const newGallery = new Gallery({
+      ...body,
       photos: returnPath,
-      creator: req.user,
+      creator: user,
     });
+    await newGallery.save();
     return res.redirect("/gallery");
   } catch (error) {}
 };
@@ -58,14 +65,14 @@ export const detail = async (req, res) => {
 
   try {
     const gallery = await Gallery.findById(galleryId).populate("creator");
-    const comments = await Comment.find({ where: galleryId }).populate(
-      "creator"
-    );
+    // const comments = await Comment.find({ where: galleryId }).populate(
+    //   "creator"
+    // );
 
     return res.render("galleryDetail", {
-      title: gallery.name,
+      title: gallery.title,
       gallery,
-      comments,
+      // comments,
     });
   } catch (error) {
     console.log(error);
@@ -74,13 +81,13 @@ export const detail = async (req, res) => {
 
 export const update = async (req, res) => {
   const {
-    params: { gymId },
+    params: { galleryId },
   } = req;
   try {
-    const gym = await Gym.findById(gymId).populate("creator");
-    return res.render("gymUpdate", {
-      title: gym.name,
-      gym,
+    const gallery = await Gallery.findById(galleryId).populate("creator");
+    return res.render("galleryUpdate", {
+      title: gallery.title,
+      gallery,
       csrfToken: req.csrfToken(),
     });
   } catch (error) {
@@ -90,21 +97,21 @@ export const update = async (req, res) => {
 
 export const updatePost = async (req, res) => {
   const {
-    params: { gymId },
+    params: { galleryId },
     body,
     files,
   } = req;
   try {
-    const gym = await Gym.findById(gymId);
+    const gallery = await Gallery.findById(galleryId);
     const returnPath = files.map((file) => {
       return file.path;
     });
 
-    const updatedGym = await Gym.findByIdAndUpdate(gymId, {
+    const updatedGallery = await Gallery.findByIdAndUpdate(gymId, {
       ...body,
-      photos: returnPath.length > 0 ? returnPath : gym.photos,
+      photos: returnPath.length > 0 ? returnPath : gallery.photos,
     });
-    return res.redirect(`/gym/${updatedGym._id}`);
+    return res.redirect(`/gallery/${updatedGallery._id}`);
   } catch (error) {
     console.log(error);
   }
@@ -112,19 +119,19 @@ export const updatePost = async (req, res) => {
 
 export const remove = async (req, res) => {
   const {
-    params: { gymId },
+    params: { galleryId },
     user,
   } = req;
   try {
-    const gym = await Gym.findById(gymId).populate("creator");
-    if (String(user._id) !== String(gym.creator._id)) {
+    const gallery = await Gallery.findById(galleryId).populate("creator");
+    if (String(user._id) !== String(gallery.creator._id)) {
       req.flash("error", "사용자가 아닙니다!");
-      res.redirect(`/gym`);
+      res.redirect(`/gallery`);
       return;
     } else {
-      await gym.remove();
+      await gallery.remove();
       req.flash("sucess", "삭제하였습니다.");
-      res.redirect(`/gym`);
+      res.redirect(`/gallery`);
       return;
     }
   } catch (error) {

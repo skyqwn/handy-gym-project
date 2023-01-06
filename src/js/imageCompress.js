@@ -19,36 +19,6 @@ const updateChange = async (e, targetId) => {
   }
 };
 
-const generateBtns2 = (id) => {
-  const deletePreview = (id) => {
-    const container = document.getElementById(id);
-    container.remove();
-    const findIndexById = [...dataTransfer.files].findIndex(
-      (file) => file.id === id
-    );
-    dataTransfer.items.remove(findIndexById);
-    fileInput.files = dataTransfer.files;
-  };
-
-  const updatePreview = (id) => {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.click();
-    input.addEventListener("change", (e) => updateChange(e, id));
-  };
-  const deleteBtn = document.createElement("div");
-  deleteBtn.innerHTML = `<i class="fa-solid fa-xmark fa-bg-white"></i>`;
-  deleteBtn.addEventListener("click", (e) => {
-    deletePreview(id);
-  });
-
-  const updateBtn = document.createElement("div");
-  updateBtn.innerHTML = `<i class="fa-solid fa-pen fa-bg-white"></i>`;
-  updateBtn.addEventListener("click", (e) => {
-    updatePreview(e, id);
-  });
-};
-
 const generateBtns = (id) => {
   const deletePreview = (id) => {
     const container = document.getElementById(id);

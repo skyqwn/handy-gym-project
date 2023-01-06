@@ -1,0 +1,7 @@
+mixin galleryCardBlock(gallery={})
+    .galleryCard 
+        a(href=`/gallery/${gallery._id}`)
+            img(src=`${gallery.thumbnail}`, alt=`${gallery.title}`)
+            h3=gallery.title
+            h4 글쓴이: #{gallery.creator}
+            

@@ -7,8 +7,6 @@ block content
             #closeBtn 취소
     .container
         form(action="/gallery/upload" method="post" enctype="multipart/form-data").uploadContainer
-            input(type="hidden" name="address")
-            input(type="hidden" name="location")
             input(type="hidden" name="_csrf" value=csrfToken)
             h3 갤러리 업로드
             .flexContainer
@@ -24,10 +22,15 @@ block content
                     //-     i.fa-solid.fa-camera
                     input(type="file" name="photos" multiple accept="image/*" ) 
                     #galleryPreview
+            .flexContainer 
+                .flexContainer__item 
+                    span 설명
+                .flexContainer__item 
+                    textarea(name="description" placeholder="ex) 궁금한점을 입력해주세요")
             button.btn 전송
 
     //- script(src="/static/js/imageCompress.js")
-    script(src="/static/js/cropper.js") 
+    //- script(src="/static/js/cropper.js") 
     script(src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js")
 
     script(type="text/javascript" src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.0/dist/browser-image-compression.js")

@@ -68,7 +68,7 @@ block content
                     #jsAddress #{gym.address}
             if `${gym.creator._id}` === `${user._id}` 
                 a(href=`/gym/${gym._id}/update`).btn 수정
-            #deleteBtn.btn 삭제
+                #deleteBtn.btn 삭제
             //- form(action=`/comment/${gym._id}`, method="post") 
                 input(type="text" name="text")
                 input(type="submit", value="댓글 작성")

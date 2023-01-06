@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 const GallerySchema = mongoose.Schema(
   {
     title: String,
-    photo: [String],
+    description: String,
+    photos: [String],
     creator: { type: mongoose.SchemaTypes.ObjectId, ref: "User" },
   },
   {
