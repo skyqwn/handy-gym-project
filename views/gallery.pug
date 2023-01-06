@@ -5,9 +5,8 @@ block content
     each gallery in galleries 
         +galleryCardBlock({
             _id:gallery._id,
-            thumbnail:gallery.photos[0],
+            thumbnail:gallery.photos[0].photo,
             title:gallery.title,
-            description:gallery.description,
             creator:gallery.creator.nickname
         })
         

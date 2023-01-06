@@ -1,12 +1,14 @@
 extends includes/layout
 
 block content 
+    .modalContainer
+        .modalWrapper
+            .cropperContainer
+            #closeBtn 취소
     .container
         form(action=`/gallery/${gallery._id}/update` method="post" enctype="multipart/form-data").uploadContainer
             input(type="hidden" name="_csrf" value=csrfToken)
-            each photo in gallery.photos
-                img(src=`/${photo}`,class="originalPreview" hidden)
-            h3 갤러리 업로드
+            h3 갤러리 업데이트
             .flexContainer
                 .flexContainer__item 
                     span 타이틀
@@ -18,17 +20,17 @@ block content
                 .flexContainer__item 
                     .btn.primary#fakeFileBtn
                         i.fa-solid.fa-camera
-                    input(type="file" name="photos" multiple accept="*" ) 
-                    #galleryPreview
-            .flexContainer 
+                    input(type="file" id="realFileInput" name="photos" multiple accept="*" ) 
+                    input(type="file" id="fakeFileInput" multiple accept="*" ) 
                 .flexContainer__item 
-                    span 설명
-                .flexContainer__item 
-                    textarea(name="description" placeholder="ex) 궁금한점을 입력해주세요")=gallery.description
-            input(type="submit" value="변경" class="btn primary")
+                     each photoObj in gallery.photos 
+                        img(src=`/${photoObj.photo}` class="originalPreview" hidden)
+                        textarea(hidden class="originalCaption" placeholder="ex) 자랑해주세요")=`${photoObj.caption}`
+                #galleryPreview
+                input(type="submit", value="생성")
 
     script(src="/static/js/cropper.js") 
     script(src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js")
 
-    script(src="/static/js/imageCompress.js")
+    //- script(src="/static/js/imageCompress.js")
     script(type="text/javascript" src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.0/dist/browser-image-compression.js")

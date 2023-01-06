@@ -39,21 +39,23 @@ export const upload = (req, res) => {
 export const uploadPost = async (req, res) => {
   const { body, files, user } = req;
   try {
-    const returnPath = files.map((file) => {
-      return file.path;
+    const returnPath = files.map((__, index) => {
+      return { photo: files[index].path, caption: body.captions[index] };
     });
-    // await Gallery.create({
-    //   title: body.title,
-    //   description: body.description,
-    //   photos: returnPath,
-    //   creator: user,
-    // });
-    const newGallery = new Gallery({
+    console.log(returnPath);
+    const newGallery = await Gallery.create({
       ...body,
       photos: returnPath,
       creator: user,
     });
-    await newGallery.save();
+
+    console.log(newGallery);
+    // const newGallery = new Gallery({
+    //   ...body,
+    //   photos: returnPath,
+    //   creator: user,
+    // });
+    // await newGallery.save();
     return res.redirect("/gallery");
   } catch (error) {}
 };
@@ -85,6 +87,7 @@ export const update = async (req, res) => {
   } = req;
   try {
     const gallery = await Gallery.findById(galleryId).populate("creator");
+    console.log(gallery);
     return res.render("galleryUpdate", {
       title: gallery.title,
       gallery,
@@ -100,18 +103,27 @@ export const updatePost = async (req, res) => {
     params: { galleryId },
     body,
     files,
+    user,
   } = req;
   try {
     const gallery = await Gallery.findById(galleryId);
-    const returnPath = files.map((file) => {
-      return file.path;
+    const returnPath = files.map((__, index) => {
+      return { photo: files[index].path, caption: body.captions[index] };
     });
-
-    const updatedGallery = await Gallery.findByIdAndUpdate(gymId, {
-      ...body,
-      photos: returnPath.length > 0 ? returnPath : gallery.photos,
-    });
-    return res.redirect(`/gallery/${updatedGallery._id}`);
+    console.log(returnPath);
+    const newGallery = await Gallery.findByIdAndUpdate(
+      galleryId,
+      {
+        ...body,
+        photos: returnPath,
+        creator: user,
+      },
+      {
+        $new: true,
+      }
+    );
+    console.log(newGallery);
+    return res.redirect(`/gallery/${newGallery._id}`);
   } catch (error) {
     console.log(error);
   }
