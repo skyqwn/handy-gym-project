@@ -4,22 +4,39 @@ var pageContainer = document.querySelector(".jsPageContainer");
 var params = new URLSearchParams(window.location.search);
 
 var PAGE_TYPE = window.location.href.split("?")[0].split("/").pop();
+
 var PAGE = Number(params.get("page")) || 1;
 
 var TOTAL_PAGE = Number(pageContainer.id);
-var PAGE_CONTAINER_SIZE = 5;
+var PAGE_CONTAINER_SIZE = 2;
+
 var CURRENT_PAGE_CONTAINER = Math.ceil(PAGE / PAGE_CONTAINER_SIZE);
 var TOTAL_PAGE_CONTAINER = Math.ceil(TOTAL_PAGE / PAGE_CONTAINER_SIZE);
 
-var setHref = function setHref(aEle, pageNum) {
-  var queryString = "?page=" + pageNum;
+var searchQueryString = "";
+
+if (PAGE_TYPE === "gym") {
   var searchTerm = params.get("searchTerm");
   var yearRound = params.get("yearRound");
   var oneday = params.get("oneday");
-  if (searchTerm) queryString += "&searchTerm=" + searchTerm;
-  if (yearRound) queryString += "&yearRound=" + yearRound;
-  if (oneday) queryString += "&oneday=" + oneday;
-  aEle.href = "/" + PAGE_TYPE + queryString;
+  if (searchTerm) searchQueryString += "&searchTerm=" + searchTerm;
+  if (yearRound) searchQueryString += "&yearRound=" + yearRound;
+  if (oneday) searchQueryString += "&oneday=" + oneday;
+}
+
+if (PAGE_TYPE === "post") {
+  var _searchTerm = params.get("searchTerm");
+  var category = params.get("category");
+  if (_searchTerm) searchQueryString += "&searchTerm=" + _searchTerm;
+  if (category) searchQueryString += "&category=" + category;
+}
+
+if (PAGE_TYPE === "gallery") {
+  var _searchTerm2 = params.get("searchTerm");
+}
+
+var setHref = function setHref(aEle, pageNum) {
+  aEle.href = "/" + PAGE_TYPE + "?page=" + pageNum + searchQueryString;
 };
 
 var paintPage = function paintPage(page) {
@@ -66,10 +83,6 @@ var paintPagination = function paintPagination(TOTAL_PAGE) {
 };
 
 var init = function init() {
-  if (PAGE > TOTAL_PAGE) {
-    window.location.href = "/gym?page=" + TOTAL_PAGE;
-  }
-
   paintPagination(TOTAL_PAGE);
 };
 

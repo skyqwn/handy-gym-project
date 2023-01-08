@@ -1,18 +1,15 @@
 extends includes/layout
 
 block content 
-    form(action="/post/upload" method="post" enctype="multipart/form-data")
+    form(action="/post/upload" method="post")
         input(type="hidden" name="_csrf" value=csrfToken)
         input(type="text", name="title" placeholder="제목")
-        select(name="category")
-            option(value="자유") 자유
-            option(value="질문") 질문 
-            option(value="공유") 공유
-            option(value="사진") 사진
-            option(value="Flex") Flex 
         textarea(name="description")
+        select(name="category")
+            - let i = 0;
+            - const arr = ["자유","질문","공유","리뷰","Flex"]
+            while i < arr.length 
+                option(value=arr[i])=arr[i]
+                - i++;
         input(type="submit" value="업로드")
 
-    script(type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js")
-    //- script(src="/static/js/useRichText.js")
-    script(type="text/javascript" src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.0/dist/browser-image-compression.js")

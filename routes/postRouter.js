@@ -17,17 +17,17 @@ postRouter.get("/", fetch);
 
 postRouter
   .route("/upload")
-  .all(onlyUser, onlyEmailVerified)
-  .get(protectCSRFToken, upload)
-  .post(protectCSRFToken, uploadPost);
+  .all(onlyUser, onlyEmailVerified, protectCSRFToken)
+  .get(upload)
+  .post(uploadPost);
 
 postRouter.route("/:postId").all(onlyUser).get(detail);
 
 postRouter
   .route("/:postId/update")
-  .all(onlyUser, onlyEmailVerified)
-  .get(protectCSRFToken, update)
-  .post(protectCSRFToken, updatePost);
+  .all(onlyUser, onlyEmailVerified, protectCSRFToken)
+  .get(update)
+  .post(updatePost);
 
 postRouter
   .route("/:postId/remove")

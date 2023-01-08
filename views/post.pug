@@ -2,6 +2,15 @@ extends includes/layout
 
 block content 
     .container
+        form(action="/post") 
+            input(name= "searchTerm")
+            select(name="category")  
+                - let i = 0;
+                - const arr = ["자유","질문","공유","리뷰","Flex"]
+                while i < arr.length 
+                    option(value=arr[i])=arr[i]
+                    - i++;
+            input(type="submit", value="검색")
         each post in posts 
             .post
                 .post__item
@@ -16,5 +25,5 @@ block content
 
 
     div(id=totalPage, class="jsPageContainer")
-    script(src="/static/js/postPagination.js") 
+    script(src="/static/js/pagination.js") 
     script(src="/static/js/convertDate.js") 

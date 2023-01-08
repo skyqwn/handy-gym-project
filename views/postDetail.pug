@@ -2,12 +2,8 @@ extends includes/layout
 
 block content 
     h1=post.title
-    h1=post.creator._id 
-    #formattedDescription
-    h1#rawDescription=post.description
+    h1=post.description
 
     if `${post.creator._id}` === `${user._id}`
         a(href=`/post/${post._id}/update`) 수정
         a(href=`/post/${post._id}/remove`) 삭제
-
-    script(src="/static/js/formatText.js") 

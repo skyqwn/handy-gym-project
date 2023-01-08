@@ -6,28 +6,37 @@ export const fetch = async (req, res) => {
   const {
     query: { page = 1 },
   } = req;
+
   const searchQuery = new Object();
+  let serchQueryString = "";
+
   if (req.query.searchTerm) {
     searchQuery.$or = [
       { name: { $regex: req.query.searchTerm } },
       { location: { $regex: req.query.searchTerm } },
     ];
+    serchQueryString += `&searchTerm=${req.query.searchTerm}`;
   }
   if (req.query.oneday) {
     searchQuery.oneday = "가능";
+    serchQueryString += `&oneday=on`;
   }
   if (req.query.yearRound) {
     searchQuery.yearRound = "네";
+    serchQueryString += `&yearRound=on`;
   }
   try {
-    if (Number(page) <= 0) {
-      return res.redirect(`/gym?page=1`);
-    }
-    const LIMIT_SIZE = 10;
-    const SKIP_PAGE = (page - 1) * LIMIT_SIZE;
+    let PAGE = +page;
+
+    const LIMIT_SIZE = 1;
+    const SKIP_PAGE = (PAGE - 1) * LIMIT_SIZE;
     // const TOTAL_GYMS = await Gym.countDocuments();//수정부문
     const TOTAL_GYMS = await Gym.countDocuments(searchQuery); //수정부문
     const TOTAL_PAGE = Math.ceil(TOTAL_GYMS / LIMIT_SIZE) || 1;
+
+    if (TOTAL_PAGE < PAGE || PAGE < 1 || !PAGE) {
+      return res.redirect(`/gym?page=1${serchQueryString}`);
+    }
     // const gyms = await Gym.find({})
     const gyms = await Gym.find(searchQuery) //수정
       .populate("creator")
