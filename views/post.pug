@@ -2,14 +2,17 @@ extends includes/layout
 
 block content 
     .container
-        form(action="/post") 
-            input(name= "searchTerm")
+        form(action="/post" method="get") 
+            input(name= "searchTerm" value=renderQuery.searchTerm)
             select(name="category")  
                 - let i = 0;
-                - const arr = ["자유","질문","공유","리뷰","Flex"]
+                - const arr = ["모두","자유","질문","공유","리뷰","Flex"]
                 while i < arr.length 
-                    option(value=arr[i])=arr[i]
-                    - i++;
+                    option(value=arr[i] selected=(renderQuery.category === arr[i] ? true : undefined))=arr[i] 
+                    - i++
+            label
+                span 추천순
+                input(type="checkbox", name="orderByRecommend" value="on" checked=renderQuery.isRecommend)
             input(type="submit", value="검색")
         each post in posts 
             .post

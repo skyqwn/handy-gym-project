@@ -5,6 +5,7 @@ const CommentSchema = mongoose.Schema(
     text: String,
     creator: { type: mongoose.SchemaTypes.ObjectId, ref: "User" },
     where: String,
+    like_users: [String],
   },
   {
     timestamps: true,

@@ -6,6 +6,8 @@ const PostSchema = mongoose.Schema(
     description: String,
     creator: { type: mongoose.SchemaTypes.ObjectId, ref: "User" },
     category: String,
+    comments: [String],
+    like_users: [String],
   },
   {
     timestamps: true,

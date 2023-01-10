@@ -1,4 +1,5 @@
 import Post from "../models/Post.js";
+import Comment from "../models/Comment.js";
 
 export const fetch = async (req, res) => {
   const {
@@ -6,20 +7,32 @@ export const fetch = async (req, res) => {
   } = req;
 
   const searchQuery = new Object();
+  const sortQuery = new Object();
+  let renderQuery = new Object();
   let searchQueryString = "";
   if (req.query.searchTerm) {
     searchQuery.title = { $regex: req.query.searchTerm };
-    searchQueryString += `&searchTerm=${req.query.seachTerm}`;
+    searchQueryString += `&searchTerm=${req.query.searchTerm}`;
+    renderQuery.searchTerm = req.query.searchTerm;
   }
-  if (req.query.category) {
+  if (req.query.category && req.query.category !== "모두") {
     searchQuery.category = req.query.category;
     searchQueryString += `&category=${req.query.category}`;
+    renderQuery.category = req.query.category;
   }
+  if (req.query.orderByRecommend) {
+    sortQuery.like_user = -1;
+    renderQuery.isRecommend = true;
+  } else {
+    sortQuery.createdAt = -1;
+    renderQuery.isRecommend = false;
+  }
+  console.log(renderQuery);
 
   try {
     let PAGE = +page;
 
-    const PAGE_SIZE = 1;
+    const PAGE_SIZE = 10;
     const TOTAL_POSTS = await Post.countDocuments(searchQuery);
     const TOTAL_PAGE = Math.ceil(TOTAL_POSTS / PAGE_SIZE) || 1;
 
@@ -30,8 +43,14 @@ export const fetch = async (req, res) => {
     const posts = await Post.find(searchQuery)
       .skip(PAGE_SIZE * (PAGE - 1))
       .limit(PAGE_SIZE)
-      .populate("creator");
-    return res.render("post", { title: "post", totalPage: TOTAL_PAGE, posts });
+      .populate("creator")
+      .sort({ createdAt: -1 });
+    return res.render("post", {
+      title: "post",
+      totalPage: TOTAL_PAGE,
+      posts,
+      renderQuery,
+    });
   } catch (error) {
     console.log(error);
   }
@@ -56,13 +75,38 @@ export const uploadPost = async (req, res) => {
   }
 };
 
+export const like = async (req, res) => {
+  const {
+    params: { postId },
+    user: { _id },
+  } = req;
+  const userId = String(_id);
+  try {
+    const post = await Post.findById(postId);
+    const existsUser = post.like_users.includes(userId);
+    if (existsUser) {
+      await Post.findByIdAndUpdate(postId, {
+        $pull: { like_users: userId },
+      });
+    } else {
+      await Post.findByIdAndUpdate(postId, {
+        $push: { like_users: userId },
+      });
+    }
+    res.status(200).json(postId); // 이거 왜보내는거징?
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const detail = async (req, res) => {
   const {
     params: { postId },
   } = req;
   try {
     const post = await Post.findById(postId).populate("creator");
-    return res.render("postDetail", { title: post.name, post });
+    const comments = await Comment.find({ where: postId }).populate("creator");
+    return res.render("postDetail", { title: post.name, post, comments });
   } catch (error) {
     console.log(error);
   }

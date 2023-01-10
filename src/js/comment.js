@@ -1,4 +1,7 @@
-const gymId = window.location.href.split("/").pop();
+const href = window.location.href;
+const hrefArr = window.location.href.split("/");
+const whereId = hrefArr.pop();
+const type = hrefArr[3];
 
 const input = document.querySelector("input[name=text]");
 const createBtn = document.getElementById("commentsBtn");
@@ -11,15 +14,15 @@ const createComment = async (e) => {
 
     if (!text) return alert("에러");
 
-    const res = await fetch(`/comment/${gymId}`, {
+    const res = await fetch(`/comment/${whereId}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         text,
+        type,
       }),
     });
     const data = await res.json();
-    console.log(data);
     return data;
   } catch (error) {
     console.log("댓글생성중 오류발생");
@@ -60,7 +63,7 @@ const handleDelete = async (e) => {
   try {
     const ok = confirm("정말 삭제하시겠습니까?");
     if (ok) {
-      const res = await fetch(`/comment/${gymId}/remove/${commentId}`, {
+      const res = await fetch(`/comment/${whereId}/remove/${commentId}`, {
         method: "GET",
       }); // method default get이라 생략가능
       if (res.ok) {

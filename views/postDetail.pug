@@ -4,6 +4,24 @@ block content
     h1=post.title
     h1=post.description
 
-    if `${post.creator._id}` === `${user._id}`
-        a(href=`/post/${post._id}/update`) 수정
-        a(href=`/post/${post._id}/remove`) 삭제
+    input(name="text")
+    #commentsBtn 댓글생성
+
+    .commentsWrapper
+        each comment in comments 
+            .comment
+                div=comment.text
+                div=comment.creator.nickname
+                if `${comment.creator._id}` === `${user._id}` 
+                    button.deleteBtns(id=comment._id) 댓글삭제
+    if post.like_users.includes(String(user._id))
+        .likeBtn.fa-solid.fa-heart.like(id=`${post._id}`)
+    else
+        .likeBtn.fa-regular.fa-heart(id=`${post._id}`)
+
+    //- if `${post.creator._id}` === `${user._id}`
+    //-     a(href=`/post/${post._id}/update`) 수정
+    //-     a(href=`/post/${post._id}/remove`) 삭제
+
+    script(src="/static/js/comment.js")
+    script(src="/static/js/likeFunc.js")

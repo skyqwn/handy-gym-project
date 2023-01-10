@@ -89,7 +89,6 @@ export const detail = async (req, res) => {
   const {
     params: { gymId },
   } = req;
-
   try {
     const gym = await Gym.findById(gymId).populate("creator");
     const comments = await Comment.find({ where: gymId }).populate("creator");

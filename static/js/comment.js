@@ -1,6 +1,9 @@
 "use strict";
 
-var gymId = window.location.href.split("/").pop();
+var href = window.location.href;
+var hrefArr = window.location.href.split("/");
+var whereId = hrefArr.pop();
+var type = hrefArr[3];
 
 var input = document.querySelector("input[name=text]");
 var createBtn = document.getElementById("commentsBtn");
@@ -13,15 +16,15 @@ var createComment = async function createComment(e) {
 
     if (!text) return alert("에러");
 
-    var res = await fetch("/comment/" + gymId, {
+    var res = await fetch("/comment/" + whereId, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        text: text
+        text: text,
+        type: type
       })
     });
     var data = await res.json();
-    console.log(data);
     return data;
   } catch (error) {
     console.log("댓글생성중 오류발생");
@@ -65,7 +68,7 @@ var handleDelete = async function handleDelete(e) {
   try {
     var ok = confirm("정말 삭제하시겠습니까?");
     if (ok) {
-      var res = await fetch("/comment/" + gymId + "/remove/" + commentId, {
+      var res = await fetch("/comment/" + whereId + "/remove/" + commentId, {
         method: "GET"
       }); // method default get이라 생략가능
       if (res.ok) {

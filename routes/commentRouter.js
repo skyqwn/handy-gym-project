@@ -5,10 +5,10 @@ import protectCSRFToken from "../utils/protectCSRFToken.js";
 
 const commentRouter = express.Router();
 
-commentRouter.post("/:gymId", onlyUser, onlyEmailVerified, create);
+commentRouter.post("/:whereId", onlyUser, onlyEmailVerified, create);
 
 commentRouter.get(
-  "/:gymId/remove/:commentId",
+  "/:whereId/remove/:commentId",
   onlyUser,
   onlyEmailVerified,
   remove

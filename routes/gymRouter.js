@@ -30,8 +30,6 @@ gymRouter
 
 gymRouter.route("/:gymId").all(onlyUser, onlyEmailVerified).get(detail);
 
-gymRouter.route("/:gymId/like").all(onlyUser, onlyEmailVerified).get(like);
-
 gymRouter
   .route("/:gymId/update")
   .all(onlyUser, onlyEmailVerified)

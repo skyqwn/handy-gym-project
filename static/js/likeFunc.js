@@ -1,11 +1,16 @@
 "use strict";
 
+var href = window.location.href;
+var hrefArr = window.location.href.split("/");
+// const whereId = hrefArr.pop();
+var type = hrefArr[3];
+
 var likeBtns = document.querySelectorAll(".likeBtn");
 
 var handleLike = async function handleLike(e) {
   var btn = e.target;
-  var gymId = e.target.id;
-  var res = await fetch("/gym/" + gymId + "/like");
+  var id = e.target.id;
+  var res = await fetch("/" + type + "/" + id + "/like");
   if (res.ok) {
     if (btn.classList.contains("like")) {
       btn.classList.remove("fa-solid");
