@@ -14,6 +14,7 @@ block content
                 span 추천순
                 input(type="checkbox", name="orderByRecommend" value="on" checked=renderQuery.isRecommend)
             input(type="submit", value="검색")
+            a(href="/post") 초기화
         each post in posts 
             .post
                 .post__item
@@ -21,6 +22,9 @@ block content
                 .post__item
                     a(href=`/post/${post.id}`) 
                         h1=post.title
+                .post__item
+                    h1 #{post.comments.length}개
+                    h1 #{post.like_users.length}개
                 .post__item
                     h1=post.creator.nickname
                 .post__item

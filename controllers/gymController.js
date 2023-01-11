@@ -8,6 +8,7 @@ export const fetch = async (req, res) => {
   } = req;
 
   const searchQuery = new Object();
+  let renderQuery = new Object();
   let serchQueryString = "";
 
   if (req.query.searchTerm) {
@@ -16,19 +17,22 @@ export const fetch = async (req, res) => {
       { location: { $regex: req.query.searchTerm } },
     ];
     serchQueryString += `&searchTerm=${req.query.searchTerm}`;
+    renderQuery.searchTerm = req.query.searchTerm;
   }
   if (req.query.oneday) {
     searchQuery.oneday = "가능";
     serchQueryString += `&oneday=on`;
+    renderQuery.isOneday = true;
   }
   if (req.query.yearRound) {
     searchQuery.yearRound = "네";
     serchQueryString += `&yearRound=on`;
+    renderQuery.isYearRound = true;
   }
   try {
     let PAGE = +page;
 
-    const LIMIT_SIZE = 1;
+    const LIMIT_SIZE = 10;
     const SKIP_PAGE = (PAGE - 1) * LIMIT_SIZE;
     // const TOTAL_GYMS = await Gym.countDocuments();//수정부문
     const TOTAL_GYMS = await Gym.countDocuments(searchQuery); //수정부문
@@ -47,6 +51,7 @@ export const fetch = async (req, res) => {
       title: "체육관",
       gyms,
       totalPage: TOTAL_PAGE,
+      renderQuery,
     });
   } catch (error) {
     console.log(error);

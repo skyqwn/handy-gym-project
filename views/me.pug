@@ -1,0 +1,7 @@
+extends includes/layout
+
+block content 
+    h1=user
+    h1=user.nickname
+    img(src=`/${user.avatarUrl}`, alt="", srcset="")
+    a(href=`/user/update`) 유저 정보 수정 

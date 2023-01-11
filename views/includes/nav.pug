@@ -5,12 +5,18 @@ nav.wideContainer
                 i.fa-sharp.fa-solid.fa-dumbbell.fa-2xl
         .navContainer__item
             if user 
-                a(href="/logout") 로그아웃 
-                a(href="/gym") 헬스장
-                a(href="/gym/upload") 헬스장 등록
-                a(href="/post/") 포스트
-                a(href="/post/upload") 포스트 업로드 
+                .menubar
+                    i.fa-solid.fa-bars
+                    i.fa-solid.fa-circle-user
+                .menuModal.hidden
+                    a(href="/user/me") 내정보 
+                    a(href="/post/upload") 쪽지함 
+                    a(href="/logout") 로그아웃  
             else 
                 a(href="/signin") 로그인 
                 a(href="/signup") 회원가입 
-#FFE500
+    .container.navContainer 
+        a(href="/gym").navLink 체육관
+        a(href="/gallery").navLink 갤러리
+        a(href="/post").navLink 게시판
+    script(src="/static/js/navModal.js")

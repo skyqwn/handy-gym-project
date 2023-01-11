@@ -1,0 +1,11 @@
+extends includes/layout
+
+block content 
+    h1=user.nickname
+    form(action="/user/update" method="POST" enctype="multipart/form-data") 
+        input(name="nickname" value=user.nickname)
+        input(type="file" name="avatar" value=user.avartar)
+        input(type="hidden" name="_csrf" value=csrfToken)
+        input(type="submit", value="전송")
+
+    //- script(src="/static/js/imageCompress.js")

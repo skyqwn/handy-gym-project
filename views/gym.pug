@@ -7,15 +7,16 @@ block content
             .modal 
                 .modal__title 검색
                 form(action="/gym" method="get")
-                    input(type="text" name="searchTerm" placeholder="업체명이나 읍/면/동을 검색해주세요")
+                    input(type="text" name="searchTerm" placeholder="업체명이나 읍/면/동을 검색해주세요" value= renderQuery.searchTerm)
                     .labelContainer
                         label
-                            input(type="checkbox", name="yearRound") 
+                            input(type="checkbox", name="yearRound" checked=renderQuery.isYearRound) 
                             span 연중무휴 
                         label 
-                            input(type="checkbox", name="oneday")
+                            input(type="checkbox", name="oneday" checked=renderQuery.isOneday)
                             span 일일권
                     button.btn.secondary 검색
+                    a(href="/gym").btn.secondary 초기화
     .container.gymContainer 
         .gymContainer__head
             .btn#modalBtn 검색

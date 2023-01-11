@@ -18,25 +18,25 @@
 
 - [x] Daum주소 API
 
-- [ ] Email 찾기
-
-- [ ] 비밀번호 변경
-
-- [ ] USER CRUD
-
 - [x] GYM CRUD
 
-- [ ] POST CRUD
+- [x] POST CRUD
 
 - [x] GYM Filter
 
-- [ ] POST Filter
+- [x] POST Filter
 
 - [x] PageNation
 
 - [x] 좋아요 기능
 
 - [x] 댓글 기능
+
+- [ ] Email 찾기
+
+- [ ] 비밀번호 변경
+
+- [ ] USER CRUD
 
 - [ ] 쪽지 기능
 
