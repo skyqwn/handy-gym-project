@@ -32,7 +32,8 @@ export const updatePost = async (req, res) => {
       user._id,
       {
         ...body,
-        avatarUrl: file?.path,
+        // avatarUrl: file?.path,
+        avatarUrl: file ? file.path : "",
       },
       {
         new: true,

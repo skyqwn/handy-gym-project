@@ -1,11 +1,28 @@
 extends includes/layout
 
-block content 
-    h1=user.nickname
-    form(action="/user/update" method="POST" enctype="multipart/form-data") 
-        input(name="nickname" value=user.nickname)
-        input(type="file" name="avatar" value=user.avartar)
-        input(type="hidden" name="_csrf" value=csrfToken)
-        input(type="submit", value="전송")
+block content
+    .container.userUpdate
+        h1=user.nickname
+        form(action="/user/update" method="POST" enctype="multipart/form-data")
+            input(type="hidden" name="_csrf" value=csrfToken)
+            input(name="nickname" value=user.nickname)
 
-    //- script(src="/static/js/imageCompress.js")
+            if user.avatarUrl
+                img(src=`/${user.avatarUrl}`)#jsAvatarImg
+            else 
+                img(src="/static/images/no_user.webp", alt="")#jsAvatarImg
+
+            #deleteBtn 아바타삭제
+            #fileBtn 아바타변경
+
+            if user.avatarUrl
+                img(src=`/${user.avatarUrl}` id="originalImg" hidden)
+
+            img(src="/static/images/no_user.webp", id="noUserImg" hidden)
+
+            input(type="file" name="avatar" )
+            input(type="file" id="fakeFileInput" )
+            input(type="submit", value="전송")
+
+    script(src="/static/js/avatarPreview.js")
+    script(type="text/javascript" src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.0/dist/browser-image-compression.js")

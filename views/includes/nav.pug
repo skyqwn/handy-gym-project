@@ -7,7 +7,10 @@ nav.wideContainer
             if user 
                 .menubar
                     i.fa-solid.fa-bars
-                    i.fa-solid.fa-circle-user
+                    if user.avatarUrl
+                        img(src=`/${user.avatarUrl}`, alt="", srcset="")
+                    else 
+                        img(src="/static/images/no_user.webp", alt="")
                 .menuModal.hidden
                     a(href="/user/me") 내정보 
                     a(href="/post/upload") 쪽지함 
