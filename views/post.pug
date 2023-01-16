@@ -26,7 +26,8 @@ block content
                     h1 #{post.comments.length}개
                     h1 #{post.like_users.length}개
                 .post__item
-                    h1=post.creator.nickname
+                    a(href=`/user/${user._id}`) 
+                        h1=post.creator.nickname
                 .post__item
                     .postCreatedAt #{post.createdAt}
 

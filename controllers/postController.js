@@ -4,7 +4,9 @@ import Comment from "../models/Comment.js";
 export const fetch = async (req, res) => {
   const {
     query: { page = 1 },
+    user,
   } = req;
+  console.log(user);
 
   const searchQuery = new Object();
   const sortQuery = new Object();
@@ -27,7 +29,6 @@ export const fetch = async (req, res) => {
     sortQuery.createdAt = -1;
     renderQuery.isRecommend = false;
   }
-  console.log(renderQuery);
 
   try {
     let PAGE = +page;
@@ -50,6 +51,7 @@ export const fetch = async (req, res) => {
       totalPage: TOTAL_PAGE,
       posts,
       renderQuery,
+      user,
     });
   } catch (error) {
     console.log(error);

@@ -1,4 +1,7 @@
 import User from "../models/User.js";
+import Gym from "../models/Gym.js";
+import Post from "../models/Post.js";
+import Gallery from "../models/Gallery.js";
 
 export const findEmail = (req, res) => {
   res.send("Find Email");
@@ -8,8 +11,25 @@ export const findEmailPost = (req, res) => {
   res.send("Find Email Post");
 };
 
-export const detail = (req, res) => {
-  res.send("User Detail");
+export const detail = async (req, res) => {
+  const {
+    params: { userId },
+  } = req;
+  try {
+    const findUser = await User.findById(userId);
+    const gyms = await Gym.find({ creator: userId });
+    const posts = await Post.find({ creator: userId });
+    const galleries = await Gallery.find({ creator: userId });
+    return res.render("userDetail", {
+      title: "userDetail",
+      findUser,
+      gyms,
+      posts,
+      galleries,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const me = (req, res) => {
