@@ -1,5 +1,6 @@
 extends includes/layout
 include mixins/gymCardBlock
+include mixins/userBlock
 
 block content 
     .modalContainer
@@ -33,7 +34,8 @@ block content
                     title:gym.title,
                     isLike:gym.like_users.includes(String(user._id)),
                     totalComment:gym.comments.length,
-                    totalLike:gym.like_users.length
+                    totalLike:gym.like_users.length,
+                    creator:gym.creator
                 })
         .gymContainer__end
             div(id=totalPage, class="jsPageContainer")

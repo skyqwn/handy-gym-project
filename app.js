@@ -17,6 +17,8 @@ import setLocals from "./utils/setLocals.js";
 import passportInit from "./utils/passportInit.js";
 import commentRouter from "./routes/commentRouter.js";
 import galleryRouter from "./routes/galleryRouter.js";
+import conversationRouter from "./routes/conversationRouter.js";
+import messageRouter from "./routes/messageRouter.js";
 
 const mongoUrl = process.env.DEV_MONGO_URL;
 const app = express();
@@ -60,7 +62,7 @@ const cspOptions = {
       "https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js",
     ],
     "frame-src": ["'self'", "*.map.daum.net"],
-    "img-src": ["'self'", "blob:", "*.daumcdn.net", "data:"],
+    "img-src": ["'self'", "blob:", "*.daumcdn.net", "data:", "*.kakaocdn.net"],
   },
 };
 
@@ -97,6 +99,8 @@ app.use("/gallery", galleryRouter);
 app.use("/post", postRouter);
 app.use("/user", userRouter);
 app.use("/comment", commentRouter);
+app.use("/conversation", conversationRouter);
+app.use("/message", messageRouter);
 
 const handleListen = () => console.log(`✅서버가 ${port}에서 실행중입니다`);
 

@@ -1,7 +1,13 @@
+include userBlock
 mixin galleryCardBlock(gallery={})
     .galleryCard 
         a(href=`/gallery/${gallery._id}`)
             img(src=`${gallery.thumbnail}`, alt=`${gallery.title}`)
             h3=gallery.title
-            h4 글쓴이: #{gallery.creator}
+            h1=gallery.creator
+            +userBlock({
+                _id: gallery.creator._id,
+                nickname: gallery.creator.nickname,
+                avatarUrl: gallery.creator.avatarUrl
+            })
             

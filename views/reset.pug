@@ -1,0 +1,12 @@
+extends includes/layout
+include mixins/oauthBlock
+
+block content
+    .container
+        .formContainer
+            h3 비밀번호 재설정
+            form(action=`/signin?redirectUrl=${redirectUrl}` method="post")
+                input(type="hidden" name="_csrf" value=csrfToken)
+                input(type="email" name="email" placeholder="이메일")
+                input(type="submit" value="비밀번호 재설정").primary
+                +oauthBlock

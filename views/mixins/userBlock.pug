@@ -1,0 +1,6 @@
+include avatarBlock
+
+mixin userBlock(user={})
+    a(href=`/user/${user._id}`).userBlock
+        +avatarBlock(user.avatarUrl)
+        div=user.nickname

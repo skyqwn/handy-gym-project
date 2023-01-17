@@ -1,10 +1,7 @@
 extends includes/layout
+include mixins/avatarBlock
 
 block content 
-    h1=user
     h1=user.nickname
-    if user.avatarUrl
-        img(src=`/${user.avatarUrl}`, alt="", srcset="")
-    else 
-        img(src="/static/images/no_user.webp", alt="")
+    +avatarBlock(user.avatarUrl , true)
     a(href=`/user/update`) 유저 정보 수정 

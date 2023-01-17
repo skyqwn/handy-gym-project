@@ -38,7 +38,8 @@ export default () => {
             const newUser = new User({
               nickname: profile._json.name || "이름없음",
               email: profile._json.email || undefined,
-              avatarUrl: profile._json.picture || "",
+              avatarUrl: "",
+              // avatarUrl: profile._json.picture || "",
               socialId: profile.id || profile._json.sub,
               socialType: "구글",
               email_verified: true,

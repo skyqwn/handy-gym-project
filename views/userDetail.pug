@@ -4,18 +4,37 @@ include mixins/gymCardBlock
 include mixins/galleryCardBlock
 
 block content
-    .gymContainer__middle 
+    .container 
+        if `${findUser._id}` === `${user._id}`
+            h1 내 정보 
+
+        +avatarBlock(findUser.avatarUrl, true)
+
+        if `${findUser._id}` === `${user._id}`
+            a(href=`/user/update`) 유저정보수정 
+
+        if `${findUser._id}` !== `${user._id}`
+            form(action=`/message/create` method="post")
+                input(type="text" name="to" value=`${findUser._id}` readOnly)
+                input(type="text" name="message")
+                button 쪽지보내기
+
+
+        h1=findUser.nickname
+        h1 체육관에 쓴글
         each gym in gyms 
-            +gymCardBlock({
-                _id:gym._id,
-                thumbnail:gym.photos[0],
-                name:gym.name,
-                title:gym.title,
-                isLike:gym.like_users.includes(String(user._id)),
-                totalComment:gym.comments.length,
-                totalLike:gym.like_users.length
-            })
+            a(href=`/gym/${gym._id}`) 
+                h1=gym.title
+        h1 갤러리에 쓴글
+        each gallery in galleries 
+            a(href=`/gallery/${gallery._id}`) 
+                h1=gallery.title 
+        h1 포스트에 쓴글
         each post in posts 
-            h1=post
+            a(href=`/post/${post._id}`) 
+                h1=post.title
+        
+
+
     
 

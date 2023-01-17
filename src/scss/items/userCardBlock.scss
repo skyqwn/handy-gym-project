@@ -1,0 +1,17 @@
+.avatar {
+  width: 26px;
+  height: 26px;
+  border: 1px solid black;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.userBlock {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.big {
+  width: 100px;
+  height: 100px;
+}

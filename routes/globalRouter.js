@@ -41,6 +41,8 @@ globalRouter.get("/resend-email", resendEmail);
 
 globalRouter.get("/no-access", noAccess);
 
+// globalRouter.get("/reset", resetPassword);
+
 // GOOGLE Login
 
 globalRouter.get(

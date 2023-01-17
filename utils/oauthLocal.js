@@ -16,7 +16,7 @@ export default () => {
 
           if (!user) {
             return done(null, false, {
-              message: "이메일로 가입된 유저가 없습니다",
+              message: "이메일 또는 비밀번호를 다시 확인해주세요",
             });
           }
 
@@ -29,7 +29,9 @@ export default () => {
           const pwOk = bcrypt.compareSync(password, user.password);
 
           if (!pwOk) {
-            return done(null, false, { message: "비밀번호가 틀립니다" });
+            return done(null, false, {
+              message: "이메일 또는 비밀번호를 다시 확인해주세요",
+            });
           }
 
           return done(null, user);
