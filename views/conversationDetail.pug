@@ -1,0 +1,12 @@
+extends includes/layout
+include mixins/userBlock
+
+block content 
+    .container 
+        each message in messages 
+            p(class=(String(user._id) === String(message.from._id) ? "right" : "left"))=message.message
+            if String(user._id) !== String(message.from._id)
+
+        form(action=`/message/create` method="post")
+            input(type="text" name="message")
+            button 쪽지보내기

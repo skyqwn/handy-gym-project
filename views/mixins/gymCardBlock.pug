@@ -1,21 +1,24 @@
 include userBlock
-mixin gymCardBlock(gym={})
 
+mixin gymCardBlock(gym={})
     .gymCard
-        a(href=`/gym/${gym._id}`)
-            img(src=`/${gym.thumbnail}`, alt=`${gym.name}`).thumbnail
-            h3=gym.name 
-            h4=gym.title
-            h4 댓글:#{gym.totalComment}
-            h4 좋아요:#{gym.totalLike}
+        a(href=`/gym/${gym._id}` target="_blank")
+            img(src=`/${gym.thumbnail}`).thumbnail
+            h3.section=gym.name
+        .gymCard__bottom.section
             +userBlock({
-                _id: gym.creator._id,
-                nickname:gym.creator.nickname,
-                avatarUrl:gym.creator.avatarUrl
+                _id:gym.creator._id,
+                avatarUrl:gym.creator.avatarUrl,
+                nickname:gym.creator.nickname
             })
+            .emojiWrapper
+                .emojiText
+                    i.fa-regular.fa-comment
+                    h1=gym.totalComment
+                .emojiText
+                    i.fa-regular.fa-heart.like
+                    h1=gym.totalLike
         if gym.isLike
             .likeBtn.fa-solid.fa-heart.like(id=`${gym._id}`)
         else
             .likeBtn.fa-regular.fa-heart(id=`${gym._id}`)
-     
-

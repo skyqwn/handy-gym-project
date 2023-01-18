@@ -1,31 +1,29 @@
 "use strict";
 
 var href = window.location.href;
-var hrefArr = window.location.href.split("/");
-// const whereId = hrefArr.pop();
+var hrefArr = href.split("/");
 var type = hrefArr[3];
 
-var likeBtns = document.querySelectorAll(".likeBtn");
+var btns = document.querySelectorAll(".likeBtn");
 
 var handleLike = async function handleLike(e) {
   var btn = e.target;
-  var id = e.target.id;
+  var id = btn.id;
   var res = await fetch("/" + type + "/" + id + "/like");
   if (res.ok) {
     if (btn.classList.contains("like")) {
       btn.classList.remove("fa-solid");
-      btn.classList.add("fa-regular");
       btn.classList.remove("like");
+      btn.classList.add("fa-regular");
     } else {
       btn.classList.remove("fa-regular");
-      btn.classList.add("like");
       btn.classList.add("fa-solid");
+      btn.classList.add("like");
     }
   } else {
-    alert("오류 발생");
+    alert("좋아요가 오류났습니다");
   }
 };
-
-for (var i = 0; i < likeBtns.length; i++) {
-  likeBtns[i].addEventListener("click", handleLike);
+for (var i = 0; i < btns.length; i++) {
+  btns[i].addEventListener("click", handleLike);
 }

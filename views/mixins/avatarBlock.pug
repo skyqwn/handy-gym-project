@@ -1,5 +1,5 @@
-mixin avatarBlock(avatar, big = false)
+mixin avatarBlock(avatar, size)
     if avatar
-        img(src=`/${avatar}` class=(big ? "big" : "")).avatar
-    else 
-        img(src="/static/images/no_user.webp", class=(big ? "big" : "")).avatar
+        img(src=`/${avatar}` style={"width":size,"height":size}).avatar
+    else
+        img(src="/static/images/noUser.png" style={"width":size,"height":size}).avatar

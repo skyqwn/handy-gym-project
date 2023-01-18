@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 
 const MessageSchema = mongoose.Schema(
   {
-    from: String,
-    to: String,
+    from: { type: mongoose.SchemaTypes.ObjectId, ref: "User" },
+    to: { type: mongoose.SchemaTypes.ObjectId, ref: "User" },
     message: String,
     conversationId: String,
   },

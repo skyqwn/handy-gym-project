@@ -104,11 +104,47 @@ export const like = async (req, res) => {
 export const detail = async (req, res) => {
   const {
     params: { postId },
+    cookies,
   } = req;
+  const HOUR = 1000 * 60 * 60;
+  const DAY = HOUR * 24;
+  const CURRENT_MONTH = new Date().getMonth();
   try {
     const post = await Post.findById(postId).populate("creator");
+
+    if (!cookies[postId] || +cookies[postId] < Date.now()) {
+      res.cookie(postId, Date.now() + DAY, {
+        expires: new Date(Date.now() + DAY + HOUR * 9),
+      });
+      post.views++;
+      await post.save();
+      // await post.findByIdAndUpdate({ postId }, { $inc: { views: 1 } });
+    }
+
+    const populatePost = await Post.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: new Date(Date.UTC(2023, CURRENT_MONTH)),
+            $lte: new Date(Date.UTC(2023, CURRENT_MONTH + 1)),
+          },
+        },
+      },
+      { $limit: 5 },
+      { $sort: { views: -1 } },
+    ]);
+    //   {
+    //   createdAt: { $month: new Date("2023-03-17") },
+    // });
+    console.log(populatePost);
+
     const comments = await Comment.find({ where: postId }).populate("creator");
-    return res.render("postDetail", { title: post.name, post, comments });
+    return res.render("postDetail", {
+      title: post.name,
+      post,
+      comments,
+      populatePost,
+    });
   } catch (error) {
     console.log(error);
   }
@@ -128,6 +164,12 @@ export const update = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const views = async (req, res) => {
+  const {
+    params: { postId },
+  } = req;
 };
 
 export const updatePost = async (req, res) => {

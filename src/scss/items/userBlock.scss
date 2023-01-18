@@ -1,0 +1,21 @@
+@import "../config/variable";
+.userBlock {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+.avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgb(215, 215, 215);
+}
+.big {
+  width: 120px;
+  height: 120px;
+}
+.middle {
+  width: 60px;
+  height: 60px;
+}

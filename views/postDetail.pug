@@ -1,27 +1,48 @@
 extends includes/layout
+include mixins/userBlock
+include mixins/avatarBlock
 
-block content 
-    h1=post.title
-    h1=post.description
+block content
+    .container.postDetail
+        h1  조회수: #{post.views} 회
+        div.section.category=post.category 
+        h2.section=post.title
+        .section
+            +userBlock({
+                _id:post.creator._id,
+                nickname:post.creator.nickname,
+                avatarUrl:post.creator.avatarUrl
+            }, "40px","40px")
+        p.section=post.description
+        .thumbsUp
+            if post.like_users.includes(String(user._id))
+                i.likeBtn.fa-solid.fa-thumbs-up.like.fa-2xl(id=`${post._id}`)
+                div 추천
+            else
+                i.likeBtn.fa-regular.fa-thumbs-up.fa-2xl(id=`${post._id}`)
+                div 추천
+        //- if `${user._id}` === `${post.creator._id}`
+        //-     a(href=`/post/${post._id}/update`) 수정
+        //-     #deleteBtn 삭제
+     
+        .commentsWrapper
+            h4 댓글
+            .commentInput
+                +avatarBlock(user.avatarUrl, "70px", "70px")
+                textarea(name="text")
+                #commentBtn.primary 댓글달기
+            each comment in comments
+                .comment
+                    +userBlock({
+                        _id:comment.creator._id,
+                        nickname:comment.creator.nickname,
+                        avatarUrl:comment.creator.avatarUrl
+                    }, "40px", "40px")
+                    p=comment.text
 
-    input(name="text")
-    #commentsBtn 댓글생성
-
-    .commentsWrapper
-        each comment in comments 
-            .comment
-                div=comment.text
-                div=comment.creator.nickname
-                if `${comment.creator._id}` === `${user._id}` 
-                    button.deleteBtns(id=comment._id) 댓글삭제
-    if post.like_users.includes(String(user._id))
-        .likeBtn.fa-solid.fa-heart.like(id=`${post._id}`)
-    else
-        .likeBtn.fa-regular.fa-heart(id=`${post._id}`)
-
-    //- if `${post.creator._id}` === `${user._id}`
-    //-     a(href=`/post/${post._id}/update`) 수정
-    //-     a(href=`/post/${post._id}/remove`) 삭제
+                    if `${comment.creator._id}`=== `${user._id}`
+                        button.commentDeleteBtn(id=comment._id) 삭제
+        
 
     script(src="/static/js/comment.js")
-    script(src="/static/js/likeFunc.js")
+    script(src="/static/js/likeFun.js")

@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const ConversationSchema = mongoose.Schema(
   {
-    users: [String],
+    users: [{ type: mongoose.SchemaTypes.ObjectId, ref: "User" }],
   },
   {
     timestamps: true,

@@ -4,21 +4,23 @@ nav.wideContainer
     .container.navContainer
         .navContainer__item
             a(href="/")
-                i.fa-sharp.fa-solid.fa-dumbbell.fa-2xl
+                //- i.fa-solid.fa-dumbbell.fa-2xl
+                h1 HANDY GYM
         .navContainer__item
-            if user 
-                .menubar
+            if user
+                .menuBar
                     i.fa-solid.fa-bars
                     +avatarBlock(user.avatarUrl)
                 .menuModal.hidden
-                    a(href="/user/me") 내정보 
-                    a(href="/message/create") 쪽지함 
-                    a(href="/logout") 로그아웃  
-            else 
-                a(href="/signin") 로그인 
-                a(href="/signup") 회원가입 
-    .container.navContainer 
-        a(href="/gym").navLink 체육관
-        a(href="/gallery").navLink 갤러리
+                    a(href=`/user/${user._id}`) 내 정보
+                    a(href="/conversation") 쪽지함
+                    a(href="/logout") 로그아웃
+            else
+                a(href="/signin") 로그인
+                a(href="/signup") 회원가입
+    .container.navContainer
         a(href="/post").navLink 게시판
-    script(src="/static/js/navModal.js")
+        a(href="/gym").navLink 체육관
+        a(href="/gallery").navLink 사진
+        
+script(src="/static/js/navModal.js") 

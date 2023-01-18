@@ -8,6 +8,7 @@ const PostSchema = mongoose.Schema(
     category: String,
     comments: [String],
     like_users: [String],
+    views: { type: Number, default: 0 },
   },
   {
     timestamps: true,

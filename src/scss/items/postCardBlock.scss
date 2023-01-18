@@ -1,0 +1,35 @@
+@import "../config/variable";
+.post {
+  display: flex;
+  &:first-child {
+    border-top: 1px solid $borderColor;
+  }
+  &__item {
+    height: 50px;
+    padding: 12px 0;
+    border-bottom: 1px solid $borderColor;
+    display: flex;
+    align-items: center;
+    &:nth-child(1) {
+      width: 200px;
+    }
+    &:nth-child(2) {
+      width: 100%;
+      a {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+    }
+    &:nth-child(3) {
+      display: flex;
+      width: 200px;
+    }
+    &:nth-child(4) {
+      width: 200px;
+    }
+    &:nth-child(5) {
+      width: 200px;
+    }
+  }
+}

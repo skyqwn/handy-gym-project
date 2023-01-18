@@ -1,0 +1,21 @@
+@import "../config/variable";
+.pagination {
+  margin-top: auto;
+  padding: 20px 0;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  .page {
+    border: 1px solid $hoverColor;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .currentPage {
+    background-color: $accentColor;
+    border: none;
+    color: $white;
+  }
+}
