@@ -5,6 +5,7 @@ const croppperContainer = document.querySelector(".croppperContainer");
 const closeBtn = document.getElementById("closeBtn");
 
 const realFileInput = document.getElementById("realFileInput");
+const fakeFileBtn = document.getElementById("fakeFileBtn");
 const fakeFileInput = document.getElementById("fakeFileInput");
 const galleryPreview = document.getElementById("galleryPreview");
 const result = document.querySelector(".result");
@@ -26,12 +27,17 @@ const compressFile = async (file) => {
     useWebWorker: false,
   };
   try {
-    let compressedBlob = await imageCompression(file, compressOption);
-    compressedBlob.name = `${file.name || "힙합"}_compressed`;
+    if (file) {
+      fakeFileBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin-pulse"></i>`;
+      fakeFileBtn.disabled = true;
 
-    const convertFile = convertBlobToFile(compressedBlob);
+      let compressedBlob = await imageCompression(file, compressOption);
+      compressedBlob.name = `${file.name || "힙합"}_compressed`;
 
-    return convertFile;
+      const convertFile = convertBlobToFile(compressedBlob);
+
+      return convertFile;
+    }
   } catch (error) {
     console.log(error);
     alert("파일 올리는 도중 오류발생");
@@ -58,14 +64,14 @@ const closeModal = () => {
   body.style.overflowY = "scroll";
 };
 
-const generateBtnContainer = (newId, blob) => {
+const generateBtnContainer = (newId, imgSrc) => {
   const btnContainer = document.createElement("div");
   btnContainer.classList.add("btnContainer");
 
   const cropBtn = document.createElement("div");
   cropBtn.innerText = "수정";
   cropBtn.classList.add("cropBtn");
-  cropBtn.addEventListener("click", (e) => openCrop(blob, newId));
+  cropBtn.addEventListener("click", (e) => openCrop(imgSrc, newId));
 
   const changeBtn = document.createElement("div");
   changeBtn.innerText = "파일변경";
@@ -85,21 +91,22 @@ const generateBtnContainer = (newId, blob) => {
 };
 
 const paintPreview = (newId, data) => {
+  const imgSrc = URL.createObjectURL(data.file);
+
   const container = document.createElement("div");
   container.id = newId;
   container.classList.add("previewContainer");
 
-  const blob = URL.createObjectURL(data.file);
-
   const img = document.createElement("img");
-  img.src = blob;
+  img.src = imgSrc;
   img.classList.add("previewImg");
 
-  const btnContainer = generateBtnContainer(newId, blob);
+  const btnContainer = generateBtnContainer(newId, imgSrc);
 
   const desc = document.createElement("textarea");
   desc.name = "captions";
   desc.placeholder = "사진에 대한 설명을 적어보세요. (선택사항)";
+
   if (data.caption) desc.value = data.caption;
 
   container.append(img);
@@ -110,17 +117,17 @@ const paintPreview = (newId, data) => {
 };
 
 const updatePreview = (targetId, newId, data) => {
+  const imgSrc = URL.createObjectURL(data.file);
+
   const container = document.getElementById(targetId);
   container.innerHTML = "";
   container.id = newId;
 
-  const blob = URL.createObjectURL(data.file);
-
   const img = document.createElement("img");
-  img.src = blob;
+  img.src = imgSrc;
   img.classList.add("previewImg");
 
-  const btnContainer = generateBtnContainer(newId, blob);
+  const btnContainer = generateBtnContainer(newId, imgSrc);
 
   const desc = document.createElement("textarea");
   desc.name = "captions";
@@ -157,7 +164,7 @@ const cropSave = (e, targetId) => {
 
       const caption = findCaption(targetId);
 
-      const data = { file: blob, caption };
+      const data = { file: croppedFile, caption };
 
       updatePreview(targetId, randomId, data);
 
@@ -249,25 +256,28 @@ const deleteImgData = (id) => {
   realFileInput.files = dataTransfer.files;
 };
 
-const handleChange = (e) => {
+const handleChange = async (e) => {
   const file = e.target.files[0];
 
-  const preview = async (file) => {
-    const randomId = generateRandomId();
+  const randomId = generateRandomId();
 
-    const compressedFile = await compressFile(file);
+  const compressedFile = await compressFile(file);
 
-    const data = { file: compressedFile, caption: "" };
+  const data = { file: compressedFile, caption: "" };
 
-    paintPreview(randomId, data);
+  paintPreview(randomId, data);
 
-    newImgTodData(compressedFile, randomId);
-  };
+  newImgTodData(compressedFile, randomId);
 
-  preview(file);
+  fakeFileBtn.innerHTML = `<i class="fa-solid fa-plus" ></i>`;
+  fakeFileBtn.disabled = false;
 };
 
 const init = () => {
+  fakeFileBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    fakeFileInput.click();
+  });
   fakeFileInput.addEventListener("change", handleChange);
   const originalPhotos = document.querySelectorAll(".originalPhoto");
   const originalCaptions = document.querySelectorAll(".originalCaption");

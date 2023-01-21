@@ -1,0 +1,25 @@
+@import "../config/variable";
+
+.userWrapper {
+  text-align: center;
+  max-width: 1080px;
+  padding: 30px;
+  background-color: rgb(197, 197, 192);
+  display: flex;
+  gap: 30px;
+  &__flex {
+    width: 50%;
+    &:first-child {
+      background-color: red;
+    }
+    &:nth-child(2) {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+    &__item {
+      height: 100%;
+      background-color: blue;
+    }
+  }
+}

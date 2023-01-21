@@ -121,7 +121,7 @@ export const detail = async (req, res) => {
       // await post.findByIdAndUpdate({ postId }, { $inc: { views: 1 } });
     }
 
-    const populatePost = await Post.aggregate([
+    const populatePosts = await Post.aggregate([
       {
         $match: {
           createdAt: {
@@ -136,14 +136,13 @@ export const detail = async (req, res) => {
     //   {
     //   createdAt: { $month: new Date("2023-03-17") },
     // });
-    console.log(populatePost);
 
     const comments = await Comment.find({ where: postId }).populate("creator");
     return res.render("postDetail", {
       title: post.name,
       post,
       comments,
-      populatePost,
+      populatePosts,
     });
   } catch (error) {
     console.log(error);

@@ -93,10 +93,21 @@ export const uploadPost = async (req, res) => {
 export const detail = async (req, res) => {
   const {
     params: { gymId },
+    cookies,
   } = req;
+  const HOUR = 1000 * 60 * 60;
+  const DAY = HOUR * 24;
   try {
     const gym = await Gym.findById(gymId).populate("creator");
     const comments = await Comment.find({ where: gymId }).populate("creator");
+
+    if (!cookies[gymId] || +cookies[gymId] < Date.now()) {
+      res.cookie(gymId, Date.now() + DAY, {
+        expires: new Date(Date.now() + DAY + HOUR * 9),
+      });
+      gym.views++;
+      await gym.save();
+    }
 
     return res.render("gymDetail", { title: gym.name, gym, comments });
   } catch (error) {

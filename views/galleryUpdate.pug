@@ -3,34 +3,29 @@ extends includes/layout
 block content 
     .modalContainer
         .modalWrapper
-            .cropperContainer
+            .croppperContainer
             #closeBtn 취소
     .container
         form(action=`/gallery/${gallery._id}/update` method="post" enctype="multipart/form-data").uploadContainer
             input(type="hidden" name="_csrf" value=csrfToken)
+            each photoObj in gallery.photos
+                img(src=`/${photoObj.photo}` hidden class="originalPhoto")
+                textarea(hidden class="originalCaption")=photoObj.caption
             h3 갤러리 업데이트
             .flexContainer
                 .flexContainer__item 
                     span 타이틀
                 .flexContainer__item 
                     input(type="text" name="title" value=gallery.title)
-            .flexContainer
-                .flexContainer__item 
-                    span 사진선택
-                .flexContainer__item 
-                    .btn.primary#fakeFileBtn
-                        i.fa-solid.fa-camera
-                    input(type="file" id="realFileInput" name="photos" multiple accept="*" ) 
-                    input(type="file" id="fakeFileInput" multiple accept="*" ) 
-                .flexContainer__item 
-                     each photoObj in gallery.photos 
-                        img(src=`/${photoObj.photo}` class="originalPreview" hidden)
-                        textarea(hidden class="originalCaption" placeholder="ex) 자랑해주세요")=`${photoObj.caption}`
-                #galleryPreview
-                input(type="submit", value="생성")
+            
+
+            input(type="file" id="realFileInput" name="photos" multiple accept="*" )
+            #galleryPreview
+            input(type="file" id="fakeFileInput" accept="*" )
+
+            input(type="submit" value="변경" class="btn primary")
 
     script(src="/static/js/cropper.js") 
     script(src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js")
 
-    //- script(src="/static/js/imageCompress.js")
     script(type="text/javascript" src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.0/dist/browser-image-compression.js")

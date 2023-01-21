@@ -1,6 +1,4 @@
 import Gallery from "../models/Gallery.js";
-import User from "../models/User.js";
-import Comment from "../models/Comment.js";
 
 export const fetch = async (req, res) => {
   const {
@@ -10,7 +8,7 @@ export const fetch = async (req, res) => {
     if (Number(page) <= 0) {
       return res.redirect(`/gallery?page=1`);
     }
-    const LIMIT_SIZE = 1;
+    const LIMIT_SIZE = 6;
     const SKIP_PAGE = (page - 1) * LIMIT_SIZE;
     const TOTAL_GALLERY = await Gallery.countDocuments();
     const TOTAL_PAGE = Math.ceil(TOTAL_GALLERY / LIMIT_SIZE) || 1;
@@ -37,39 +35,55 @@ export const upload = (req, res) => {
 };
 
 export const uploadPost = async (req, res) => {
-  const { body, files, user } = req;
+  const {
+    body: { title, captions },
+    files,
+    user,
+  } = req;
+
+  let captionsArr = new Array();
+
+  if (typeof captions === "string") {
+    captionsArr.push(captions);
+  } else {
+    captionsArr = captions;
+  }
   try {
-    const returnPath = files.map((__, index) => {
-      return { photo: files[index].path, caption: body.captions[index] };
+    const photosObjArr = files.map((__, index) => {
+      return { photo: files[index].path, caption: captionsArr[index] };
     });
-    console.log(returnPath);
     const newGallery = await Gallery.create({
-      ...body,
-      photos: returnPath,
+      title,
+      photos: photosObjArr,
       creator: user,
     });
+    await newGallery.save();
 
-    console.log(newGallery);
-    // const newGallery = new Gallery({
-    //   ...body,
-    //   photos: returnPath,
-    //   creator: user,
-    // });
-    // await newGallery.save();
     return res.redirect("/gallery");
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const detail = async (req, res) => {
   const {
     params: { galleryId },
+    cookies,
   } = req;
-
+  const HOUR = 1000 * 60 * 60;
+  const DAY = HOUR * 24;
   try {
     const gallery = await Gallery.findById(galleryId).populate("creator");
     // const comments = await Comment.find({ where: galleryId }).populate(
     //   "creator"
     // );
+    if (!cookies[galleryId] || +cookies[galleryId] < Date.now()) {
+      res.cookie(galleryId, Date.now() + DAY, {
+        expires: new Date(Date.now() + DAY + HOUR * 9),
+      });
+      gallery.views++;
+      await gallery.save();
+    }
 
     return res.render("galleryDetail", {
       title: gallery.title,

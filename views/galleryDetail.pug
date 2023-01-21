@@ -6,8 +6,9 @@ block content
         .galleryDetail 
             .galleryDetail__section 
                 h1=gallery.title
-            .galleryDetail__section 
-                each photoObj in gallery.photos 
+                h1 조회수: #{gallery.views}
+            each photoObj in gallery.photos 
+                .galleryDetail__section 
                     img(src=`/${photoObj.photo}`)
                     p=photoObj.caption
                 

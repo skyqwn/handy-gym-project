@@ -12,17 +12,21 @@
 @import "./items/form.scss";
 @import "./items/pageHead.scss";
 @import "./items/pagination.scss";
-@import "./items/postCardBlock.scss";
 @import "./items/modal.scss";
 @import "./items/viewMore.scss";
+@import "./items/postCardBlock.scss";
+@import "./items/galleryCardBlock.scss";
+@import "./items/category.scss";
 
 @import "./pages/gymUpload.scss";
 @import "./pages/galleryUpload.scss";
 @import "./pages/gymDetail.scss";
 @import "./pages/home.scss";
 @import "./pages/gym.scss";
+@import "./pages/gallery.scss";
 @import "./pages/me.scss";
 @import "./pages/post.scss";
 @import "./pages/postDetail.scss";
 @import "./pages/userUpdate.scss";
+@import "./pages/userDetail.scss";
 @import "./pages/conversationDetail.scss";

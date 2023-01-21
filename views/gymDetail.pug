@@ -1,94 +1,107 @@
 extends includes/layout
+include mixins/categoryBlock
 
-block content 
-    .viewMoreContainer 
+block content
+    .viewMoreContainer
         .viewMore
             .viewMore__top.viewMore__column
-                .viewMore__item 
-                .viewMore__item 
+                .viewMore__item
+                .viewMore__item
                 .viewMore__item#xBtn 취소
             .viewMore__middle.viewMore__column
                 .viewMore__item 
-                    i.fa-solid.fa-chevron-left#prevSlide
-                .viewMore__item.slideContainer 
-                    each photo in gym.photos 
-                        img(src=`/${photo}`, alt="" class="gymImg")
+                    i.fa-solid.fa-chevron-left#prevSlideBtn
+                .viewMore__item
+                    .slideContainer
+                        each photo in gym.photos
+                            img(src=`/${photo}`, alt="체육관 사진", class="gymImg")
                 .viewMore__item 
-                    i.fa-solid.fa-chevron-right#nextSlide
+                    i.fa-solid.fa-chevron-right#nextSlideBtn
             .viewMore__bottom.viewMore__column
                 .viewMore__item 
-                .viewMore__item#slideNumber
+                .viewMore__item#slideNumber 
                 .viewMore__item 
     .container
         .gymDetail
             .gymDetail__section
-                h1=gym.name
-            .gymDetail__section
-                if gym.yearRound === "네"
-                    .infoBtn.yes 연중무휴
-                if gym.yearRound === "아니오"
-                    .infoBtn.no 연중무휴 불가능
-                if gym.yearRound === "모름"
-                    .infoBtn 연중무휴 여부: 모름
-
-
+                +categoryBlock({
+                    views:gym.views,
+                    likes:gym.like_users.length,
+                    comments:comments.length
+                })
+            h1.gymDetail__section #{gym.name}
+            .gymDetail__section.btnContainer
                 if gym.oneday === "가능"
-                    .infoBtn 일일입장가능
+                    .gymDetail__btn.yes 일일권 가능
                         if gym.onedayPay === "모름"
-                            span 가격: #{gym.onedayPay}
+                            span (가격: #{gym.onedayPay})
                         else 
-                            span 가격: #{gym.onedayPay}원
-
-                if gym.oneday === "불가능"
-                    .infoBtn.no 일일입장 불가능 
-                if gym.oneday === "모름"
-                    .infoBtn 일일입장 모름
-
-
+                            span (가격: #{gym.onedayPay}원)
+                            
+                else if gym.oneday === "불가능"
+                    .gymDetail__btn.no 일일권 불가능
+                else if gym.oneday === "모름"
+                    .gymDetail__btn 일일권 여부 모름
+                if gym.yearRound === "네"
+                    .gymDetail__btn.yes 연중무휴
+                else if gym.yearRound === "아니오"
+                    .gymDetail__btn.no 연중무휴 아님
+                else if gym.oneday === "모름"
+                    .gymDetail__btn 연중무휴 여부 모름
             
-            .gymDetail__imgLayout.gymDetail__section
+            .gymDetail__imgLayout.gymDetail__section.gymDetail__bigSection
                 - let i = 0;
                 while i < 4
                     if i === 0 || i === 1
-                        .imgContainer
+                        .imgContainer 
                             img(src=`/${gym.photos[i]}`,)
                     if i === 2
                         .imgContainer 
                             img(src=`/${gym.photos[i]}`,)
                             img(src=`/${gym.photos[i+1]}`,)
-                            #viewMore + 사진 더보기
+                            #viewMore.btn + 사진 더보기
                     if i === 3
                         span
+                            
                     - ++i
-            .gymDetail__section
-                p=gym.description
-            
-            .gymDetail__section
+            .gymDetail__bigSection
+                h2 체육관 소개
+                h3.gymDetail__section " #{gym.title} "
+                p.gymDetail__section=gym.description
+            .gymDetail__section.gymDetail__bigSection
                 #kakaoMap
                     #jsAddress #{gym.address}
-            if `${gym.creator._id}` === `${user._id}` 
-                a(href=`/gym/${gym._id}/update`).btn 수정
-                #deleteBtn.btn 삭제
-            //- form(action=`/comment/${gym._id}`, method="post") 
-                input(type="text" name="text")
-                input(type="submit", value="댓글 작성")
-            input(name="text" id=gym.id)
-            button#commentsBtn 댓글생성
+                
+            //- if `${user._id}`=== `${gym.creator._id}`
+            //-     .updateAndDeleteBtn
+            //-         a(href=`/gym/${gym._id}/update`)
+            //-             div.btn.primary 수정
+            //-         #deleteBtn.btn.secondary 삭제
+            .gymDetail__section.gymDetail__bigSection
+                .commentsWrapper
+                    h4 댓글 #{comments.length}
+                    each comment in comments
+                        .comment
+                            +userBlock({
+                                _id:comment.creator._id,
+                                nickname:comment.creator.nickname,
+                                avatarUrl:comment.creator.avatarUrl
+                            }, "40px")
+                            p=comment.text
 
-            .commentsWrapper
-                each comment in comments 
-                    .comment
-                        div=comment.text
-                        div=comment.creator.nickname
-                        if `${comment.creator._id}` === `${user._id}` 
-                            button.deleteBtns(id=comment._id) 댓글삭제
-                    //- a(href=`/comment/${gym._id}/remove/${comment._id}`) 삭제 
-        script(src="/static/js/viewMore.js")
-        script(src="/static/js/useConfirm.js") 
-        script(src="/static/js/kakaoMap.js")
-        script(src="/static/js/comment.js")
-            
-        
+                            if `${comment.creator._id}`=== `${user._id}`
+                                button.commentDeleteBtn(id=comment._id) 삭제
+                .commentInput
+                    +avatarBlock(user.avatarUrl, "70px")
+                    textarea(name="text")
+                    #commentBtn.primary 댓글달기
+                    
+    .modalContainer
+        .modal
+            .modal__title 검색
+                    
 
-
-    
+    script(src="/static/js/viewMore.js") 
+    script(src="/static/js/kakaomap.js") 
+    script(src="/static/js/useConfirm.js") 
+    script(src="/static/js/comment.js") 

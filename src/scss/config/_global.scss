@@ -4,7 +4,7 @@ body,
 html {
   background-color: $bgColor;
   color: $textColor;
-  font-family: $fontFamilly;
+  font-family: $fontFamily;
   font-size: 16px;
   line-height: 1.4rem;
   position: relative;
@@ -20,7 +20,7 @@ html {
     border: 1px solid $borderColor;
     height: 44px;
     padding: 0 12px;
-    font-family: $fontFamilly;
+    font-family: $fontFamily;
     border-radius: 2px;
     transition: all 0.2s ease-in-out;
     outline: none;
@@ -43,7 +43,7 @@ html {
   textarea {
     border: 1px solid $borderColor;
     border-radius: 2px;
-    font-family: $fontFamilly;
+    font-family: $fontFamily;
     resize: none;
     background-color: white;
     padding: 12px;

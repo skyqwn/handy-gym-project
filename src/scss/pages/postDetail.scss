@@ -1,7 +1,8 @@
 @import "../config/variable";
 .postDetail {
-  max-width: 760px;
-  padding: 30px 0;
+  display: flex;
+  width: 100%;
+  gap: 20px;
   h2 {
     font-size: 36px;
     font-weight: 700;
@@ -10,7 +11,9 @@
   p {
     white-space: pre-wrap;
   }
-  .category {
+  .head {
+    display: flex;
+    gap: 10px;
     font-size: 20px;
     font-weight: 700;
   }
@@ -35,6 +38,36 @@
     div {
       font-weight: 700;
       font-size: 12px;
+    }
+  }
+  &__item {
+    background-color: $white;
+    box-shadow: $boxShadow;
+    margin: 30px 0;
+    &:first-child {
+      width: 80%;
+      padding: 30px;
+    }
+    &:last-child {
+      padding: 20px;
+      width: 20%;
+      position: sticky;
+      top: $navHeight;
+      height: fit-content;
+      a {
+        &:hover {
+          .title {
+            text-decoration: underline;
+          }
+        }
+        p {
+          margin-top: 10px;
+          .index {
+            font-weight: 700;
+            margin-right: 10px;
+          }
+        }
+      }
     }
   }
 }

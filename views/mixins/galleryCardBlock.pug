@@ -1,13 +1,12 @@
 include userBlock
+
 mixin galleryCardBlock(gallery={})
     .galleryCard 
         a(href=`/gallery/${gallery._id}`)
-            img(src=`${gallery.thumbnail}`, alt=`${gallery.title}`)
+            img(src=`${gallery.thumbnail}`, alt=`${gallery.title}`).thumbnail
             h3=gallery.title
-            h1=gallery.creator
             +userBlock({
-                _id: gallery.creator._id,
-                nickname: gallery.creator.nickname,
-                avatarUrl: gallery.creator.avatarUrl
+                _id:gallery.creator._id,
+                avatarUrl:gallery.creator.avatarUrl,
+                nickname:gallery.creator.nickname
             })
-            

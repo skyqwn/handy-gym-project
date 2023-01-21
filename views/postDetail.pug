@@ -1,47 +1,61 @@
 extends includes/layout
 include mixins/userBlock
 include mixins/avatarBlock
+include mixins/categoryBlock
 
 block content
     .container.postDetail
-        h1  조회수: #{post.views} 회
-        div.section.category=post.category 
-        h2.section=post.title
-        .section
-            +userBlock({
-                _id:post.creator._id,
-                nickname:post.creator.nickname,
-                avatarUrl:post.creator.avatarUrl
-            }, "40px","40px")
-        p.section=post.description
-        .thumbsUp
-            if post.like_users.includes(String(user._id))
-                i.likeBtn.fa-solid.fa-thumbs-up.like.fa-2xl(id=`${post._id}`)
-                div 추천
-            else
-                i.likeBtn.fa-regular.fa-thumbs-up.fa-2xl(id=`${post._id}`)
-                div 추천
-        //- if `${user._id}` === `${post.creator._id}`
-        //-     a(href=`/post/${post._id}/update`) 수정
-        //-     #deleteBtn 삭제
-     
-        .commentsWrapper
-            h4 댓글
+        .postDetail__item
+            .section.head
+                div=post.category
+                +categoryBlock({
+                    views:post.views,
+                    likes:post.like_users.length,
+                    comments:comments.length
+                })
+            h2.section=post.title
+            .section
+                +userBlock({
+                    _id:post.creator._id,
+                    nickname:post.creator.nickname,
+                    avatarUrl:post.creator.avatarUrl
+                }, "40px","40px")
+            p.section=post.description
+            .thumbsUp
+                if post.like_users.includes(String(user._id))
+                    i.likeBtn.fa-solid.fa-thumbs-up.like.fa-2xl(id=`${post._id}`)
+                    div 추천
+                else
+                    i.likeBtn.fa-regular.fa-thumbs-up.fa-2xl(id=`${post._id}`)
+                    div 추천
+            //- if `${user._id}` === `${post.creator._id}`
+            //-     a(href=`/post/${post._id}/update`) 수정
+            //-     #deleteBtn 삭제
+        
+            .commentsWrapper
+                h4 댓글 #{comments.length}
+                each comment in comments
+                    .comment
+                        +userBlock({
+                            _id:comment.creator._id,
+                            nickname:comment.creator.nickname,
+                            avatarUrl:comment.creator.avatarUrl
+                        }, "40px")
+                        p=comment.text
+
+                        if `${comment.creator._id}`=== `${user._id}`
+                            button.commentDeleteBtn(id=comment._id) 삭제
             .commentInput
-                +avatarBlock(user.avatarUrl, "70px", "70px")
+                +avatarBlock(user.avatarUrl, "70px")
                 textarea(name="text")
                 #commentBtn.primary 댓글달기
-            each comment in comments
-                .comment
-                    +userBlock({
-                        _id:comment.creator._id,
-                        nickname:comment.creator.nickname,
-                        avatarUrl:comment.creator.avatarUrl
-                    }, "40px", "40px")
-                    p=comment.text
-
-                    if `${comment.creator._id}`=== `${user._id}`
-                        button.commentDeleteBtn(id=comment._id) 삭제
+        .postDetail__item
+            .head 이 달의 인기글
+            each populatePost, index in populatePosts
+                a(href=`/post/${populatePost._id}`)
+                    p 
+                        span.index #{index + 1}
+                        span.title #{populatePost.title}
         
 
     script(src="/static/js/comment.js")

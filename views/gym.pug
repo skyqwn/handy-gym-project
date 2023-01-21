@@ -1,45 +1,45 @@
 extends includes/layout
 include mixins/gymCardBlock
-include mixins/userBlock
 
 block content 
     .modalContainer
         .modalWrapper
-            .modal 
+            .modal
                 .modal__title 검색
-                form(action="/gym" method="get")
-                    input(type="text" name="searchTerm" placeholder="업체명이나 읍/면/동을 검색해주세요" value= renderQuery.searchTerm)
+                form(action=`/gym?page=1`)
+                    input(type="text" name="searchTerm" value=renderQuery.searchTerm placeholder="업체명이나 읍면동을 검색해보세요")
                     .labelContainer
                         label
-                            input(type="checkbox", name="yearRound" checked=renderQuery.isYearRound) 
-                            span 연중무휴 
-                        label 
-                            input(type="checkbox", name="oneday" checked=renderQuery.isOneday)
+                            input(type="checkbox" name="yearRound" checked=renderQuery.isYearRound)
+                            span 연중무휴
+                        label
+                            input(type="checkbox" name="oneday" checked=renderQuery.isOneday)
                             span 일일권
-                    button.btn.secondary 검색
                     a(href="/gym").btn.secondary 초기화
-    .container.gymContainer 
-        .gymContainer__head
-            .btn#modalBtn 검색
-            a(href="/gym/upload")
+                    button.btn.primary 검색
+                //- a(href="/gym").btn.secondary 초기화
+    .container.pageContainer
+        .pageHead
+            .btn.secondary#modalBtn 검색
+            a(href="/gym/upload") 
                 .btn.primary 업로드
-            if searchTerm 
-                h4 #{searchTerm}으로 검색한 결과입니다.
-        .gymContainer__middle 
-            each gym in gyms 
+        .gymWrapper
+            each gym in gyms
                 +gymCardBlock({
                     _id:gym._id,
+                    location:gym.location,
+                    creator:gym.creator,
                     thumbnail:gym.photos[0],
                     name:gym.name,
                     title:gym.title,
                     isLike:gym.like_users.includes(String(user._id)),
-                    totalComment:gym.comments.length,
                     totalLike:gym.like_users.length,
-                    creator:gym.creator
+                    totalComment:gym.comments.length,
+                    views:gym.views
                 })
-        .gymContainer__end
-            div(id=totalPage, class="jsPageContainer")
+        div(id=totalPage class="jsPageContainer pagination")
 
-        script(src="/static/js/pagination.js") 
-        script(src="/static/js/createModal.js") 
-        script(src="/static/js/likeFunc.js") 
+
+    script(src="/static/js/pagination.js")
+    script(src="/static/js/createModal.js") 
+    script(src="/static/js/likeFunc.js")

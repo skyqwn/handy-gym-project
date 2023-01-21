@@ -1,0 +1,13 @@
+@import "../config/variable";
+
+.category {
+  display: flex;
+  gap: 5px;
+  font-size: 14px;
+  font-weight: 400;
+  span {
+    font-weight: 700;
+    margin-left: 3px;
+    color: $accentColor;
+  }
+}

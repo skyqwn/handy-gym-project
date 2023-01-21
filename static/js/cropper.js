@@ -9,6 +9,7 @@ var croppperContainer = document.querySelector(".croppperContainer");
 var closeBtn = document.getElementById("closeBtn");
 
 var realFileInput = document.getElementById("realFileInput");
+var fakeFileBtn = document.getElementById("fakeFileBtn");
 var fakeFileInput = document.getElementById("fakeFileInput");
 var galleryPreview = document.getElementById("galleryPreview");
 var result = document.querySelector(".result");
@@ -30,12 +31,17 @@ var compressFile = async function compressFile(file) {
     useWebWorker: false
   };
   try {
-    var compressedBlob = await imageCompression(file, compressOption);
-    compressedBlob.name = (file.name || "힙합") + "_compressed";
+    if (file) {
+      fakeFileBtn.innerHTML = "<i class=\"fa-solid fa-spinner fa-spin-pulse\"></i>";
+      fakeFileBtn.disabled = true;
 
-    var convertFile = convertBlobToFile(compressedBlob);
+      var compressedBlob = await imageCompression(file, compressOption);
+      compressedBlob.name = (file.name || "힙합") + "_compressed";
 
-    return convertFile;
+      var convertFile = convertBlobToFile(compressedBlob);
+
+      return convertFile;
+    }
   } catch (error) {
     console.log(error);
     alert("파일 올리는 도중 오류발생");
@@ -62,7 +68,7 @@ var closeModal = function closeModal() {
   body.style.overflowY = "scroll";
 };
 
-var generateBtnContainer = function generateBtnContainer(newId, blob) {
+var generateBtnContainer = function generateBtnContainer(newId, imgSrc) {
   var btnContainer = document.createElement("div");
   btnContainer.classList.add("btnContainer");
 
@@ -70,7 +76,7 @@ var generateBtnContainer = function generateBtnContainer(newId, blob) {
   cropBtn.innerText = "수정";
   cropBtn.classList.add("cropBtn");
   cropBtn.addEventListener("click", function (e) {
-    return openCrop(blob, newId);
+    return openCrop(imgSrc, newId);
   });
 
   var changeBtn = document.createElement("div");
@@ -95,21 +101,22 @@ var generateBtnContainer = function generateBtnContainer(newId, blob) {
 };
 
 var paintPreview = function paintPreview(newId, data) {
+  var imgSrc = URL.createObjectURL(data.file);
+
   var container = document.createElement("div");
   container.id = newId;
   container.classList.add("previewContainer");
 
-  var blob = URL.createObjectURL(data.file);
-
   var img = document.createElement("img");
-  img.src = blob;
+  img.src = imgSrc;
   img.classList.add("previewImg");
 
-  var btnContainer = generateBtnContainer(newId, blob);
+  var btnContainer = generateBtnContainer(newId, imgSrc);
 
   var desc = document.createElement("textarea");
   desc.name = "captions";
   desc.placeholder = "사진에 대한 설명을 적어보세요. (선택사항)";
+
   if (data.caption) desc.value = data.caption;
 
   container.append(img);
@@ -120,17 +127,17 @@ var paintPreview = function paintPreview(newId, data) {
 };
 
 var updatePreview = function updatePreview(targetId, newId, data) {
+  var imgSrc = URL.createObjectURL(data.file);
+
   var container = document.getElementById(targetId);
   container.innerHTML = "";
   container.id = newId;
 
-  var blob = URL.createObjectURL(data.file);
-
   var img = document.createElement("img");
-  img.src = blob;
+  img.src = imgSrc;
   img.classList.add("previewImg");
 
-  var btnContainer = generateBtnContainer(newId, blob);
+  var btnContainer = generateBtnContainer(newId, imgSrc);
 
   var desc = document.createElement("textarea");
   desc.name = "captions";
@@ -165,7 +172,7 @@ var cropSave = function cropSave(e, targetId) {
 
     var caption = findCaption(targetId);
 
-    var data = { file: blob, caption: caption };
+    var data = { file: croppedFile, caption: caption };
 
     updatePreview(targetId, randomId, data);
 
@@ -259,25 +266,28 @@ var deleteImgData = function deleteImgData(id) {
   realFileInput.files = dataTransfer.files;
 };
 
-var handleChange = function handleChange(e) {
+var handleChange = async function handleChange(e) {
   var file = e.target.files[0];
 
-  var preview = async function preview(file) {
-    var randomId = generateRandomId();
+  var randomId = generateRandomId();
 
-    var compressedFile = await compressFile(file);
+  var compressedFile = await compressFile(file);
 
-    var data = { file: compressedFile, caption: "" };
+  var data = { file: compressedFile, caption: "" };
 
-    paintPreview(randomId, data);
+  paintPreview(randomId, data);
 
-    newImgTodData(compressedFile, randomId);
-  };
+  newImgTodData(compressedFile, randomId);
 
-  preview(file);
+  fakeFileBtn.innerHTML = "<i class=\"fa-solid fa-plus\" ></i>";
+  fakeFileBtn.disabled = false;
 };
 
 var init = function init() {
+  fakeFileBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    fakeFileInput.click();
+  });
   fakeFileInput.addEventListener("change", handleChange);
   var originalPhotos = document.querySelectorAll(".originalPhoto");
   var originalCaptions = document.querySelectorAll(".originalCaption");

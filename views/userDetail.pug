@@ -4,35 +4,45 @@ include mixins/gymCardBlock
 include mixins/galleryCardBlock
 
 block content
-    .container 
-        if `${findUser._id}` === `${user._id}`
-            h1 내 정보 
+    .container.userWrapper
+        .userWrapper__flex
+            .userWrapper__flex__item
+                +avatarBlock(findUser.avatarUrl, true)
+        .userWrapper__flex
+            .userWrapper__flex__item
+                h1 2
+            .userWrapper__flex__item
+                h1 3
+        
+        //- .userWrapper__Flex
+        //-     .userWrapper__Felx__item
+        //-     +avatarBlock(findUser.avatarUrl, true)
+        //-     .userWrapper__Felx__item
+        //-         if `${findUser._id}` === `${user._id}`
+        //-             h1 #{findUser.nickname}님의 정보
+        //-         if `${findUser._id}` === `${user._id}`
+        //-             a(href=`/user/update`) 나의 프로필 수정
+        //-     .userWrapper__Felx__item
+        //-         if `${findUser._id}` !== `${user._id}`
+        //-             form(action=`/message/create` method="post")
+        //-                 input(type="text" name="to" value=`${findUser._id}` readOnly)
+        //-                 input(type="text" name="message")
+        //-                 button 쪽지보내기
 
-        +avatarBlock(findUser.avatarUrl, true)
 
-        if `${findUser._id}` === `${user._id}`
-            a(href=`/user/update`) 유저정보수정 
-
-        if `${findUser._id}` !== `${user._id}`
-            form(action=`/message/create` method="post")
-                input(type="text" name="to" value=`${findUser._id}` readOnly)
-                input(type="text" name="message")
-                button 쪽지보내기
-
-
-        h1=findUser.nickname
-        h1 체육관에 쓴글
-        each gym in gyms 
-            a(href=`/gym/${gym._id}`) 
-                h1=gym.title
-        h1 갤러리에 쓴글
-        each gallery in galleries 
-            a(href=`/gallery/${gallery._id}`) 
-                h1=gallery.title 
-        h1 포스트에 쓴글
-        each post in posts 
-            a(href=`/post/${post._id}`) 
-                h1=post.title
+        //- h2=findUser.nickname
+        //- h2 체육관에 쓴글
+        //- each gym in gyms 
+        //-     a(href=`/gym/${gym._id}`) 
+        //-         h2=gym.title
+        //- h2 갤러리에 쓴글
+        //- each gallery in galleries 
+        //-     a(href=`/gallery/${gallery._id}`) 
+        //-         h2=gallery.title 
+        //- h2 포스트에 쓴글
+        //- each post in posts 
+        //-     a(href=`/post/${post._id}`) 
+        //-         h2=post.title
         
 
 
