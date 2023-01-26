@@ -19,6 +19,24 @@ var cropper = void 0;
 
 var dataTransfer = new DataTransfer();
 
+var startLoading = function startLoading(ele) {
+  ele.innerHTML = "";
+  if (ele.classList.contains("fa-pen")) {
+    ele.classList.remove("fa-pen");
+    ele.classList.add("fa-spinner");
+    ele.classList.add("fa-spin-pulse");
+    return;
+  }
+  ele.innerHTML = "<i class=\"fa-solid fa-spinner fa-spin-pulse\"></i>";
+  ele.disabled = true;
+};
+
+var endLoading = function endLoading(ele) {
+  ele.innerHTML = "";
+  ele.innerHTML = "<i class=\"fa-solid fa-plus\" ></i>";
+  ele.disabled = false;
+};
+
 var generateRandomId = function generateRandomId() {
   return Math.random().toString(16).slice(2);
 };
@@ -32,9 +50,6 @@ var compressFile = async function compressFile(file) {
   };
   try {
     if (file) {
-      fakeFileBtn.innerHTML = "<i class=\"fa-solid fa-spinner fa-spin-pulse\"></i>";
-      fakeFileBtn.disabled = true;
-
       var compressedBlob = await imageCompression(file, compressOption);
       compressedBlob.name = (file.name || "힙합") + "_compressed";
 
@@ -70,24 +85,24 @@ var closeModal = function closeModal() {
 
 var generateBtnContainer = function generateBtnContainer(newId, imgSrc) {
   var btnContainer = document.createElement("div");
-  btnContainer.classList.add("btnContainer");
+  btnContainer.classList.add("previewContainer__btn");
 
   var cropBtn = document.createElement("div");
-  cropBtn.innerText = "수정";
+  cropBtn.innerHTML = "<i class=\"fa-solid fa-crop-simple\"></i>";
   cropBtn.classList.add("cropBtn");
   cropBtn.addEventListener("click", function (e) {
     return openCrop(imgSrc, newId);
   });
 
   var changeBtn = document.createElement("div");
-  changeBtn.innerText = "파일변경";
+  changeBtn.innerHTML = "<i class=\"fa-solid fa-pen\"></i>";
   changeBtn.classList.add("deleteBtn");
   changeBtn.addEventListener("click", function (e) {
-    return changeFile(newId);
+    return changeFile(newId, e.target);
   });
 
   var deleteBtn = document.createElement("div");
-  deleteBtn.innerText = "삭제";
+  deleteBtn.innerHTML = "<i class=\"fa-solid fa-xmark\"></i>";
   deleteBtn.classList.add("deleteBtn");
   deleteBtn.addEventListener("click", function (e) {
     return deletePreview(newId);
@@ -106,10 +121,11 @@ var paintPreview = function paintPreview(newId, data) {
   var container = document.createElement("div");
   container.id = newId;
   container.classList.add("previewContainer");
+  container.classList.add("galleryPreview");
 
   var img = document.createElement("img");
   img.src = imgSrc;
-  img.classList.add("previewImg");
+  img.classList.add("previewContainer__img");
 
   var btnContainer = generateBtnContainer(newId, imgSrc);
 
@@ -135,7 +151,7 @@ var updatePreview = function updatePreview(targetId, newId, data) {
 
   var img = document.createElement("img");
   img.src = imgSrc;
-  img.classList.add("previewImg");
+  img.classList.add("previewContainer__img");
 
   var btnContainer = generateBtnContainer(newId, imgSrc);
 
@@ -214,13 +230,14 @@ var findCaption = function findCaption(targetId) {
   }
 };
 
-var changeFile = function changeFile(id) {
+var changeFile = function changeFile(id, btn) {
   var input = document.createElement("input");
   input.type = "file";
   input.click();
   input.addEventListener("change", async function (e) {
     var randomId = generateRandomId();
     var file = e.target.files[0];
+    startLoading(btn);
     var compressedFile = await compressFile(file);
     var caption = findCaption(id);
     var data = { file: compressedFile, caption: caption };
@@ -271,6 +288,8 @@ var handleChange = async function handleChange(e) {
 
   var randomId = generateRandomId();
 
+  startLoading(fakeFileBtn);
+
   var compressedFile = await compressFile(file);
 
   var data = { file: compressedFile, caption: "" };
@@ -279,8 +298,7 @@ var handleChange = async function handleChange(e) {
 
   newImgTodData(compressedFile, randomId);
 
-  fakeFileBtn.innerHTML = "<i class=\"fa-solid fa-plus\" ></i>";
-  fakeFileBtn.disabled = false;
+  endLoading(fakeFileBtn);
 };
 
 var init = function init() {

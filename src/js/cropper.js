@@ -15,6 +15,24 @@ let cropper;
 
 const dataTransfer = new DataTransfer();
 
+const startLoading = (ele) => {
+  ele.innerHTML = "";
+  if (ele.classList.contains("fa-pen")) {
+    ele.classList.remove("fa-pen");
+    ele.classList.add("fa-spinner");
+    ele.classList.add("fa-spin-pulse");
+    return;
+  }
+  ele.innerHTML = `<i class="fa-solid fa-spinner fa-spin-pulse"></i>`;
+  ele.disabled = true;
+};
+
+const endLoading = (ele) => {
+  ele.innerHTML = "";
+  ele.innerHTML = `<i class="fa-solid fa-plus" ></i>`;
+  ele.disabled = false;
+};
+
 const generateRandomId = () => {
   return Math.random().toString(16).slice(2);
 };
@@ -28,9 +46,6 @@ const compressFile = async (file) => {
   };
   try {
     if (file) {
-      fakeFileBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin-pulse"></i>`;
-      fakeFileBtn.disabled = true;
-
       let compressedBlob = await imageCompression(file, compressOption);
       compressedBlob.name = `${file.name || "힙합"}_compressed`;
 
@@ -66,20 +81,20 @@ const closeModal = () => {
 
 const generateBtnContainer = (newId, imgSrc) => {
   const btnContainer = document.createElement("div");
-  btnContainer.classList.add("btnContainer");
+  btnContainer.classList.add("previewContainer__btn");
 
   const cropBtn = document.createElement("div");
-  cropBtn.innerText = "수정";
+  cropBtn.innerHTML = `<i class="fa-solid fa-crop-simple"></i>`;
   cropBtn.classList.add("cropBtn");
   cropBtn.addEventListener("click", (e) => openCrop(imgSrc, newId));
 
   const changeBtn = document.createElement("div");
-  changeBtn.innerText = "파일변경";
+  changeBtn.innerHTML = `<i class="fa-solid fa-pen"></i>`;
   changeBtn.classList.add("deleteBtn");
-  changeBtn.addEventListener("click", (e) => changeFile(newId));
+  changeBtn.addEventListener("click", (e) => changeFile(newId, e.target));
 
   const deleteBtn = document.createElement("div");
-  deleteBtn.innerText = "삭제";
+  deleteBtn.innerHTML = `<i class="fa-solid fa-xmark"></i>`;
   deleteBtn.classList.add("deleteBtn");
   deleteBtn.addEventListener("click", (e) => deletePreview(newId));
 
@@ -96,10 +111,11 @@ const paintPreview = (newId, data) => {
   const container = document.createElement("div");
   container.id = newId;
   container.classList.add("previewContainer");
+  container.classList.add("galleryPreview");
 
   const img = document.createElement("img");
   img.src = imgSrc;
-  img.classList.add("previewImg");
+  img.classList.add("previewContainer__img");
 
   const btnContainer = generateBtnContainer(newId, imgSrc);
 
@@ -125,7 +141,7 @@ const updatePreview = (targetId, newId, data) => {
 
   const img = document.createElement("img");
   img.src = imgSrc;
-  img.classList.add("previewImg");
+  img.classList.add("previewContainer__img");
 
   const btnContainer = generateBtnContainer(newId, imgSrc);
 
@@ -204,13 +220,14 @@ const findCaption = (targetId) => {
   }
 };
 
-const changeFile = (id) => {
+const changeFile = (id, btn) => {
   const input = document.createElement("input");
   input.type = "file";
   input.click();
   input.addEventListener("change", async (e) => {
     const randomId = generateRandomId();
     const file = e.target.files[0];
+    startLoading(btn);
     const compressedFile = await compressFile(file);
     const caption = findCaption(id);
     const data = { file: compressedFile, caption };
@@ -261,6 +278,8 @@ const handleChange = async (e) => {
 
   const randomId = generateRandomId();
 
+  startLoading(fakeFileBtn);
+
   const compressedFile = await compressFile(file);
 
   const data = { file: compressedFile, caption: "" };
@@ -269,8 +288,7 @@ const handleChange = async (e) => {
 
   newImgTodData(compressedFile, randomId);
 
-  fakeFileBtn.innerHTML = `<i class="fa-solid fa-plus" ></i>`;
-  fakeFileBtn.disabled = false;
+  endLoading(fakeFileBtn);
 };
 
 const init = () => {

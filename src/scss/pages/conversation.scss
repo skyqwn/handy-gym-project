@@ -1,0 +1,48 @@
+@import "../config/variable";
+
+.conversation {
+  max-width: 960px;
+  padding: 20px;
+  background-color: $white;
+  box-shadow: $boxShadow;
+  height: calc(100% - $navHeight - $footerHeight);
+  &__messageContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 85%;
+    overflow-y: scroll;
+    .message {
+      padding: 10px;
+      align-self: start;
+      border-radius: 20px;
+      border-bottom-left-radius: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background-color: $hoverColor;
+      color: $textColor;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    .me {
+      background-color: $accentColor;
+      color: $white;
+      align-self: end;
+      border-radius: 20px;
+      border-bottom-right-radius: 0;
+    }
+  }
+}
+
+::-webkit-scrollbar {
+  width: 14px; /* 스크롤바의 너비 */
+}
+
+::-webkit-scrollbar-thumb {
+  background: $hoverColor; /* 스크롤바의 색상 */
+}
+
+::-webkit-scrollbar-track {
+  background: $white; /*스크롤바 뒷 배경 색상*/
+}

@@ -1,0 +1,47 @@
+.uploadColumn {
+  display: flex;
+  align-items: center;
+  &__item {
+    &:first-child {
+      width: 30%;
+    }
+    &:last-child {
+      width: 70%;
+      input {
+        width: 100%;
+      }
+      .btn {
+        width: 100px;
+      }
+      textarea {
+        width: 100%;
+        aspect-ratio: 2 / 1;
+      }
+      #kakaomap {
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        margin: 3px 0;
+      }
+      label {
+        display: inline-flex;
+        margin-right: 5px;
+      }
+      input[type="radio"] {
+        display: none;
+      }
+      input[type="radio"]:checked {
+        & + label {
+          background-color: $accentColor;
+          color: $white;
+        }
+      }
+    }
+  }
+}
+
+.uploadHead {
+  align-self: center;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}

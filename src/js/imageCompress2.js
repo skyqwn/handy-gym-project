@@ -39,6 +39,11 @@ const convertBlobToFile = (blob) => {
 };
 
 const generateBtns = (id) => {
+  const deleteBtn = document.createElement("div");
+  deleteBtn.innerHTML = `<i class="fa-solid fa-xmark"></i>`;
+  deleteBtn.addEventListener("click", (e) => {
+    deletePreview(id);
+  });
   const deletePreview = (id) => {
     const container = document.getElementById(id);
     container.remove();
@@ -46,8 +51,41 @@ const generateBtns = (id) => {
     const findIndexById = [...dataTransfer.files].findIndex(
       (file) => file.id === id
     );
+
+    dataTransfer.items.remove(findIndexById);
+
+    fileInput.files = dataTransfer.files;
   };
-  console.log(findIndexById);
+
+  const updateBtn = document.createElement("div");
+  updateBtn.innerHTML = `<i class="fa-solid fa-pen"></i>`;
+  updateBtn.addEventListener("click", (e) => {
+    updatePreview(id, e.target);
+  });
+  const updatePreview = (id, btn) => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.click();
+    input.addEventListener("change", (e) => updateChange(e, id, btn));
+  };
+  return { deleteBtn, updateBtn };
+};
+
+const updateChange = async (e, targetId, updateBtn) => {
+  try {
+    startLoading(updateBtn);
+
+    const newId = generateRandomId();
+    const file = await compressFile(e.target.files[0]);
+    file.id = newId;
+
+    handleUpdateFile(file, targetId);
+  } catch (error) {
+    console.log(error);
+    alert("파일 수정 도중 오류발생");
+    return;
+  }
+  return;
 };
 
 const paintPreview = (imgSrc, id) => {
@@ -71,6 +109,14 @@ const paintPreview = (imgSrc, id) => {
   btnContainer.classList.add("previewContaienr__btn");
 
   const { deleteBtn, updateBtn } = generateBtns(id);
+
+  btnContainer.appendChild(updateBtn);
+  btnContainer.appendChild(deleteBtn);
+
+  previewContainer.appendChild(previewImg);
+  previewContainer.appendChild(btnContainer);
+
+  preview.append(previewContainer);
 };
 
 const init = () => {

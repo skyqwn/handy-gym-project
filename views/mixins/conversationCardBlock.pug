@@ -1,0 +1,11 @@
+include userBlock
+
+mixin conversationCardBlock(user, conversation)
+    .conversationCard
+        +userBlock({
+                _id:user._id,
+                avatarUrl:user.avatarUrl,
+                nickname:user.nickname
+            }, "60px")
+        a(href=`/conversation/${conversation._id}`).btn.primary
+            div #{user.nickname}(님)과의 쪽지방으로 이동

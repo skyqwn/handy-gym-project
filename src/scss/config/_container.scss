@@ -1,0 +1,49 @@
+@import "_variable";
+
+.emojiContainer {
+  display: flex;
+  gap: 5px;
+}
+.emojiText {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  font-size: 14px;
+}
+.container {
+  max-width: 1280px;
+  width: 100%;
+  padding: 0 4px;
+  margin: 0 auto;
+}
+
+.wideContainer {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.narrowContainer {
+  max-width: 840px;
+  width: 100%;
+  padding: 0 4px;
+  margin: 0 auto;
+}
+
+.paper {
+  background-color: $white;
+  box-shadow: $boxShadow;
+  padding: 30px;
+  margin: 20px auto;
+}
+
+.box {
+  margin: 20px auto;
+  border: 1px solid $borderColor;
+  padding: 30px;
+}
+
+.uploadContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}

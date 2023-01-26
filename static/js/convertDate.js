@@ -1,6 +1,6 @@
 "use strict";
 
-var createdTexts = document.querySelectorAll(".postCreatedAt");
+var createdTexts = document.querySelectorAll(".createdAt");
 
 function dateFormat(createdEl) {
   var rawText = createdEl.innerText;

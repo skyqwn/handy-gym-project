@@ -1,4 +1,4 @@
-const createdTexts = document.querySelectorAll(".postCreatedAt");
+const createdTexts = document.querySelectorAll(".createdAt");
 
 function dateFormat(createdEl) {
   const rawText = createdEl.innerText;

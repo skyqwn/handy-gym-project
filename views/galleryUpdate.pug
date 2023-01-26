@@ -5,25 +5,25 @@ block content
         .modalWrapper
             .croppperContainer
             #closeBtn 취소
-    .container
-        form(action=`/gallery/${gallery._id}/update` method="post" enctype="multipart/form-data").uploadContainer
-            input(type="hidden" name="_csrf" value=csrfToken)
-            each photoObj in gallery.photos
-                img(src=`/${photoObj.photo}` hidden class="originalPhoto")
-                textarea(hidden class="originalCaption")=photoObj.caption
-            h3 갤러리 업데이트
-            .flexContainer
-                .flexContainer__item 
-                    span 타이틀
-                .flexContainer__item 
-                    input(type="text" name="title" value=gallery.title)
-            
+    form(action=`/gallery/${gallery._id}/update` method="post" enctype="multipart/form-data").uploadContainer.narrowContainer.box
+        input(type="hidden" name="_csrf" value=csrfToken)
+        each photoObj in gallery.photos
+            img(src=`/${photoObj.photo}` hidden class="originalPhoto")
+            textarea(hidden class="originalCaption")=photoObj.caption
+        h3.uploadHead 갤러리 업데이트
+        .uploadColumn
+            .uploadColumn__item 
+                span 타이틀
+            .uploadColumn__item 
+                input(type="text" name="title" value=gallery.title)
 
-            input(type="file" id="realFileInput" name="photos" multiple accept="*" )
-            #galleryPreview
-            input(type="file" id="fakeFileInput" accept="*" )
+        input(type="file" id="realFileInput" name="photos" multiple accept="*" hidden)
+        #galleryPreview
+        button.btn.secondary#fakeFileBtn
+            i.fa-solid.fa-plus
+        input(type="file" id="fakeFileInput" accept="*" hidden )
 
-            input(type="submit" value="변경" class="btn primary")
+        input(type="submit" value="변경" class="btn primary")
 
     script(src="/static/js/cropper.js") 
     script(src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js")

@@ -43,6 +43,11 @@ var convertBlobToFile = function convertBlobToFile(blob) {
 };
 
 var generateBtns = function generateBtns(id) {
+  var deleteBtn = document.createElement("div");
+  deleteBtn.innerHTML = "<i class=\"fa-solid fa-xmark\"></i>";
+  deleteBtn.addEventListener("click", function (e) {
+    deletePreview(id);
+  });
   var deletePreview = function deletePreview(id) {
     var container = document.getElementById(id);
     container.remove();
@@ -50,8 +55,43 @@ var generateBtns = function generateBtns(id) {
     var findIndexById = [].concat(_toConsumableArray(dataTransfer.files)).findIndex(function (file) {
       return file.id === id;
     });
+
+    dataTransfer.items.remove(findIndexById);
+
+    fileInput.files = dataTransfer.files;
   };
-  console.log(findIndexById);
+
+  var updateBtn = document.createElement("div");
+  updateBtn.innerHTML = "<i class=\"fa-solid fa-pen\"></i>";
+  updateBtn.addEventListener("click", function (e) {
+    updatePreview(id, e.target);
+  });
+  var updatePreview = function updatePreview(id, btn) {
+    var input = document.createElement("input");
+    input.type = "file";
+    input.click();
+    input.addEventListener("change", function (e) {
+      return updateChange(e, id, btn);
+    });
+  };
+  return { deleteBtn: deleteBtn, updateBtn: updateBtn };
+};
+
+var updateChange = async function updateChange(e, targetId, updateBtn) {
+  try {
+    startLoading(updateBtn);
+
+    var newId = generateRandomId();
+    var file = await compressFile(e.target.files[0]);
+    file.id = newId;
+
+    handleUpdateFile(file, targetId);
+  } catch (error) {
+    console.log(error);
+    alert("파일 수정 도중 오류발생");
+    return;
+  }
+  return;
 };
 
 var paintPreview = function paintPreview(imgSrc, id) {
@@ -77,6 +117,14 @@ var paintPreview = function paintPreview(imgSrc, id) {
   var _generateBtns = generateBtns(id),
       deleteBtn = _generateBtns.deleteBtn,
       updateBtn = _generateBtns.updateBtn;
+
+  btnContainer.appendChild(updateBtn);
+  btnContainer.appendChild(deleteBtn);
+
+  previewContainer.appendChild(previewImg);
+  previewContainer.appendChild(btnContainer);
+
+  preview.append(previewContainer);
 };
 
 var init = function init() {

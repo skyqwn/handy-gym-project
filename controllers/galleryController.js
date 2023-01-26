@@ -1,3 +1,4 @@
+import Comment from "../models/Comment.js";
 import Gallery from "../models/Gallery.js";
 
 export const fetch = async (req, res) => {
@@ -5,33 +6,27 @@ export const fetch = async (req, res) => {
     query: { page = 1 },
   } = req;
   try {
-    if (Number(page) <= 0) {
-      return res.redirect(`/gallery?page=1`);
-    }
     const LIMIT_SIZE = 6;
     const SKIP_PAGE = (page - 1) * LIMIT_SIZE;
-    const TOTAL_GALLERY = await Gallery.countDocuments();
-    const TOTAL_PAGE = Math.ceil(TOTAL_GALLERY / LIMIT_SIZE) || 1;
+    const TOTAL_GALLERIES = await Gallery.countDocuments();
+    const TOTAL_PAGE = Math.ceil(TOTAL_GALLERIES / LIMIT_SIZE) || 1;
     const galleries = await Gallery.find({})
-      .populate("creator")
       .skip(SKIP_PAGE)
       .limit(LIMIT_SIZE)
-      .sort({ createdAt: -1 });
-
-    return res.render("gallery", {
-      title: "갤러리",
-      galleries,
-      totalPage: TOTAL_PAGE,
-    });
+      .sort({ createdAt: -1 })
+      .populate("creator");
+    return res.render("gallery", { galleries, totalPage: TOTAL_PAGE });
   } catch (error) {
     console.log(error);
   }
 };
 
-export const fetchLikes = async (req, res) => {};
-
-export const upload = (req, res) => {
-  return res.render("galleryUpload", { csrfToken: req.csrfToken() });
+export const upload = async (req, res) => {
+  try {
+    res.render("galleryUpload", { csrfToken: req.csrfToken() });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const uploadPost = async (req, res) => {
@@ -44,20 +39,23 @@ export const uploadPost = async (req, res) => {
   let captionsArr = new Array();
 
   if (typeof captions === "string") {
+    // 캡션이 한개일 때
     captionsArr.push(captions);
   } else {
+    // 캡션이 여러개일 때
     captionsArr = captions;
   }
+
   try {
-    const photosObjArr = files.map((__, index) => {
+    const returnPhotosObj = files.map((__, index) => {
       return { photo: files[index].path, caption: captionsArr[index] };
     });
-    const newGallery = await Gallery.create({
+
+    await Gallery.create({
       title,
-      photos: photosObjArr,
-      creator: user,
+      photos: returnPhotosObj,
+      creator: user._id,
     });
-    await newGallery.save();
 
     return res.redirect("/gallery");
   } catch (error) {
@@ -72,36 +70,53 @@ export const detail = async (req, res) => {
   } = req;
   const HOUR = 1000 * 60 * 60;
   const DAY = HOUR * 24;
+  const CURRENT_MONTH = new Date().getMonth();
   try {
     const gallery = await Gallery.findById(galleryId).populate("creator");
-    // const comments = await Comment.find({ where: galleryId }).populate(
-    //   "creator"
-    // );
+
     if (!cookies[galleryId] || +cookies[galleryId] < Date.now()) {
       res.cookie(galleryId, Date.now() + DAY, {
-        expires: new Date(Date.now() + DAY + HOUR * 9),
+        expires: new Date(Date.now() + DAY + 9 * HOUR),
       });
       gallery.views++;
       await gallery.save();
     }
 
+    const populateGalleries = await Gallery.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: new Date(Date.UTC(2023, CURRENT_MONTH)),
+            $lte: new Date(Date.UTC(2023, CURRENT_MONTH + 1)),
+          },
+        },
+      },
+      { $limit: 5 },
+      { $sort: { views: -1 } },
+    ]);
+
+    const comments = await Comment.find({ where: galleryId }).populate(
+      "creator"
+    );
+
+    console.log(comments);
+
     return res.render("galleryDetail", {
       title: gallery.title,
       gallery,
-      // comments,
+      comments,
+      populateGalleries,
     });
   } catch (error) {
     console.log(error);
   }
 };
-
 export const update = async (req, res) => {
   const {
     params: { galleryId },
   } = req;
   try {
     const gallery = await Gallery.findById(galleryId).populate("creator");
-    console.log(gallery);
     return res.render("galleryUpdate", {
       title: gallery.title,
       gallery,
@@ -115,29 +130,27 @@ export const update = async (req, res) => {
 export const updatePost = async (req, res) => {
   const {
     params: { galleryId },
-    body,
+    body: { title, captions },
     files,
-    user,
   } = req;
   try {
     const gallery = await Gallery.findById(galleryId);
-    const returnPath = files.map((__, index) => {
-      return { photo: files[index].path, caption: body.captions[index] };
+    const returnPhotosObj = files.map((__, index) => {
+      console.log(captions[index]);
+      return { photo: files[index].path, caption: captions[index] };
     });
-    console.log(returnPath);
-    const newGallery = await Gallery.findByIdAndUpdate(
+
+    const updatedGallery = await Gallery.findByIdAndUpdate(
       galleryId,
       {
-        ...body,
-        photos: returnPath,
-        creator: user,
+        title,
+        photos: returnPhotosObj,
       },
       {
-        $new: true,
+        new: true,
       }
     );
-    console.log(newGallery);
-    return res.redirect(`/gallery/${newGallery._id}`);
+    return res.redirect(`/gallery/${updatedGallery._id}`);
   } catch (error) {
     console.log(error);
   }
@@ -163,4 +176,28 @@ export const remove = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const like = async (req, res) => {
+  const {
+    params: { galleryId },
+    user: { _id },
+  } = req;
+  const userId = String(_id);
+  try {
+    const currentGallery = await Gallery.findById(galleryId);
+    const existsUser = currentGallery.like_users.includes(userId);
+    if (existsUser) {
+      await Gallery.findByIdAndUpdate(galleryId, {
+        $pull: { like_users: userId },
+      });
+    } else {
+      await Gallery.findByIdAndUpdate(galleryId, {
+        $push: { like_users: userId },
+      });
+    }
+
+    return res.status(200).json();
+  } catch (error) {}
+  res.status(200).json({ message: `${req.params.gymId}로 좋아요 신청` });
 };

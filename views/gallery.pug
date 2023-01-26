@@ -1,23 +1,17 @@
 extends includes/layout
 include mixins/galleryCardBlock
 
-block content 
-    .container
+block content
+    .container.pageContainer
         .pageHead
             .btn.secondary#modalBtn 검색
-            a(href="gallery/upload") 
+            a(href="/gallery/upload") 
                 .btn.primary 업로드
         .galleryWrapper
-            each gallery in galleries
-                +galleryCardBlock({
-                    _id:gallery._id,
-                    thumbnail:gallery.photos[0].photo,
-                    title:gallery.title,
-                    creator:gallery.creator
-                })
-        
+            each gallery in galleries 
+                +galleryCardBlock(gallery)  
 
-    div(id=totalPage, class="jsPageContainer pagination")
+        div(id=totalPage class="jsPageContainer pagination")
 
 
     script(src="/static/js/pagination.js") 

@@ -63,6 +63,11 @@ const convertBlobToFile = (blob) => {
 };
 
 const generateBtns = (id) => {
+  const deleteBtn = document.createElement("div");
+  deleteBtn.innerHTML = `<i class="fa-solid fa-xmark"></i>`;
+  deleteBtn.addEventListener("click", (e) => {
+    deletePreview(id);
+  });
   const deletePreview = (id) => {
     const container = document.getElementById(id);
     container.remove();
@@ -76,22 +81,17 @@ const generateBtns = (id) => {
     fileInput.files = dataTransfer.files;
   };
 
+  const updateBtn = document.createElement("div");
+  updateBtn.innerHTML = `<i class="fa-solid fa-pen"></i>`;
+  updateBtn.addEventListener("click", (e) => {
+    updatePreview(id, e.target);
+  });
   const updatePreview = (id, btn) => {
     const input = document.createElement("input");
     input.type = "file";
     input.click();
     input.addEventListener("change", (e) => updateChange(e, id, btn));
   };
-  const deleteBtn = document.createElement("div");
-  deleteBtn.innerHTML = `<i class="fa-solid fa-xmark"></i>`;
-  deleteBtn.addEventListener("click", (e) => {
-    deletePreview(id);
-  });
-  const updateBtn = document.createElement("div");
-  updateBtn.innerHTML = `<i class="fa-solid fa-pen"></i>`;
-  updateBtn.addEventListener("click", (e) => {
-    updatePreview(id, e.target);
-  });
   return { deleteBtn, updateBtn };
 };
 
@@ -127,6 +127,7 @@ const paintPreview = (imgSrc, id) => {
   previewImg.src = url;
 
   previewContainer.classList.add("previewContainer");
+  previewContainer.classList.add("gymPreview");
   previewImg.classList.add("previewContainer__img");
   btnContainer.classList.add("previewContainer__btn");
 

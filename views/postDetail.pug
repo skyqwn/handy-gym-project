@@ -4,8 +4,8 @@ include mixins/avatarBlock
 include mixins/categoryBlock
 
 block content
-    .container.postDetail
-        .postDetail__item
+    .container.detailPage
+        .detailPage__item
             .section.head
                 div=post.category
                 +categoryBlock({
@@ -15,13 +15,9 @@ block content
                 })
             h2.section=post.title
             .section
-                +userBlock({
-                    _id:post.creator._id,
-                    nickname:post.creator.nickname,
-                    avatarUrl:post.creator.avatarUrl
-                }, "40px","40px")
-            p.section=post.description
-            .thumbsUp
+                +userBlock(post.creator, '40px')
+            p.section.desc=post.description
+            .centerLikeBtn
                 if post.like_users.includes(String(user._id))
                     i.likeBtn.fa-solid.fa-thumbs-up.like.fa-2xl(id=`${post._id}`)
                     div 추천
@@ -49,7 +45,7 @@ block content
                 +avatarBlock(user.avatarUrl, "70px")
                 textarea(name="text")
                 #commentBtn.primary 댓글달기
-        .postDetail__item
+        .detailPage__item
             .head 이 달의 인기글
             each populatePost, index in populatePosts
                 a(href=`/post/${populatePost._id}`)

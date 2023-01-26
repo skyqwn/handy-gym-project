@@ -1,131 +1,27 @@
 @import "../config/variable";
 
-.uploadContainer {
+.onedayPayItem {
   display: flex;
-  flex-direction: column;
-  border: 1px solid $borderColor;
-  padding: 40px 60px;
-  max-width: 760px;
-  margin: 20px auto;
-  gap: 30px;
-  h3 {
-    align-self: center;
-    font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 10px;
+  align-items: center;
+  input[type="text"] {
+    max-width: 100px;
+    border: none;
+    border-bottom: 1px solid $borderColor;
+    text-align: right;
   }
-  .flexContainer {
+  p {
+    font-size: 20px;
+    margin-left: 5px;
+  }
+  label {
     display: flex;
     align-items: center;
-    &__item {
-      &:first-child {
-        width: 30%;
-      }
-      &:last-child {
-        width: 70%;
-        input {
-          width: 100%;
-        }
-        .btn {
-          width: 100px;
-        }
-        textarea {
-          width: 100%;
-          aspect-ratio: 2 / 1;
-        }
-        #kakaomap {
-          width: 100%;
-          aspect-ratio: 4 / 3;
-          margin: 3px 0;
-        }
-        label {
-          display: inline-flex;
-          margin-right: 5px;
-        }
-        input[type="radio"] {
-          display: none;
-        }
-        input[type="radio"]:checked {
-          & + label {
-            background-color: $accentColor;
-            color: $white;
-          }
-        }
-      }
+    input {
+      width: 40px;
+      height: 20px;
     }
-  }
-  #preview {
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 3px;
-    gap: 5px;
-    .previewContainer {
-      position: relative;
-      width: 100px;
-      aspect-ratio: 3 / 4;
-      border: 1px solid $borderColor;
-      overflow: hidden;
-      border-radius: 3px;
-      &__img {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        right: 0;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        margin: auto;
-        object-fit: cover;
-      }
-      &__btn {
-        position: absolute;
-        top: 0;
-        right: 0;
-        display: flex;
-        gap: 2px;
-        div {
-          cursor: pointer;
-          z-index: 50;
-          width: 20px;
-          height: 20px;
-          border-radius: 50%;
-          background-color: white;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          font-size: 10px;
-          color: $blue;
-          .fa-xmark {
-            font-size: 14px;
-            color: $red;
-          }
-        }
-      }
-    }
-  }
-  .onedayPayItem {
-    display: flex;
-    align-items: center;
-    input[type="text"] {
-      max-width: 100px;
-      border: none;
-      border-bottom: 1px solid $borderColor;
-      text-align: right;
-    }
-    p {
-      font-size: 20px;
-      margin-left: 5px;
-    }
-    label {
-      display: flex;
-      align-items: center;
-      input {
-        width: 40px;
-        height: 20px;
-      }
-      div {
-        width: 60px;
-      }
+    div {
+      width: 60px;
     }
   }
 }

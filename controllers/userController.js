@@ -2,6 +2,7 @@ import User from "../models/User.js";
 import Gym from "../models/Gym.js";
 import Post from "../models/Post.js";
 import Gallery from "../models/Gallery.js";
+import Conversation from "../models/Conversation.js";
 
 export const findEmail = (req, res) => {
   res.send("Find Email");
@@ -20,12 +21,16 @@ export const detail = async (req, res) => {
     const gyms = await Gym.find({ creator: userId });
     const posts = await Post.find({ creator: userId });
     const galleries = await Gallery.find({ creator: userId });
+    const conversations = await Conversation.find({
+      users: { $in: [req.user._id] },
+    }).populate("users");
     return res.render("userDetail", {
       title: "userDetail",
       findUser,
       gyms,
       posts,
       galleries,
+      conversations,
     });
   } catch (error) {
     console.log(error);

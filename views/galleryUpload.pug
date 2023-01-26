@@ -7,26 +7,25 @@ block content
             #closeBtn 취소
 
            
-    .container
-        form(action="/gallery/upload" method="post" enctype="multipart/form-data").uploadContainer
-            input(type="hidden" name="_csrf" value=csrfToken)
-            h3 사진 업로드
-            .flexContainer
-                .flexContainer__item
-                    span 타이틀
-                .flexContainer__item
-                    input(type="text" name="title" placeholder="ex) 하버 몸 만들어드립니다")
-            .flexContainer
-                .flexContainer__item
-                    span 사진
-                .flexContainer__item
-            input(type="file" id="realFileInput" name="photos" multiple hidden)
-            #galleryPreview
-            button.btn.secondary#fakeFileBtn
-                i.fa-solid.fa-plus
-            input(type="file" id="fakeFileInput" hidden)
-            
-            button(type="submit").btn.primary 생성
+    form(action="/gallery/upload" method="post" enctype="multipart/form-data").uploadContainer.narrowContainer.box
+        input(type="hidden" name="_csrf" value=csrfToken)
+        h3.uploadHead 사진 업로드
+        .uploadColumn
+            .uploadColumn__item
+                span 타이틀
+            .uploadColumn__item
+                input(type="text" name="title" placeholder="ex) 하버 몸 만들어드립니다")
+        .uploadColumn
+            .uploadColumn__item
+                span 사진
+            .uploadColumn__item
+                input(type="file" id="realFileInput" name="photos" multiple hidden)
+        #galleryPreview
+        button.btn.secondary#fakeFileBtn
+            i.fa-solid.fa-plus
+        input(type="file" id="fakeFileInput" hidden)
+        
+        button(type="submit").btn.primary 생성
 
     script(src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js") 
     script(type="text/javascript" src="https://cdn.jsdelivr.net/npm/browser-image-compression@1.0.15/dist/browser-image-compression.js")

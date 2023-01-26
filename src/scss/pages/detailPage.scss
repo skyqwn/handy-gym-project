@@ -1,5 +1,5 @@
 @import "../config/variable";
-.postDetail {
+.detailPage {
   display: flex;
   width: 100%;
   gap: 20px;
@@ -11,6 +11,9 @@
   p {
     white-space: pre-wrap;
   }
+  .desc {
+    min-height: 200px;
+  }
   .head {
     display: flex;
     gap: 10px;
@@ -20,26 +23,7 @@
   .section {
     margin-bottom: 20px;
   }
-  .thumbsUp {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: 30px auto;
-    gap: 14px;
-    // width: 60px;
-    // height: 60px;
-    // border-radius: 50%;
-    // border: 1px solid $borderColor;
-    padding: 20px 0 0 0;
-    i {
-      cursor: pointer;
-    }
-    div {
-      font-weight: 700;
-      font-size: 12px;
-    }
-  }
+
   &__item {
     background-color: $white;
     box-shadow: $boxShadow;
@@ -47,6 +31,11 @@
     &:first-child {
       width: 80%;
       padding: 30px;
+      img {
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+      }
     }
     &:last-child {
       padding: 20px;

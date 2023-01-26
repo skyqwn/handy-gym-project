@@ -1,12 +1,26 @@
 extends includes/layout
 include mixins/userBlock
 
-block content 
-    .container 
-        each message in messages 
-            p(class=(String(user._id) === String(message.from._id) ? "right" : "left"))=message.message
-            if String(user._id) !== String(message.from._id)
-
+block content
+    .conversation.narrowContainer
+        .conversation__messageContainer
+            each message in messages
+                if `${message.from._id}` === `${user._id}`
+                    .message(class="me")
+                        p=message.message
+                        .createdAt=message.createdAt
+                else 
+                    .message
+                        +userBlock(message.from, "30px")
+                        p=message.message
+                        .createdAt=message.createdAt
+            #jsScrollPoint
         form(action=`/message/create` method="post")
-            input(type="text" name="message")
-            button 쪽지보내기
+            .commentInput
+                +avatarBlock(user.avatarUrl, "70px")
+                input(type="text" name="to" value=otherUserId readOnly hidden )
+                textarea(name="message" placeholder="쪽지 플레이스홀더")
+                button.primary#commentBtn 쪽지보내기
+    
+    script(src="/static/js/convertDate.js") 
+    script(src="/static/js/scroll.js") 

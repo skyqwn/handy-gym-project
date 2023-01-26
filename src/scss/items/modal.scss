@@ -27,6 +27,16 @@
   min-width: 300px;
   max-width: 450px;
   padding: 30px;
+  positixxzon: relative;
+  #xBtn {
+    position: absolute;
+    right: 20;
+    top: 15;
+    cursor: pointer;
+    &:hover {
+      color: $red;
+    }
+  }
   &__title {
     margin-bottom: 30px;
     font-size: 30px;

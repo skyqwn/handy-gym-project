@@ -1,8 +1,7 @@
-import { stringify } from "uuid";
 import Comment from "../models/Comment.js";
+import Gallery from "../models/Gallery.js";
 import Gym from "../models/Gym.js";
 import Post from "../models/Post.js";
-import Gallery from "../models/Gallery.js";
 
 export const create = async (req, res) => {
   const {
@@ -16,41 +15,58 @@ export const create = async (req, res) => {
       where: whereId,
       creator: userId,
     });
-    if (type === "gym") {
-      await Gym.findByIdAndUpdate(whereId, {
-        $push: { comments: String(comment._id) },
-      });
-    }
     if (type === "post") {
-      await Post.findByIdAndUpdate(whereId, {
-        $push: { comments: String(comment._id) },
-      });
+      await Post.findByIdAndUpdate(
+        whereId,
+        {
+          $push: { comments: String(comment._id) },
+        },
+        {
+          new: true,
+        }
+      );
+    }
+    if (type === "gym") {
+      await Gym.findByIdAndUpdate(
+        whereId,
+        {
+          $push: { comments: String(comment._id) },
+        },
+        {
+          new: true,
+        }
+      );
     }
     if (type === "gallery") {
-      await Gallery.findByIdAndUpdate(whereId, {
-        $push: { comments: String(comment._id) },
-      });
+      await Gallery.findByIdAndUpdate(
+        whereId,
+        {
+          $push: { comments: String(comment._id) },
+        },
+        {
+          new: true,
+        }
+      );
     }
-    res.status(201).json({ comment, user: req.user });
-    // return res.redirect(`/gym/${gymId}`);
+    return res.status(201).json({ comment, user: req.user });
   } catch (error) {
     console.log(error);
     return res.status(400).json();
   }
 };
 
+export const update = (req, res) => {
+  console.log("없데이트");
+};
+
 export const remove = async (req, res) => {
   const {
-    params: { whereId, commentId },
+    params: { commentId, whereId },
   } = req;
   try {
     await Comment.findByIdAndDelete(commentId);
-
-    await Gym.findById(whereId, {
-      $pull: { comments: commentId },
-    });
-    return res.status(200).json({ Message: "Ok" });
-    // res.redirect(`/gym/${gymId}`);
+    await Gym.findOneAndUpdate(gymId, { $pull: { comments: commentId } });
+    return res.status(200).json({ message: "삭제성공" });
   } catch (error) {
     console.log(error);
     return res.status(400).json();

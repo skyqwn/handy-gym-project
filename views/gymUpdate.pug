@@ -1,68 +1,68 @@
 extends includes/layout
 
 block content 
-    .container
+    .narrowContainer.box
         form(action=`/gym/${gym._id}/update` method="post" enctype="multipart/form-data").uploadContainer
             input(type="hidden" name="address" value=gym.address)
             input(type="hidden" name="location" value=gym.location)
             input(type="hidden" name="_csrf" value=csrfToken)
             each photo in gym.photos
                 img(src=`/${photo}`,class="originalPreview" hidden)
-            h3 체육관 업데이트
-            .flexContainer
-                .flexContainer__item 
+            h3.uploadHead 체육관 업데이트
+            .uploadColumn
+                .upliadColumn__item 
                     span 이름
-                .flexContainer__item 
+                .upliadColumn__item 
                     input(type="text" name="name" placeholder="ex) 검단헬스장" value=gym.name)
-            .flexContainer
-                .flexContainer__item 
+            .uploadColumn
+                .upliadColumn__item 
                     span 타이틀
-                .flexContainer__item 
+                .upliadColumn__item 
                     input(type="text" name="title" placeholder="ex) 3개월 안에 몸짱" value=gym.title)
-            .flexContainer
-                .flexContainer__item 
+            .uploadColumn
+                .upliadColumn__item 
                     span
-                .flexContainer__item 
+                .upliadColumn__item 
                     textarea(name="description" placeholder="ex) 자랑해주세요")=gym.description
-            .flexContainer  
-                .flexContainer__item 
+            .uploadColumn  
+                .upliadColumn__item 
                     h1 주소
-                .flexContainer__item 
+                .upliadColumn__item 
                     #searchAddressBtn.btn.primary 주소검색
                     #kakaoMap
                     #result=gym.address
-            .flexContainer
-                .flexContainer__item 
+            .uploadColumn
+                .upliadColumn__item 
                     span 사진선택
-                .flexContainer__item 
+                .upliadColumn__item 
                     .btn.primary#fakeFileBtn
                         i.fa-solid.fa-camera
                     #preview
                     input(type="file" name="photos" multiple accept="image/*" ) 
-            .flexContainer
-                .flexContainer__item 
+            .uploadColumn
+                .upliadColumn__item 
                     span 연중무휴
-                .flexContainer__item 
+                .upliadColumn__item 
                     input(type="radio" id="year1" name="yearRound" value="네")
                     label(for="year1").btn.primary 네
                     input(type="radio" id="year2" name="yearRound" value="모름")
                     label(for="year2").btn.primary 모름
                     input(type="radio" id="year3" name="yearRound" value="아니오")
                     label(for="year3").btn.primary 아니오
-            .flexContainer
-                .flexContainer__item 
+            .uploadColumn
+                .upliadColumn__item 
                     span 일일이용권
-                .flexContainer__item 
+                .upliadColumn__item 
                     input(type="radio" id="oneday1" name="oneday" value="가능")
                     label(for="oneday1").btn.primary 가능
                     input(type="radio" id="oneday2" name="oneday" value="모름")
                     label(for="oneday2").btn.primary 모름
                     input(type="radio" id="oneday3" name="oneday" value="불가능")
                     label(for="oneday3").btn.primary 불가능
-            .flexContainer#jsOnedayPay
-                .flexContainer__item 
+            .uploadColumn#jsOnedayPay
+                .upliadColumn__item 
                     span 일일권 가격
-                .flexContainer__item.onedayPayItem
+                .upliadColumn__item.onedayPayItem
                     input(type="text" name="onedayPay")
                     p 원
                     label

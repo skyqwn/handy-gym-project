@@ -1,23 +1,58 @@
 extends includes/layout
+include mixins/userBlock
+include mixins/categoryBlock
 
 block content 
-    
-    .container 
-        .galleryDetail 
-            .galleryDetail__section 
-                h1=gallery.title
-                h1 조회수: #{gallery.views}
-            each photoObj in gallery.photos 
-                .galleryDetail__section 
-                    img(src=`/${photoObj.photo}`)
-                    p=photoObj.caption
-                
-            .galleryDetail__section 
-                p=gallery.description
-            if `${gallery.creator._id}` === `${user._id}`
-                a(href=`/gallery/${gallery._id}/update`).btn 수정
-                #deleteBtn.btn 글삭제
+    .container.detailPage
+        .detailPage__item
+            .section
+                +categoryBlock({
+                    views:gallery.views,
+                    likes:gallery.like_users.length,
+                    comments:comments.length
+                })
+            h2.section=gallery.title
+            .section
+                +userBlock(gallery.creator, '40px')
+            .section   
+                each photoObj in gallery.photos
+                    .detailPage__section
+                        img(src=`/${photoObj.photo}`)
+                        p=photoObj.caption
+            .centerLikeBtn
+                if gallery.like_users.includes(String(user._id))
+                    i.likeBtn.fa-solid.fa-heart.like.fa-2xl(id=`${gallery._id}`)
+                    div 좋아요
+                else
+                    i.likeBtn.fa-regular.fa-heart.fa-2xl(id=`${gallery._id}`)
+                    div 좋아요
+            .commentsWrapper
+                h4 댓글 #{comments.length}
+                each comment in comments
+                    .comment
+                        +userBlock({
+                            _id:comment.creator._id,
+                            nickname:comment.creator.nickname,
+                            avatarUrl:comment.creator.avatarUrl
+                        }, "40px")
+                        p=comment.text
 
-    script(src="/static/js/galleryRemove.js") 
-
-                        
+                        if `${comment.creator._id}`=== `${user._id}`
+                            button.commentDeleteBtn(id=comment._id) 삭제
+            .commentInput
+                +avatarBlock(user.avatarUrl, "70px")
+                textarea(name="text")
+                #commentBtn.primary 댓글달기
+        .detailPage__item
+            .head 이 달의 포토
+            each populateGallery, index in populateGalleries
+                a(href=`/gallery/${populateGallery._id}`)
+                    p 
+                        span.index #{index + 1}
+                        span.title #{populateGallery.title}
+            //- if `${gallery.creator._id}` === `${user._id}`
+            //-     a(href=`/gallery/${gallery._id}/update`).btn 수정
+            //-     a(href=`/gallery/${gallery._id}/remove`).btn 삭제
+            //- //- #deleteBtn.btn 글삭제
+    script(src="/static/js/comment.js")
+    script(src="/static/js/likeFun.js")

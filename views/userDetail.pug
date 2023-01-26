@@ -4,21 +4,42 @@ include mixins/gymCardBlock
 include mixins/galleryCardBlock
 
 block content
+    .modalContainer
+        .modalWrapper 
+            .modal 
+                #xBtn.fa-solid.fa-x
+                h1  #{findUser.nickname} 님에게 메시지 보내기
+                form(action=`/message/create` method="post")
+                    input(type="text" name="message" )
+                    input(type="text" name="to" value=findUser._id readOnly)
+                    button 쪽지보내기
+
+
     .container.userWrapper
         .userWrapper__flex
             .userWrapper__flex__item
-                +avatarBlock(findUser.avatarUrl, true)
+                img(src=`/${findUser.avatarUrl}`)
+                h1=findUser.nickname
+                        .fa-solid.fa-envelope#modalBtn
         .userWrapper__flex
             .userWrapper__flex__item
-                h1 2
+                h1 #{findUser.nickname} 님이 게시판에서 작성한 글
+                //- h1=posts 
             .userWrapper__flex__item
-                h1 3
+                h1 #{findUser.nickname} 님이 체육관에서 작성한 글
+            .userWrapper__flex__item 
+                h1 #{findUser.nickname} 님이 사진에서 작성한 글
+
+
+
+    script(src="/static/js/conversationModal.js")
+        
         
         //- .userWrapper__Flex
         //-     .userWrapper__Felx__item
         //-     +avatarBlock(findUser.avatarUrl, true)
         //-     .userWrapper__Felx__item
-        //-         if `${findUser._id}` === `${user._id}`
+        //-         if `${findUser._id}` === `${findUser._id}`
         //-             h1 #{findUser.nickname}님의 정보
         //-         if `${findUser._id}` === `${user._id}`
         //-             a(href=`/user/update`) 나의 프로필 수정

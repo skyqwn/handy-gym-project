@@ -1,11 +1,11 @@
 extends includes/layout
-include mixins/avatarBlock
-block content 
-    .container 
-        each conversation in conversations 
+include mixins/conversationCardBlock
+
+block content
+    .narrowContainer
+        each conversation in conversations
             each conversationUser in conversation.users
                 if `${conversationUser._id}` !== `${user._id}`
-                    a(href=`/conversation/${conversation._id}`) 
-                        +avatarBlock(conversationUser.avatarUrl, "60px")
-                        div #{conversationUser.nickname} 님 대화방
-                
+                    +conversationCardBlock(conversationUser, conversation)
+                        
+            

@@ -27,15 +27,7 @@ block content
                 .btn.primary 업로드
         .postWrapper
             each post in posts
-                +postCardBlock({
-                    _id:post._id,
-                    title:post.title,
-                    category:post.category,
-                    commentLength:post.comments.length,
-                    likeLength:post.like_users.length,
-                    createdAt:post.createdAt,
-                    creator:post.creator
-                })
+                +postCardBlock(post)
     
         div(id=totalPage class="jsPageContainer pagination")
     

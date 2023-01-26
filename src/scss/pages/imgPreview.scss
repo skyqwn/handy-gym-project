@@ -1,0 +1,67 @@
+.previewContainer {
+  position: relative;
+  width: 100%;
+  border: 1px solid $borderColor;
+  border-radius: 3px;
+  &__img {
+    width: 100%;
+    height: 100%;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    object-fit: cover;
+  }
+
+  &__btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    gap: 2px;
+    div {
+      cursor: pointer;
+      z-index: 50;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 10px;
+      color: $blue;
+      .fa-xmark {
+        font-size: 14px;
+        color: $red;
+      }
+      .fa-crop-simple {
+        color: $yellow;
+      }
+      .fa-spinner {
+        color: $accentColor;
+      }
+    }
+  }
+
+  textarea[name="captions"] {
+    width: 100%;
+    height: 140px;
+  }
+}
+
+#preview {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 3px;
+  gap: 5px;
+}
+.gymPreview {
+  aspect-ratio: 3 / 4;
+  width: 100px;
+}
+
+.galleryPreview {
+  aspect-ratio: 4 / 3;
+}

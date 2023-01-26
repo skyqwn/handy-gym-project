@@ -67,6 +67,11 @@ var convertBlobToFile = function convertBlobToFile(blob) {
 };
 
 var generateBtns = function generateBtns(id) {
+  var deleteBtn = document.createElement("div");
+  deleteBtn.innerHTML = "<i class=\"fa-solid fa-xmark\"></i>";
+  deleteBtn.addEventListener("click", function (e) {
+    deletePreview(id);
+  });
   var deletePreview = function deletePreview(id) {
     var container = document.getElementById(id);
     container.remove();
@@ -80,6 +85,11 @@ var generateBtns = function generateBtns(id) {
     fileInput.files = dataTransfer.files;
   };
 
+  var updateBtn = document.createElement("div");
+  updateBtn.innerHTML = "<i class=\"fa-solid fa-pen\"></i>";
+  updateBtn.addEventListener("click", function (e) {
+    updatePreview(id, e.target);
+  });
   var updatePreview = function updatePreview(id, btn) {
     var input = document.createElement("input");
     input.type = "file";
@@ -88,16 +98,6 @@ var generateBtns = function generateBtns(id) {
       return updateChange(e, id, btn);
     });
   };
-  var deleteBtn = document.createElement("div");
-  deleteBtn.innerHTML = "<i class=\"fa-solid fa-xmark\"></i>";
-  deleteBtn.addEventListener("click", function (e) {
-    deletePreview(id);
-  });
-  var updateBtn = document.createElement("div");
-  updateBtn.innerHTML = "<i class=\"fa-solid fa-pen\"></i>";
-  updateBtn.addEventListener("click", function (e) {
-    updatePreview(id, e.target);
-  });
   return { deleteBtn: deleteBtn, updateBtn: updateBtn };
 };
 
@@ -135,6 +135,7 @@ var paintPreview = function paintPreview(imgSrc, id) {
   previewImg.src = url;
 
   previewContainer.classList.add("previewContainer");
+  previewContainer.classList.add("gymPreview");
   previewImg.classList.add("previewContainer__img");
   btnContainer.classList.add("previewContainer__btn");
 
