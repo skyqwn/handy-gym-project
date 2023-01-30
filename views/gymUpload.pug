@@ -6,6 +6,7 @@ block content
         input(type="hidden" name="address")
         input(type="hidden" name="location")
         h3.uploadHead 체육관 업로드
+        #validErrorMessage
         .uploadColumn
             .uploadColumn__item
                 span 이름
@@ -69,12 +70,12 @@ block content
                     id="onedayPayCheckbox")                 
                     div 모름
         
-        input(type="submit" value="생성").btn.primary
+        .btn.primary#jsSubmit 생성
 
     script(type="text/javascript" src="https://cdn.jsdelivr.net/npm/browser-image-compression@1.0.15/dist/browser-image-compression.js")
 
     script(src="/static/js/daumAddress.js")
     script(src="/static/js/imageCompress.js")
     script(src="/static/js/createOnedayPay.js")
-        
+    script(src="/static/js/validFrom.js") 
     script(src="/static/js/confirmRefresh.js")

@@ -66,7 +66,7 @@ export const signupPost = async (req, res) => {
   try {
     if (password !== passwordRepeat) {
       req.flash("error", "비밀번호가 틀립니다");
-      return res.status(500);
+      return res.redirect("/signup");
     }
     const existUser = await User.findOne({ email });
     if (existUser) {
@@ -98,12 +98,13 @@ export const signupPost = async (req, res) => {
       return res.redirect(`/signin`);
     }
   } catch (error) {
-    console.log(error);
-    if (
-      error.message === "A user with the given username is already registered"
-    ) {
-      console.log("유저가 있음");
-    }
+    req.flash("error", "서버 오류 발생하였습니다 다시 시도해주세요.");
+    // console.log(error);
+    // if (
+    //   error.message === "A user with the given username is already registered"
+    // ) {
+    //   console.log("유저가 있음");
+    // }
   }
 };
 
@@ -170,7 +171,7 @@ export const verifyEmail = async (req, res) => {
       return res.redirect("/");
     }
   } catch (error) {
-    console.log(error);
+    req.flash("error", "서버 오류 발생하였습니다 다시 시도해주세요.");
   }
 };
 
@@ -188,7 +189,7 @@ export const resendEmail = async (req, res) => {
       `/no-access?redirectUrl=${redirectUrl}&disAllowedType=resendEmail`
     );
   } catch (error) {
-    console.log(error);
+    req.flash("error", "서버 오류 발생하였습니다 다시 시도해주세요.");
   }
 };
 
@@ -197,28 +198,19 @@ export const noAccess = (req, res) => {
     query: { redirectUrl, disAllowedType },
   } = req;
 
-  const createRule = () => {
-    if (disAllowedType === "user") {
-      return { message: "로그인을 해야 이용가능합니다", type: "user" };
-    }
+  const createMessage = () => {
     if (disAllowedType === "email") {
-      return {
-        message: "인증이메일 재전송을 원하면 아래버튼을 누르세요",
-        type: "email",
-      };
+      return `${req?.user?.email}을 확인해주세요.\n 인증이메일 재전송을 원하면 아래버튼을 누르세요`;
     }
     if (disAllowedType === "resendEmail") {
-      return {
-        message: `인증이메일을 보냈습니다. ${req?.user?.email}을 확인해주세요`,
-        type: "email",
-      };
+      return `인증이메일을 보냈습니다. ${req?.user?.email}을 확인해주세요`;
     }
   };
 
-  const ruleObj = createRule();
+  const message = createMessage();
 
   return res.render("noAccess", {
-    ruleObj,
+    message,
     redirectUrl,
   });
 };

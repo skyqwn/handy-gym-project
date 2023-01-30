@@ -1,60 +1,96 @@
-@import "../config/variable";
-
-.userWrapper {
-  text-align: center;
-  max-width: 1080px;
-  padding: 30px;
-  background-color: rgb(197, 197, 192);
+.userDetail {
   display: flex;
-  gap: 30px;
-  &__flex {
+  gap: 50px;
+  margin: 40px auto;
+  &__item {
     &:first-child {
       display: flex;
-      padding: 20px;
       flex-direction: column;
-      object-fit: cover;
-      width: 30%;
-      .userWrapper__flex__item {
-        &:first-child {
-          position: relative;
-          img {
-            border-radius: 50%;
-            width: 110px;
-            height: 110px;
-            object-fit: cover;
-          }
-          .fa-solid.fa-envelope {
-            position: absolute;
-            color: $white;
-            bottom: 30;
-            right: 25;
-            font-size: 30px;
-            border-radius: 50%;
-          }
-          h1 {
-            margin-top: 8px;
-            font-weight: 700;
-            font-size: 32px;
-            // display: inline-block;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid $borderColor;
+      padding: 50px 40px;
+      border-radius: 10px;
+      height: fit-content;
+      .nickname {
+        margin-bottom: 20px;
+      }
+    }
+    &:last-child {
+      width: 100%;
+    }
+    .section {
+      border-bottom: 1px solid $borderColor;
+      padding-bottom: 30px;
+      margin-bottom: 30px;
+      a {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 5px;
+        padding-left: 5px;
+        span {
+          font-weight: 700;
+        }
+        &:hover {
+          div {
+            text-decoration: underline;
           }
         }
       }
     }
-    &:last-child {
-      width: 70%;
-      display: flex;
-      flex-direction: column;
-      background-color: green;
-      color: white;
-      .userWrapper__flex__item {
-        border-bottom: 1px solid $borderColor;
-        flex: 33%;
-        margin-top: 3px;
-      }
-      // &__item {
-      //   border: 1px solid $borderColor;
-      //   flex: 33%;
-      // }
+    .head {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+  }
+}
+
+.userDetailMessage {
+  textarea {
+    width: 390px;
+    height: 180px;
+  }
+}
+
+.userUpdateForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  img {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 1px solid $borderColor;
+    transition: all 0.1s ease-in-out;
+    cursor: pointer;
+    &:hover {
+      border: 2px solid $accentColor;
+    }
+  }
+  input {
+    width: 100%;
+  }
+  .imgContainer {
+    position: relative;
+  }
+  .deleteBtn {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 10px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    color: white;
+    background-color: $red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.1s ease-in-out;
+    &:hover {
+      background-color: $redHover;
     }
   }
 }

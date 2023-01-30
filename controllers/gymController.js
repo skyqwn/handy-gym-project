@@ -54,7 +54,8 @@ export const fetch = async (req, res) => {
       renderQuery,
     });
   } catch (error) {
-    console.log(error);
+    req.flash("error", "서버 오류 발생하였습니다 다시 시도해주세요.");
+    return res.redirect("/");
   }
 };
 
@@ -64,7 +65,8 @@ export const fetchLikes = async (req, res) => {
     const gyms = await Gym.find({ like_users: { $in: `${user._id}` } });
     res.render("likeGyms", { title: "좋아요", gyms });
   } catch (error) {
-    console.log(error);
+    req.flash("error", "서버 오류 발생하였습니다 다시 시도해주세요.");
+    return res.redirect("/");
   }
 };
 
@@ -86,7 +88,8 @@ export const uploadPost = async (req, res) => {
     await newGym.save();
     return res.redirect("/gym");
   } catch (error) {
-    console.log(error);
+    req.flash("error", "서버 오류 발생하였습니다 다시 시도해주세요.");
+    return res.redirect("/");
   }
 };
 
@@ -111,7 +114,8 @@ export const detail = async (req, res) => {
 
     return res.render("gymDetail", { title: gym.name, gym, comments });
   } catch (error) {
-    console.log(error);
+    req.flash("error", "서버 오류 발생하였습니다 다시 시도해주세요.");
+    return res.redirect("/");
   }
 };
 
@@ -127,7 +131,8 @@ export const update = async (req, res) => {
       csrfToken: req.csrfToken(),
     });
   } catch (error) {
-    console.log(error);
+    req.flash("error", "서버 오류 발생하였습니다 다시 시도해주세요.");
+    return res.redirect("/");
   }
 };
 
@@ -149,7 +154,8 @@ export const updatePost = async (req, res) => {
     });
     return res.redirect(`/gym/${updatedGym._id}`);
   } catch (error) {
-    console.log(error);
+    req.flash("error", "서버 오류 발생하였습니다 다시 시도해주세요.");
+    return res.redirect("/");
   }
 };
 
@@ -171,7 +177,8 @@ export const remove = async (req, res) => {
       return;
     }
   } catch (error) {
-    console.log(error);
+    req.flash("error", "서버 오류 발생하였습니다 다시 시도해주세요.");
+    return res.redirect("/");
   }
 };
 
@@ -195,7 +202,8 @@ export const like = async (req, res) => {
     }
     res.status(200).json(gymId); // 이거 왜보내는거징?
   } catch (error) {
-    console.log(error);
+    req.flash("error", "서버 오류 발생하였습니다 다시 시도해주세요.");
+    return res.redirect("/");
   }
 };
 

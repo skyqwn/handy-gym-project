@@ -3,41 +3,38 @@
 var viewMoreBtn = document.getElementById("viewMore");
 var viewMoreContainer = document.querySelector(".viewMoreContainer");
 var viewMore = document.querySelector(".viewMore");
-var xBtn = document.querySelector("#xBtn");
 var body = document.querySelector("body");
+var xBtn = document.getElementById("xBtn");
 
-var slideContainer = document.querySelector(".slideContainer");
 var imgs = document.querySelectorAll(".gymImg");
-var nextBtn = document.getElementById("nextSlide");
-var prevBtn = document.getElementById("prevSlide");
-var slideNumber = document.getElementById("slideNumber");
+var nextBtn = document.getElementById("nextSlideBtn");
+var prevBtn = document.getElementById("prevSlideBtn");
+
+var SLIDE_INDEX = 0;
 
 var modalOpen = function modalOpen() {
   viewMoreContainer.style.transform = "translateY(0)";
-  viewMoreContainer.style.opacity = "1";
+  viewMoreContainer.style.opacity = 1;
   viewMore.style.top = window.scrollY + "px";
   body.style.overflowY = "hidden";
 };
 
 var modalClose = function modalClose() {
   viewMoreContainer.style.transform = "translateY(-100%)";
-  viewMoreContainer.style.opacity = "0";
+  viewMoreContainer.style.opacity = 0;
   body.style.overflowY = "scroll";
 };
 
-var SLIDE_INDEX = 0;
-
 var paintImgsSlide = function paintImgsSlide(index) {
+  var slideNumber = document.getElementById("slideNumber");
   for (var i = 0; i < imgs.length; i++) {
-    if (index === i) {
-      imgs[i].style.opacity = "1";
-      slideNumber.innerText = i + 1 + "  / " + imgs.length;
+    if (i === index) {
+      imgs[i].style.opacity = 1;
+      slideNumber.innerText = i + 1 + " /" + imgs.length;
     } else {
-      imgs[i].style.opacity = "0";
+      imgs[i].style.opacity = 0;
     }
   }
-  // const percent = -100 * index;
-  // slideContainer.style.transform = `translateX(${percent}%)`;
 };
 
 var handleNext = function handleNext() {
@@ -50,17 +47,13 @@ var handleNext = function handleNext() {
 };
 
 var handlePrev = function handlePrev() {
-  if (SLIDE_INDEX <= 0) {
+  if (SLIDE_INDEX === 0) {
     SLIDE_INDEX = imgs.length - 1;
   } else {
     SLIDE_INDEX--;
   }
   paintImgsSlide(SLIDE_INDEX);
 };
-
-// if (imgs.length > 0) {
-//   init();
-// }
 
 var init = function init() {
   paintImgsSlide(SLIDE_INDEX);
@@ -70,4 +63,8 @@ var init = function init() {
   prevBtn.addEventListener("click", handlePrev);
 };
 
-init();
+console.log(viewMoreBtn);
+
+if (viewMoreBtn) {
+  init();
+}

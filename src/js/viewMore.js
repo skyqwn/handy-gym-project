@@ -1,41 +1,38 @@
 const viewMoreBtn = document.getElementById("viewMore");
 const viewMoreContainer = document.querySelector(".viewMoreContainer");
 const viewMore = document.querySelector(".viewMore");
-const xBtn = document.querySelector("#xBtn");
 const body = document.querySelector("body");
+const xBtn = document.getElementById("xBtn");
 
-const slideContainer = document.querySelector(".slideContainer");
 const imgs = document.querySelectorAll(".gymImg");
-const nextBtn = document.getElementById("nextSlide");
-const prevBtn = document.getElementById("prevSlide");
-const slideNumber = document.getElementById("slideNumber");
+const nextBtn = document.getElementById("nextSlideBtn");
+const prevBtn = document.getElementById("prevSlideBtn");
+
+let SLIDE_INDEX = 0;
 
 const modalOpen = () => {
   viewMoreContainer.style.transform = "translateY(0)";
-  viewMoreContainer.style.opacity = "1";
+  viewMoreContainer.style.opacity = 1;
   viewMore.style.top = `${window.scrollY}px`;
   body.style.overflowY = "hidden";
 };
 
 const modalClose = () => {
   viewMoreContainer.style.transform = "translateY(-100%)";
-  viewMoreContainer.style.opacity = "0";
+  viewMoreContainer.style.opacity = 0;
   body.style.overflowY = "scroll";
 };
 
-let SLIDE_INDEX = 0;
-
 const paintImgsSlide = (index) => {
+  const slideNumber = document.getElementById("slideNumber");
   for (let i = 0; i < imgs.length; i++) {
-    if (index === i) {
-      imgs[i].style.opacity = "1";
-      slideNumber.innerText = `${i + 1}  / ${imgs.length}`;
+    if (i === index) {
+      imgs[i].style.opacity = 1;
+      slideNumber.innerText = `${i + 1} /${imgs.length}`;
     } else {
-      imgs[i].style.opacity = "0";
+      imgs[i].style.opacity = 0;
     }
   }
-  // const percent = -100 * index;
-  // slideContainer.style.transform = `translateX(${percent}%)`;
 };
 
 const handleNext = () => {
@@ -48,17 +45,13 @@ const handleNext = () => {
 };
 
 const handlePrev = () => {
-  if (SLIDE_INDEX <= 0) {
+  if (SLIDE_INDEX === 0) {
     SLIDE_INDEX = imgs.length - 1;
   } else {
     SLIDE_INDEX--;
   }
   paintImgsSlide(SLIDE_INDEX);
 };
-
-// if (imgs.length > 0) {
-//   init();
-// }
 
 const init = () => {
   paintImgsSlide(SLIDE_INDEX);
@@ -68,4 +61,8 @@ const init = () => {
   prevBtn.addEventListener("click", handlePrev);
 };
 
-init();
+console.log(viewMoreBtn);
+
+if (viewMoreBtn) {
+  init();
+}

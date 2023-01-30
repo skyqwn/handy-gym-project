@@ -6,7 +6,7 @@ var fakeFileInput = document.getElementById("fakeFileInput");
 var avatarBtn = document.getElementById("fileBtn");
 var deleteBtn = document.getElementById("deleteBtn");
 
-var avatarImg = document.getElementById("jsAvatarImg");
+var avatarImg = document.querySelector(".avatarImg");
 
 var dataTransfer = new DataTransfer();
 
@@ -33,7 +33,7 @@ var removeFile = function removeFile() {
 
 var convertBlobToFile = function convertBlobToFile(blob) {
   var convertFile = new File([blob], blob.name || "preview", {
-    type: "image/*"
+    type: "images/*"
   });
 
   return convertFile;
@@ -48,32 +48,15 @@ var compressFile = async function compressFile(file) {
   };
   try {
     var compressedBlob = await imageCompression(file, compressOption);
-    compressedBlob.name = file.name + "_compressed";
+    compressedBlob.name = (file.name || "힙합") + "_compressed";
 
     var convertFile = convertBlobToFile(compressedBlob);
 
     return convertFile;
   } catch (error) {
     console.log(error);
-    alert("파일 업로드중 오류발생!");
+    alert("파일 올리는 도중 오류발생");
     return;
-  }
-};
-
-var imgSrcToFile = async function imgSrcToFile(imageEle) {
-  var canvas = document.createElement("canvas");
-  canvas.height = imageEle.naturalHeight;
-  canvas.width = imageEle.naturalWidth;
-  canvas.getContext("2d").drawImage(imageEle, 0, 0);
-  try {
-    var blob = await new Promise(function (resolve) {
-      return canvas.toBlob(function (blob) {
-        return resolve(blob);
-      });
-    });
-    return convertBlobToFile(blob);
-  } catch (error) {
-    console.log(error);
   }
 };
 
@@ -86,6 +69,25 @@ var fakeHandleFile = async function fakeHandleFile(e) {
     paintPreview(compressedFile);
 
     addFile(compressedFile);
+  }
+};
+
+var imgSrcToFile = async function imgSrcToFile(imageEle) {
+  var canvas = document.createElement("canvas");
+  canvas.height = imageEle.naturalHeight;
+  canvas.width = imageEle.naturalWidth;
+  canvas.getContext("2d").drawImage(imageEle, 0, 0);
+  console.log(imageEle);
+  try {
+    var blob = await new Promise(function (resolve) {
+      return canvas.toBlob(function (blob) {
+        return resolve(blob);
+      });
+    });
+    console.log(blob);
+    return convertBlobToFile(blob);
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -113,6 +115,7 @@ var init = function init() {
     var noUserImgUrl = URL.createObjectURL(noUserImgFile);
     noUserImgSrc = noUserImgUrl;
   };
+
   window.addEventListener("load", handleLoad);
 };
 

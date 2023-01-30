@@ -5,11 +5,14 @@ block content
     .container
         .formContainer
             h3 로그인
-            form(action=`/signin?redirectUrl=${redirectUrl}` method="post")
+            form(action=`/signin?redirectUrl=${redirectUrl}` method="post")#signinForm
                 input(type="hidden" name="_csrf" value=csrfToken)
-                input(type="email" name="email" placeholder="이메일")
+                #validErrorMessage
+                input(type="email" name="email" placeholder="이메일" required)
                 input(type="password" name="password" placeholder="비밀번호")
-                input(type="submit" value="로그인").primary
+                .btn.primary#jsSubmit 로그인
                 a(href=`/signup?redirectUrl=${redirectUrl}`) 
                     .btn.tertiary 계정이 없으신가요?
                 +oauthBlock
+
+    script(src="/static/js/validFrom.js") 

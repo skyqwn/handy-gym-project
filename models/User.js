@@ -2,10 +2,10 @@ import mongoose from "mongoose";
 import { v4 as uuidv4 } from "uuid";
 
 const UserSchema = new mongoose.Schema({
-  nickname: String,
+  nickname: { type: String, required: true },
   avatarUrl: String,
   password: String,
-  email: String,
+  email: { type: String, required: true },
   email_verified: { type: Boolean, default: false },
   email_verify_string: {
     type: String,

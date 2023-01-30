@@ -1,9 +1,10 @@
 extends includes/layout
 
 block content 
-    form(action="/post/upload" method="post").uploadContainer.narrowContainer.box
+    form(action="/post/upload" method="post").uploadContainer.narrowContainer.box#jsPostUploadForm
         input(type="hidden" name="_csrf" value=csrfToken)
-        h3.uploadHead 게시물 업로드 
+        h3.uploadHead 게시물 업로드
+        #validErrorMessage
         .uploadColumn
             .uploadColumn__item
                 span 제목
@@ -24,5 +25,7 @@ block content
                     while i < arr.length 
                         option(value=arr[i])=arr[i]
                         - i++;
-        input(type="submit" value="업로드")
+        .btn.primary#jsSubmit 로그인
+
+    script(src="/static/js/validFrom.js") 
 

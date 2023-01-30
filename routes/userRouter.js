@@ -1,5 +1,7 @@
 import express from "express";
 import {
+  changePassword,
+  changePasswordPost,
   detail,
   findEmail,
   findEmailPost,
@@ -15,15 +17,25 @@ const userRouter = express.Router();
 
 userRouter.route("/find-email").get(findEmail).post(findEmailPost);
 
-userRouter.route("/me").get(me);
+userRouter.route("/me").get(onlyUser, onlyEmailVerified, me);
+
+userRouter.post(
+  "/update",
+  onlyUser,
+  onlyEmailVerified,
+  avatarUpload.single("avatar"),
+  protectCSRFToken,
+  updatePost
+);
 
 userRouter
-  .route("/update")
+  .route("/change-password")
   .all(onlyUser, onlyEmailVerified)
-  .get(protectCSRFToken, update)
-  .post(avatarUpload.single("avatar"), protectCSRFToken, updatePost);
+  .get(changePassword)
+  .post(changePasswordPost);
 
-// userRouter.route("/remove").all(onlyUser, onlyEmailVerified).get(remove);
+userRouter
+  .route("/:userId")
+  .get(onlyUser, onlyEmailVerified, protectCSRFToken, detail);
 
-userRouter.route("/:userId").get(detail);
 export default userRouter;

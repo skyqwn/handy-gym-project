@@ -1,71 +1,92 @@
-
 extends includes/layout
 include mixins/gymCardBlock
 include mixins/galleryCardBlock
+include mixins/avatarBlock
 
 block content
     .modalContainer
-        .modalWrapper 
-            .modal 
-                #xBtn.fa-solid.fa-x
-                h1  #{findUser.nickname} 님에게 메시지 보내기
-                form(action=`/message/create` method="post")
-                    input(type="text" name="message" )
-                    input(type="text" name="to" value=findUser._id readOnly)
-                    button 쪽지보내기
+        .modalWrapper
+            .modal
+                if `${findUser._id}` === `${user._id}`
+                    form(action="/user/update" method="POST" enctype="multipart/form-data").userUpdateForm
+                        input(type="hidden" name="_csrf" value=csrfToken)
+                        .imgContainer
+                            if user.avatarUrl
+                                img(src=`/${user.avatarUrl}`).avatarImg#fileBtn
+                            else
+                                img(src="/static/images/noUser.png").avatarImg#fileBtn
+                            .deleteBtn#deleteBtn
+                                i.fa-solid.fa-xmark
+
+                        input(name="nickname" value=user.nickname)
+
+                        if user.avatarUrl
+                            img(src=`/${user.avatarUrl}` id="originalImg"  hidden)
+
+                        img(src="/static/images/noUser.png" id="noUserImg" hidden)
+
+                        input(type="file" name="avatar" hidden)
+                        input(type="file" id="fakeFileInput" hidden)
+                        input(type="submit", value="전송").btn.primary
+                else
+                    form(action=`/message/create` method="post").userDetailMessage
+                        div #{findUser.nickname}님에게 쪽지 보내기
+                        input(type="text" name="to" value=findUser._id readOnly hidden )
+                        textarea(name="message")
+                        button.btn.primary 쪽지보내기
+    .narrowContainer
+        .userDetail
+            .userDetail__item
+                +avatarBlock(findUser.avatarUrl, "120px")
+                if `${findUser._id}` === `${user._id}`
+                    div.nickname #{user.nickname}(나)
+                    .btn.primary#modalBtn 
+                        .emojiText
+                            i.fa-regular.fa-pen-to-square 
+                            span 정보 수정
+                else 
+                    div.nickname #{findUser.nickname}
+                    .btn.primary#modalBtn
+                        .emojiText
+                            i.fa-regular.fa-envelope 
+                            span 쪽지 보내기
+                
+
+            .userDetail__item
+                .section
+                    .head #{findUser.nickname}님이 쓴 체육관글
+                    if gyms.length > 0
+                        each gym, index in gyms
+                            a(href=`/gym/${gym._id}` target="_blank")
+                                span.index=index+1
+                                div=gym.title
+                    else
+                        h4 작성한 글이 없습니다
+                .section
+                    .head #{findUser.nickname}님이 쓴 게시글
+                    if posts.length > 0
+                        each post, index in posts
+                            a(href=`/post/${post._id}` target="_blank")
+                                span.index=index+1
+                                div=post.title
+                    else
+                        h4 작성한 글이 없습니다
+
+                .section
+                    .head #{findUser.nickname}님이 쓴 사진
+                    if galleries.length > 0
+                        each gallery, index in galleries
+                            a(href=`/gallery/${gallery._id}` target="_blank")
+                                span.index=index+1
+                                div=gallery.title
+                    else
+                        h4 작성한 글이 없습니다
+
+                
 
 
-    .container.userWrapper
-        .userWrapper__flex
-            .userWrapper__flex__item
-                img(src=`/${findUser.avatarUrl}`)
-                h1=findUser.nickname
-                        .fa-solid.fa-envelope#modalBtn
-        .userWrapper__flex
-            .userWrapper__flex__item
-                h1 #{findUser.nickname} 님이 게시판에서 작성한 글
-                //- h1=posts 
-            .userWrapper__flex__item
-                h1 #{findUser.nickname} 님이 체육관에서 작성한 글
-            .userWrapper__flex__item 
-                h1 #{findUser.nickname} 님이 사진에서 작성한 글
 
+    script(type="text/javascript" src="https://cdn.jsdelivr.net/npm/browser-image-compression@1.0.15/dist/browser-image-compression.js")
 
-
-    script(src="/static/js/conversationModal.js")
-        
-        
-        //- .userWrapper__Flex
-        //-     .userWrapper__Felx__item
-        //-     +avatarBlock(findUser.avatarUrl, true)
-        //-     .userWrapper__Felx__item
-        //-         if `${findUser._id}` === `${findUser._id}`
-        //-             h1 #{findUser.nickname}님의 정보
-        //-         if `${findUser._id}` === `${user._id}`
-        //-             a(href=`/user/update`) 나의 프로필 수정
-        //-     .userWrapper__Felx__item
-        //-         if `${findUser._id}` !== `${user._id}`
-        //-             form(action=`/message/create` method="post")
-        //-                 input(type="text" name="to" value=`${findUser._id}` readOnly)
-        //-                 input(type="text" name="message")
-        //-                 button 쪽지보내기
-
-
-        //- h2=findUser.nickname
-        //- h2 체육관에 쓴글
-        //- each gym in gyms 
-        //-     a(href=`/gym/${gym._id}`) 
-        //-         h2=gym.title
-        //- h2 갤러리에 쓴글
-        //- each gallery in galleries 
-        //-     a(href=`/gallery/${gallery._id}`) 
-        //-         h2=gallery.title 
-        //- h2 포스트에 쓴글
-        //- each post in posts 
-        //-     a(href=`/post/${post._id}`) 
-        //-         h2=post.title
-        
-
-
-    
-
+    script(src="/static/js/avatarPreview.js")
+    script(src="/static/js/createModal.js") 

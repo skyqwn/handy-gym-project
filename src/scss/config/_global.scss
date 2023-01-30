@@ -80,3 +80,13 @@ html {
 .like {
   color: $red;
 }
+
+.valid {
+  border: 1px solid $red;
+}
+
+.validMessage {
+  color: $red;
+  font-size: 12px;
+  font-weight: 700;
+}

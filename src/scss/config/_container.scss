@@ -6,7 +6,7 @@
 }
 .emojiText {
   display: flex;
-  gap: 2px;
+  gap: 4px;
   align-items: center;
   font-size: 14px;
 }
@@ -37,9 +37,9 @@
 }
 
 .box {
-  margin: 20px auto;
   border: 1px solid $borderColor;
   padding: 30px;
+  margin: 20px auto;
 }
 
 .uploadContainer {

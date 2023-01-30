@@ -6,7 +6,6 @@ export const fetch = async (req, res) => {
     query: { page = 1 },
     user,
   } = req;
-  console.log(user);
 
   const searchQuery = new Object();
   const sortQuery = new Object();

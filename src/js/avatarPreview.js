@@ -4,7 +4,7 @@ const fakeFileInput = document.getElementById("fakeFileInput");
 const avatarBtn = document.getElementById("fileBtn");
 const deleteBtn = document.getElementById("deleteBtn");
 
-const avatarImg = document.getElementById("jsAvatarImg");
+const avatarImg = document.querySelector(".avatarImg");
 
 let dataTransfer = new DataTransfer();
 
@@ -31,7 +31,7 @@ const removeFile = () => {
 
 const convertBlobToFile = (blob) => {
   const convertFile = new File([blob], blob.name || "preview", {
-    type: "image/*",
+    type: "images/*",
   });
 
   return convertFile;
@@ -46,30 +46,15 @@ const compressFile = async (file) => {
   };
   try {
     let compressedBlob = await imageCompression(file, compressOption);
-    compressedBlob.name = `${file.name}_compressed`;
+    compressedBlob.name = `${file.name || "힙합"}_compressed`;
 
     const convertFile = convertBlobToFile(compressedBlob);
 
     return convertFile;
   } catch (error) {
     console.log(error);
-    alert("파일 업로드중 오류발생!");
+    alert("파일 올리는 도중 오류발생");
     return;
-  }
-};
-
-const imgSrcToFile = async (imageEle) => {
-  const canvas = document.createElement("canvas");
-  canvas.height = imageEle.naturalHeight;
-  canvas.width = imageEle.naturalWidth;
-  canvas.getContext("2d").drawImage(imageEle, 0, 0);
-  try {
-    const blob = await new Promise((resolve) =>
-      canvas.toBlob((blob) => resolve(blob))
-    );
-    return convertBlobToFile(blob);
-  } catch (error) {
-    console.log(error);
   }
 };
 
@@ -82,6 +67,23 @@ const fakeHandleFile = async (e) => {
     paintPreview(compressedFile);
 
     addFile(compressedFile);
+  }
+};
+
+const imgSrcToFile = async (imageEle) => {
+  const canvas = document.createElement("canvas");
+  canvas.height = imageEle.naturalHeight;
+  canvas.width = imageEle.naturalWidth;
+  canvas.getContext("2d").drawImage(imageEle, 0, 0);
+  console.log(imageEle);
+  try {
+    const blob = await new Promise((resolve) =>
+      canvas.toBlob((blob) => resolve(blob))
+    );
+    console.log(blob);
+    return convertBlobToFile(blob);
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -109,6 +111,7 @@ const init = () => {
     const noUserImgUrl = URL.createObjectURL(noUserImgFile);
     noUserImgSrc = noUserImgUrl;
   };
+
   window.addEventListener("load", handleLoad);
 };
 

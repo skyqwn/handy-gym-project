@@ -1,0 +1,17 @@
+@import "../config/variable";
+
+.noAccess {
+  margin-top: 50px;
+  .message {
+    color: red;
+    word-break: break-all;
+    white-space: pre-line;
+    font-size: 28px;
+    line-height: 38px;
+    margin-bottom: 30px;
+    font-weight: 700;
+  }
+  a {
+    width: fit-content;
+  }
+}

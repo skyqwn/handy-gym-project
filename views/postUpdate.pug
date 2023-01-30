@@ -1,9 +1,10 @@
 extends includes/layout
 
 block content 
-    form(action=`/post/${post._id}/update` method="post").uploadContainer.narrowContainer.box
+    form(action=`/post/${post._id}/update` method="post").uploadContainer.narrowContainer.box#jsPostUploadForm
         input(type="hidden" name="_csrf" value=csrfToken)
         h3.uploadHead 포스트 업데이트
+        #validErrorMessage
         .uploadColumn
             .uploadColumn__item 
                 span 타이틀
@@ -24,4 +25,7 @@ block content
                     while i < arr.length 
                         option(value=arr[i] selected=(arr[i] ===post.category ? true : undefined))=arr[i]
                         - i++;
-        input(type="submit" value="업데이트")
+        .btn.primary#jsSubmit 수정하기
+
+    script(src="/static/js/validFrom.js") 
+

@@ -2,7 +2,7 @@
 
 .home {
   height: calc(100% - $navHeight);
-  .box {
+  .homeBox {
     display: flex;
     &:first-child {
       height: 40%;
@@ -17,7 +17,7 @@
         flex-direction: row;
         align-items: center;
         justify-content: space-around;
-        .box__item__img {
+        .homeBox__item__img {
           height: 90%;
           img {
             height: 100%;
@@ -31,7 +31,7 @@
         justify-content: center;
         gap: 20px;
 
-        .box__item__img {
+        .homeBox__item__img {
           height: 52%;
           img {
             height: 100%;
