@@ -43,21 +43,21 @@ block content
                 span 연중무휴인가요?
             .uploadColumn__item
                 input(type="radio" id="yearRound1" name="yearRound" value="네")
-                label(for="yearRound1").btn.secondary 네
+                label(for="yearRound1").btn.secondary.yearRoundLabel 네
                 input(type="radio" id="yearRound2" name="yearRound" value="아니오")
-                label(for="yearRound2").btn.secondary 아니오
+                label(for="yearRound2").btn.secondary.yearRoundLabel 아니오
                 input(type="radio" id="yearRound3" name="yearRound" value="모름")
-                label(for="yearRound3").btn.secondary 모름
+                label(for="yearRound3").btn.secondary.yearRoundLabel 모름
         .uploadColumn
             .uploadColumn__item
                 span 일일권이 가능한가요?
             .uploadColumn__item
                 input(type="radio" id="oneday1" name="oneday" value="가능")
-                label(for="oneday1").btn.secondary 가능
+                label(for="oneday1").btn.secondary.onedayLabel 가능
                 input(type="radio" id="oneday2" name="oneday" value="불가능")
-                label(for="oneday2").btn.secondary 불가능
+                label(for="oneday2").btn.secondary.onedayLabel 불가능
                 input(type="radio" id="oneday3" name="oneday" value="모름")
-                label(for="oneday3").btn.secondary 모름
+                label(for="oneday3").btn.secondary.onedayLabel 모름
         .uploadColumn#jsOnedayPay
             .uploadColumn__item
                 span 일일권가격
@@ -67,7 +67,7 @@ block content
                 label
                     input(type="checkbox"
                     name="onedayPayCheckbox"
-                    id="onedayPayCheckbox")                 
+                    id="onedayPayCheckBox")                 
                     div 모름
         
         .btn.primary#jsSubmit 생성
@@ -77,5 +77,5 @@ block content
     script(src="/static/js/daumAddress.js")
     script(src="/static/js/imageCompress.js")
     script(src="/static/js/createOnedayPay.js")
-    script(src="/static/js/validFrom.js") 
     script(src="/static/js/confirmRefresh.js")
+    script(src="/static/js/validFrom.js") 
