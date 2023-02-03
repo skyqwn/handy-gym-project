@@ -22,9 +22,9 @@ postRouter
   .get(upload)
   .post(uploadPost);
 
-postRouter.route("/:postId").all(onlyUser).get(detail);
+postRouter.route("/:postId").all(onlyUser, onlyEmailVerified).get(detail);
 
-postRouter.route("/:postId/like").all(onlyUser).get(like);
+postRouter.route("/:postId/like").all(onlyUser, onlyEmailVerified).get(like);
 
 postRouter
   .route("/:postId/update")

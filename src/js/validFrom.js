@@ -1,11 +1,8 @@
 const form = document.querySelector("form");
-
 const validErrorMessage = document.getElementById("validErrorMessage");
 
 const createErrorMessage = (message) => {
-  validErrorMessage.innerHTML = ``;
-  validErrorMessage.innerText = message || "필수항목을 입력하세요";
-  validErrorMessage.classList.add("errorValid");
+  alert(message || "필수항목을 입력하세요");
 };
 
 const validEmail = (input) => {
@@ -18,65 +15,146 @@ const validEmail = (input) => {
   }
 };
 
-const formValid = (ele) => {
-  const submitBtn = ele.querySelector("#jsSubmit");
+const paintBtnError = (ele) => {
+  ele.style.backgroundColor = "#ff5e57";
+};
+const initBtn = (ele) => {
+  ele.style.backgroundColor = "#00b894";
+};
 
-  const inputs = ele.querySelectorAll("input");
-  const textarea = ele.querySelector("textarea");
-  const select = ele.querySelector("select");
+const paintBorderError = (ele) => {
+  ele.style.border = "1px solid #ff5e57";
+};
 
-  // GYM 전용 선택자
+const initBorder = (ele) => {
+  ele.style.border = "1px solid #bdc3c7";
+};
 
-  const address = ele.querySelector("input[name=address]");
-  const photosInput = ele.querySelector("input[name=photos]");
-  const yearRoundRadio = ele.querySelectorAll("input[name=yearRound]");
-  const onedayRadio = ele.querySelectorAll("input[name=oneday]");
-
-  const emailInput = ele.querySelector("input[type=email]");
+const formValid = () => {
+  const submitBtn = form.querySelector("#jsSubmit");
+  const inputs = form.querySelectorAll("input");
+  const textarea = form.querySelector("textarea");
+  const select = form.querySelector("select");
 
   const handleSubmit = () => {
     let ok = true;
-
+    let yearRoundChecked = false;
+    let onedayChecked = false;
+    let errorMessage = "";
     const validRequired = (ele) => {
       const exceptionName = [
         "address",
-        "photos",
         "yearRound",
         "oneday",
         "email",
+        "onedayPay",
+        "onedayCheckbox",
       ];
       const name = ele.name;
       const value = ele.value;
-      ele.classList.remove("valid");
-      if (!value) {
-        ele.classList.add("valid");
-        createErrorMessage();
-        ok = false;
+      const isException = exceptionName.includes(name);
+      const isFileInput = Boolean(ele.type === "file");
+      if (isException || isFileInput) {
+        if (name === "address") {
+          const map = document.getElementById("kakaoMap");
+          const searchAddressBtn = document.getElementById("searchAddressBtn");
+          initBorder(map);
+          initBtn(searchAddressBtn);
+          if (!value) {
+            paintBorderError(map);
+            paintBtnError(searchAddressBtn);
+            errorMessage = "주소를 입력해주세요";
+            ok = false;
+            console.log("주소에러");
+          }
+        }
+        if (name === "gymPhotos") {
+          const files = ele.files;
+          const btn = document.getElementById("fakeFileBtn");
+          initBtn(btn);
+          if (files.length < 4) {
+            paintBtnError(btn);
+            errorMessage = "사진을 4장이상 넣어주세요";
+            ok = false;
+            console.log("사진에러");
+          }
+        }
+        if (name === "galleryPhotos") {
+          const btn = document.getElementById("fakeFileBtn");
+          const files = ele.files;
+          initBorder(btn);
+          if (files.length === 0) {
+            ok = false;
+            paintBorderError(btn);
+            errorMessage = "사진을 1장이상 넣어주세요";
+          }
+        }
+        if (name === "yearRound") {
+          const labels = document.querySelectorAll(".yearRoundLabel");
+          if (ele.checked) {
+            ok = true;
+            yearRoundChecked = true;
+            for (let i = 0; i < labels.length; i++) {
+              initBorder(labels[i]);
+            }
+          }
+          if (!yearRoundChecked) {
+            ok = false;
+            for (let i = 0; i < labels.length; i++) {
+              paintBorderError(labels[i]);
+            }
+            console.log("연중무휴에러");
+          }
+        }
+        if (name === "oneday") {
+          const labels = document.querySelectorAll(".onedayLabel");
+          if (ele.checked) {
+            ok = true;
+            onedayChecked = true;
+            for (let i = 0; i < labels.length; i++) {
+              initBorder(labels[i]);
+            }
+          }
+          if (!onedayChecked) {
+            ok = false;
+            for (let i = 0; i < labels.length; i++) {
+              paintBorderError(labels[i]);
+            }
+            console.log("일일권에러");
+          }
+        }
+        if (name === "onedayPay") {
+          const yesOneday = document.getElementById("oneday1");
+          initBorder(ele);
+          if (yesOneday.checked) {
+            if (!ele.value) {
+              ok = false;
+              paintBorderError(ele);
+            }
+          }
+        }
+        if (name === "email") {
+          const emailBoolean = validEmail(ele);
+          initBorder(ele);
+          if (!emailBoolean || !ele.value) {
+            paintBorderError(ele);
+            errorMessage = "이메일 형식이 아닙니다";
+            ele.focus();
+          }
+        }
+      } else {
+        initBorder(ele);
+        if (!value) {
+          paintBorderError(ele);
+          errorMessage = "필수항목을 입력하세요";
+          ok = false;
+          console.log("필수항목에러");
+        }
       }
     };
 
-    if (emailInput && emailInput.value) {
-      const emailBoolean = validEmail(emailInput);
-      if (!emailBoolean) {
-        createErrorMessage("이메일 형식이 아닙니다");
-        emailInput.classList.remove("valid");
-        emailInput.classList.add("valid");
-        emailInput.focus();
-        return;
-      }
-    }
-
     for (let i = 0; i < inputs.length; i++) {
-      if (
-        inputs[i].name !== "onedayPay" ||
-        inputs[i].name !== "address" ||
-        inputs[i].name !== "location" ||
-        inputs[i].type !== "file" ||
-        inputs[i].type !== "radio" ||
-        inputs[i].type !== "checkbox"
-      ) {
-        validRequired(inputs[i]);
-      }
+      validRequired(inputs[i]);
     }
 
     if (textarea) {
@@ -87,79 +165,14 @@ const formValid = (ele) => {
       validRequired(select);
     }
 
-    if (address) {
-      const value = address.value;
-      const map = document.getElementById("kakaoMap");
-      const searchAddressBtn = document.getElementById("searchAddressBtn");
-      map.classList.remove("valid");
-      searchAddressBtn.style.backgroundColor = "#00b894";
-
-      if (!value) {
-        map.classList.add("valid");
-        searchAddressBtn.style.backgroundColor = "#ff5e57";
-        createErrorMessage("주소를 검색하세요");
-        ok = false;
-      }
-    }
-
-    if (photosInput) {
-      const files = photosInput.files;
-      const btn = document.getElementById("fakeFileBtn");
-      console.log(photosInput);
-      console.log(btn);
-      btn.style.backgroundColor = "#00b894";
-
-      if (files.length < 4) {
-        btn.style.backgroundColor = "#ff5e57";
-        createErrorMessage("사진을 4장 이상 올려주세요");
-        ok = false;
-      }
-    }
-
-    // if (yearRoundRadio.length > 0) {
-    //   let radioOk = false;
-    //   for (let i = 0; i < yearRoundRadio.length; i++) {
-    //     if (yearRoundRadio[i].checked) {
-    //       radioOk = true;
-    //     }
-    //   }
-    //   const labels = document.querySelectorAll(".yearRoundLabel");
-    //   if (!radioOk) {
-    //     for (let i = 0; i < labels.length; i++) {
-    //       labels[i].style.border = "2px solid #ff5e57";
-    //     }
-    //   } else {
-    //     for (let i = 0; i < labels.length; i++) {
-    //       labels[i].style.border = "1px solid #00b894";
-    //     }
-    //   }
-    // }
-
-    // if (onedayRadio.length > 0) {
-    //   let radioOk = false;
-    //   for (let i = 0; i < onedayRadio.length; i++) {
-    //     if (onedayRadio[i].checked) {
-    //       radioOk = true;
-    //     }
-    //   }
-    //   const labels = document.querySelectorAll(".onedayLabel");
-    //   if (!radioOk) {
-    //     for (let i = 0; i < labels.length; i++) {
-    //       labels[i].style.border = "2px solid #ff5e57";
-    //     }
-    //   } else {
-    //     for (let i = 0; i < labels.length; i++) {
-    //       labels[i].style.border = "1px solid #00b894";
-    //     }
-    //   }
-    // }
-
     if (ok) {
-      ele.submit();
+      form.submit();
+    } else {
+      createErrorMessage(errorMessage);
     }
   };
 
   submitBtn.addEventListener("click", handleSubmit);
 };
 
-formValid(form);
+formValid();

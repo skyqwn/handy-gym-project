@@ -15,8 +15,8 @@ block content
                 })
             h2.section=post.title
             .section
-                +userBlock(post.creator, '40px')
-            p.section.desc=post.description
+                +userBlock(post.creator, "40px")
+            p.desc.section=post.description
             .centerLikeBtn
                 if post.like_users.includes(String(user._id))
                     i.likeBtn.fa-solid.fa-thumbs-up.like.fa-2xl(id=`${post._id}`)
@@ -24,19 +24,14 @@ block content
                 else
                     i.likeBtn.fa-regular.fa-thumbs-up.fa-2xl(id=`${post._id}`)
                     div 추천
-            //- if `${user._id}` === `${post.creator._id}`
-            //-     a(href=`/post/${post._id}/update`) 수정
-            //-     #deleteBtn 삭제
-        
+                    
+           
+
             .commentsWrapper
                 h4 댓글 #{comments.length}
                 each comment in comments
                     .comment
-                        +userBlock({
-                            _id:comment.creator._id,
-                            nickname:comment.creator.nickname,
-                            avatarUrl:comment.creator.avatarUrl
-                        }, "40px")
+                        +userBlock(comment.creator, "40px")
                         p=comment.text
 
                         if `${comment.creator._id}`=== `${user._id}`
@@ -46,12 +41,18 @@ block content
                 textarea(name="text")
                 #commentBtn.primary 댓글달기
         .detailPage__item
-            .head 이 달의 인기글
+            .head 이 달의 인기게시글
             each populatePost, index in populatePosts
                 a(href=`/post/${populatePost._id}`)
                     p 
                         span.index #{index + 1}
                         span.title #{populatePost.title}
+                    
+    if `${user._id}` === `${post.creator._id}`
+        .updateAndDeleteBtn
+            a(href=`/post/${post._id}/update`)
+                button 수정하기
+            button#deleteBtn 삭제하기
         
 
     script(src="/static/js/comment.js")

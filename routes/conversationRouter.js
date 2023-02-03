@@ -6,8 +6,7 @@ import protectCSRFToken from "../utils/protectCSRFToken.js";
 
 const conversationRouter = express.Router();
 
-conversationRouter.get("/", fetch);
-
-conversationRouter.get("/:id", detail);
+conversationRouter.get("/", onlyUser, onlyEmailVerified, fetch);
+conversationRouter.get("/:id", onlyUser, onlyEmailVerified, detail);
 
 export default conversationRouter;

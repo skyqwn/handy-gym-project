@@ -1,4 +1,4 @@
-const fileInput = document.querySelector("input[name=photos]");
+const fileInput = document.querySelector("input[name=gymPhotos]");
 const preview = document.getElementById("preview");
 const fakeFileBtn = document.getElementById("fakeFileBtn");
 const originalPreviews = document.querySelectorAll(".originalPreview");
@@ -25,7 +25,7 @@ const startLoading = (ele) => {
 
 const endLoading = (ele) => {
   ele.innerHTML = "";
-  ele.innerHTML = `<i class="fa-solid fa-plus"></i>`;
+  ele.innerHTML = `<i class="fa-solid fa-camera"></i>`;
   ele.disabled = false;
 };
 

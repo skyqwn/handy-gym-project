@@ -27,15 +27,15 @@
   z-index: 100;
   .message {
     width: fit-content;
-    height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 5px;
     font-weight: 600;
-    padding: 10px 20px;
+    padding: 8px 20px;
     word-break: break-word;
     white-space: pre-line;
+    text-align: center;
   }
   #success {
     background-color: #0c2461;

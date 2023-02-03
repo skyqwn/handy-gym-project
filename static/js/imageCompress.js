@@ -2,7 +2,7 @@
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-var fileInput = document.querySelector("input[name=photos]");
+var fileInput = document.querySelector("input[name=gymPhotos]");
 var preview = document.getElementById("preview");
 var fakeFileBtn = document.getElementById("fakeFileBtn");
 var originalPreviews = document.querySelectorAll(".originalPreview");
@@ -29,7 +29,7 @@ var startLoading = function startLoading(ele) {
 
 var endLoading = function endLoading(ele) {
   ele.innerHTML = "";
-  ele.innerHTML = "<i class=\"fa-solid fa-plus\"></i>";
+  ele.innerHTML = "<i class=\"fa-solid fa-camera\"></i>";
   ele.disabled = false;
 };
 

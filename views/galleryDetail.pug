@@ -50,9 +50,11 @@ block content
                     p 
                         span.index #{index + 1}
                         span.title #{populateGallery.title}
-            //- if `${gallery.creator._id}` === `${user._id}`
-            //-     a(href=`/gallery/${gallery._id}/update`).btn 수정
-            //-     a(href=`/gallery/${gallery._id}/remove`).btn 삭제
-            //- //- #deleteBtn.btn 글삭제
+    if `${gallery.creator._id}` === `${user._id}`
+        .updateAndDeleteBtn
+            a(href=`/gallery/${gallery._id}/update`)
+                button 수정하기
+            button#deleteBtn 삭제하기
+    //- #deleteBtn.btn 글삭제
     script(src="/static/js/comment.js")
     script(src="/static/js/likeFun.js")

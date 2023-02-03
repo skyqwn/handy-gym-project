@@ -11,25 +11,24 @@ var commentsWrapper = document.querySelector(".commentsWrapper");
 var deleteBtns = document.querySelectorAll(".commentDeleteBtn");
 
 var createComment = async function createComment(e) {
-  try {
-    var text = input.value;
+  var text = input.value;
 
-    if (!text) return alert("내용을 작성해주세요");
+  if (!text) return alert("내용을 작성해주세요");
 
-    var res = await fetch("/comment/" + whereId, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        text: text,
-        type: type
-      })
-    });
+  var res = await fetch("/comment/" + whereId, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      text: text,
+      type: type
+    })
+  });
+  if (res.ok) {
     var data = await res.json();
-
     return data;
-  } catch (error) {
-    console.log(error);
+  } else {
     alert("댓글생성중 에러발생");
+    return;
   }
 };
 
@@ -39,6 +38,9 @@ var paintComment = function paintComment(_ref) {
 
   var commentContainer = document.createElement("div");
   commentContainer.classList.add("comment");
+  var creatorUserContainer = document.createElement("a");
+  creatorUserContainer.classList.add("userBlock");
+  creatorUserContainer.href = "/user/" + user._id;
   var creatorImg = document.createElement("img");
   if (user.avatarUrl) {
     creatorImg.src = "/" + user.avatarUrl;
@@ -50,14 +52,16 @@ var paintComment = function paintComment(_ref) {
   creatorImg.classList.add("avatar");
   var creatorName = document.createElement("div");
   creatorName.innerText = user.nickname;
-  var commentText = document.createElement("div");
+  var commentText = document.createElement("p");
   commentText.innerText = comment.text;
   var deleteBtn = document.createElement("button");
   deleteBtn.id = comment._id;
   deleteBtn.innerText = "삭제";
   deleteBtn.addEventListener("click", handleDelete);
-  commentContainer.append(creatorImg);
-  commentContainer.append(creatorName);
+
+  creatorUserContainer.append(creatorImg);
+  creatorUserContainer.append(creatorName);
+  commentContainer.append(creatorUserContainer);
   commentContainer.append(commentText);
   commentContainer.append(deleteBtn);
 
@@ -78,19 +82,15 @@ var handleClick = async function handleClick(e) {
 
 var handleDelete = async function handleDelete(e) {
   var commentId = e.target.id;
-  try {
-    var ok = confirm("정말 삭제하시겠습니까?");
-    if (ok) {
-      var res = await fetch("/comment/" + whereId + "/remove/" + commentId);
-      if (res.ok) {
-        var comment = e.target.parentNode;
-        comment.remove();
-      } else {
-        alert("삭제하는데 오류가 발생했습니다");
-      }
+  var ok = confirm("정말 삭제하시겠습니까?");
+  if (ok) {
+    var res = await fetch("/comment/" + whereId + "/remove/" + commentId + "?type=" + type);
+    if (res.ok) {
+      var comment = e.target.parentNode;
+      comment.remove();
+    } else {
+      alert("삭제하는데 오류가 발생했습니다");
     }
-  } catch (error) {
-    alert(error);
   }
 };
 

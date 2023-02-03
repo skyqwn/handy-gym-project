@@ -2,14 +2,21 @@
 
 var href = window.location.href;
 var hrefArr = href.split("/");
-var type = hrefArr[3];
+var secondUrl = hrefArr[3];
+var secondUrlArr = secondUrl.split("?");
+var type = secondUrlArr[0];
 
 var btns = document.querySelectorAll(".likeBtn");
 
 var handleLike = async function handleLike(e) {
   var btn = e.target;
   var id = btn.id;
-  var res = await fetch("/" + type + "/" + id + "/like");
+  var res = void 0;
+  if (type === "like") {
+    res = await fetch("/gym/" + id + "/like");
+  } else {
+    res = await fetch("/" + type + "/" + id + "/like");
+  }
   if (res.ok) {
     if (btn.classList.contains("like")) {
       btn.classList.remove("fa-solid");
@@ -21,7 +28,7 @@ var handleLike = async function handleLike(e) {
       btn.classList.add("like");
     }
   } else {
-    alert("좋아요가 오류났습니다");
+    alert("서버 오류가 발생했습니다");
   }
 };
 for (var i = 0; i < btns.length; i++) {

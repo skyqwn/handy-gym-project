@@ -1,7 +1,7 @@
 extends includes/layout
 
 block content
-    form(action="/gym/upload" method="post" enctype="multipart/form-data").uploadContainer.narrowContainer.box
+    form(action="/gym/upload" method="post" enctype="multipart/form-data").narrowContainer.box.uploadContainer
         input(type="hidden" name="_csrf" value=csrfToken)
         input(type="hidden" name="address")
         input(type="hidden" name="location")
@@ -16,28 +16,20 @@ block content
             .uploadColumn__item
                 span 타이틀
             .uploadColumn__item
-                input(type="text" name="title" placeholder="ex) 하버 몸 만들어드립니다")
-        .uploadColumn
-            .uploadColumn__item
-                span 설명
-            .uploadColumn__item
-                textarea(name="description" placeholder="체육관을 추천하는 이유를 자세하게 설명하세요")
-        .uploadColumn
-            .uploadColumn__item
-                span 주소
-            .uploadColumn__item
-                #searchAddressBtn.btn.primary 주소검색
-                #kakaoMap
-                #result
+                input(type="text" name="title" placeholder="ex) 국내 최대 규모의 헬스장입니다 ")
         .uploadColumn
             .uploadColumn__item
                 span 사진
             .uploadColumn__item
-                button.btn.primary#fakeFileBtn
+                .btn.primary#fakeFileBtn
                     i.fa-solid.fa-camera
-                //- input(type="file" name="photos" multiple)
-                input(type="file" name="photos" multiple hidden)
+                input(type="file" name="gymPhotos" multiple hidden)
                 #preview
+        .uploadColumn
+            .uploadColumn__item
+                span 설명
+            .uploadColumn__item
+                textarea(name="description" placeholder="체육관을 추천하는 이유를 써보세요\n기구, 평수, 주차여부 등등 체육관의 장점을 자세하게 써주세요")
         .uploadColumn
             .uploadColumn__item
                 span 연중무휴인가요?
@@ -67,10 +59,23 @@ block content
                 label
                     input(type="checkbox"
                     name="onedayPayCheckbox"
-                    id="onedayPayCheckBox")                 
+                    id="onedayPayCheckbox")                 
                     div 모름
         
-        .btn.primary#jsSubmit 생성
+        .uploadColumn
+            .uploadColumn__item
+                span 주소
+            .uploadColumn__item
+                #searchAddressBtn.btn.primary 주소검색
+                #kakaoMap
+                #result
+        
+        
+        .submitBtnWrapper
+            .submitBtn.secondary#jsSubmit 
+                .emojiText
+                    i.fa-solid.fa-cloud-arrow-up 
+                    span 업로드
 
     script(type="text/javascript" src="https://cdn.jsdelivr.net/npm/browser-image-compression@1.0.15/dist/browser-image-compression.js")
 

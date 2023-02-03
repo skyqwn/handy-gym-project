@@ -1,49 +1,41 @@
 extends includes/layout
 
-block content
-    form(action=`/gym/${gym._id}/update` method="post" enctype="multipart/form-data").uploadContainer.narrowContainer.box
+block content 
+    .modalContainer
+        .modalWrapper
+            .croppperContainer
+            #closeBtn 취소
+    form(action=`/gallery/${gallery._id}/update` method="post" enctype="multipart/form-data").uploadContainer.narrowContainer.box
         input(type="hidden" name="_csrf" value=csrfToken)
-        input(type="hidden" name="location" value=gym.location)
-        input(type="hidden" name="address" value=gym.address)
-        each photo in gym.photos
-            img(src=`/${photo}` class="originalPreview" hidden)
-        h3.uploadHead 체육관 업데이트
-        #validErrorMessage
-        .uploadColumn
-            .uploadColumn__item
-                span 이름
-            .uploadColumn__item
-                input(type="text" name="name" placeholder="이름" value=gym.name)
+        each photoObj in gallery.photos
+            img(src=`/${photoObj.photo}` hidden class="originalPhoto")
+            textarea(hidden class="originalCaption")=photoObj.caption
+        h3.uploadHead 사진 업데이트
         .uploadColumn
             .uploadColumn__item
                 span 타이틀
-            .uploadColumn__item
-                input(type="text" name="title" placeholder="한 줄로 표현해보세요" value=gym.title)
-        .uploadColumn
-            .uploadColumn__item
-                span 설명
-            .uploadColumn__item
-                textarea(name="description" placeholder="세부내용")=gym.description
-        .uploadColumn
-            .uploadColumn__item
-                span 주소
-            .uploadColumn__item
-                #searchAddressBtn.btn.primary 주소검색
-                #kakaoMap
-                #result
+            .uploadColumn__item 
+                input(type="text" name="title" value=gallery.title  placeholder="ex) 오늘의 식단")
         .uploadColumn
             .uploadColumn__item
                 span 사진
             .uploadColumn__item
-                .btn.primary#fakeFileBtn
+                #galleryPreview
+                .galleryBtn#fakeFileBtn
                     i.fa-solid.fa-camera
-                input(type="file" name="photos" multiple)
-                #gymPreview
-        
-        .btn.primary#jsSubmit 업데이트
+        input(type="file" id="realFileInput" name="galleryPhotos" multiple accept="*" hidden)
+        input(type="file" id="fakeFileInput" accept="*" hidden )
 
+        .submitBtnWrapper
+            .submitBtn.secondary#jsSubmit 
+                .emojiText
+                    i.fa-solid.fa-cloud-arrow-up 
+                    span 업로드
+
+
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js") 
     script(type="text/javascript" src="https://cdn.jsdelivr.net/npm/browser-image-compression@1.0.15/dist/browser-image-compression.js")
 
     script(src="/static/js/daumAddress.js")
-    script(src="/static/js/gymPreview.js")
-    script(src="/static/js/validForm.js")
+    script(src="/static/js/cropper.js")
+    script(src="/static/js/validFrom.js")

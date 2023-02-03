@@ -3,14 +3,6 @@ import Gym from "../models/Gym.js";
 import Post from "../models/Post.js";
 import User from "../models/User.js";
 
-export const findEmail = (req, res) => {
-  res.send("Find Email");
-};
-
-export const findEmailPost = (req, res) => {
-  res.send("Find Email Post");
-};
-
 export const detail = async (req, res) => {
   const {
     params: { userId },
@@ -20,6 +12,7 @@ export const detail = async (req, res) => {
     const gyms = await Gym.find({ creator: userId });
     const posts = await Post.find({ creator: userId });
     const galleries = await Gallery.find({ creator: userId });
+    req.session.create_message_url = req.originalUrl;
     return res.render("userDetail", {
       title: `${findUser.nickname} 상세`,
       findUser,
@@ -61,13 +54,3 @@ export const updatePost = async (req, res) => {
     console.log(error);
   }
 };
-
-export const me = (req, res) => {
-  res.render("me", { title: "내 정보", user: req.user });
-};
-
-export const changePassword = (req, res) => {
-  res.send("change password");
-};
-
-export const changePasswordPost = (req, res) => {};

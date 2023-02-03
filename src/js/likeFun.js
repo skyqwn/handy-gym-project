@@ -1,13 +1,20 @@
 const href = window.location.href;
 const hrefArr = href.split("/");
-const type = hrefArr[3];
+const secondUrl = hrefArr[3];
+const secondUrlArr = secondUrl.split("?");
+const type = secondUrlArr[0];
 
 const btns = document.querySelectorAll(".likeBtn");
 
 const handleLike = async (e) => {
   const btn = e.target;
   const id = btn.id;
-  const res = await fetch(`/${type}/${id}/like`);
+  let res;
+  if (type === "like") {
+    res = await fetch(`/gym/${id}/like`);
+  } else {
+    res = await fetch(`/${type}/${id}/like`);
+  }
   if (res.ok) {
     if (btn.classList.contains("like")) {
       btn.classList.remove("fa-solid");
@@ -19,7 +26,7 @@ const handleLike = async (e) => {
       btn.classList.add("like");
     }
   } else {
-    alert("좋아요가 오류났습니다");
+    alert("서버 오류가 발생했습니다");
   }
 };
 for (let i = 0; i < btns.length; i++) {

@@ -54,7 +54,6 @@ var compressFile = async function compressFile(file) {
 
     return convertFile;
   } catch (error) {
-    console.log(error);
     alert("파일 올리는 도중 오류발생");
     return;
   }
@@ -84,10 +83,10 @@ var imgSrcToFile = async function imgSrcToFile(imageEle) {
         return resolve(blob);
       });
     });
-    console.log(blob);
     return convertBlobToFile(blob);
   } catch (error) {
-    console.log(error);
+    alert("서버 오류 발생");
+    return;
   }
 };
 

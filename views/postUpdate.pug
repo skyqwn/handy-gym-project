@@ -1,31 +1,34 @@
 extends includes/layout
 
-block content 
-    form(action=`/post/${post._id}/update` method="post").uploadContainer.narrowContainer.box#jsPostUploadForm
+block content
+    form(action="/post/upload" method="post").narrowContainer.uploadContainer.box
         input(type="hidden" name="_csrf" value=csrfToken)
-        h3.uploadHead 포스트 업데이트
-        #validErrorMessage
+        h3.uploadHead 포스트 업로드
         .uploadColumn
             .uploadColumn__item 
-                span 타이틀
-            .uploadColumn__item 
-                input(type="text", name="title" placeholder="제목" value=post.title)
-        .uploadColumn
-            .uploadColumn__item 
-                span 내용
-            .uploadColumn__item 
-                textarea(name="description")=post.description
-        .uploadColumn
-            .uploadColumn__item 
-                span 선택
-            .uploadColumn__item 
+                span 카테고리
+            .uploadColumn__item
                 select(name="category")
                     - let i = 0;
                     - const arr = ["자유","질문","공유","리뷰","Flex"]
-                    while i < arr.length 
-                        option(value=arr[i] selected=(arr[i] ===post.category ? true : undefined))=arr[i]
-                        - i++;
-        .btn.primary#jsSubmit 수정하기
+                    while i < arr.length
+                        option(value=arr[i])=arr[i]
+                        - i++
+        .uploadColumn
+            .uploadColumn__item 
+                span 제목
+            .uploadColumn__item 
+                input(type="text" name="title" placeholder="한 줄로 표현해보세요")
+        .uploadColumn
+            .uploadColumn__item 
+                span 세부내용
+            .uploadColumn__item 
+                textarea(name="description" placeholder="세부내용")
+        .submitBtnWrapper
+            .submitBtn.secondary#jsSubmit 
+                .emojiText
+                    i.fa-solid.fa-cloud-arrow-up 
+                    span 업로드 
 
     script(src="/static/js/validFrom.js") 
 

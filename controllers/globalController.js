@@ -1,8 +1,10 @@
 import passport from "passport";
 import bcrypt from "bcrypt";
-
 import User from "../models/User.js";
 import sendMail from "../utils/sendMail.js";
+import Gym from "../models/Gym.js";
+import Post from "../models/Post.js";
+import Gallery from "../models/Gallery.js";
 
 export const home = (req, res) => {
   res.render("home");
@@ -129,6 +131,7 @@ export const googleCallback = async (req, res) => {
 export const kakaoCallback = async (req, res) => {
   passport.authenticate("kakao", (err, user, info) => {
     if (err) {
+      console.log(err);
       req.flash("error", "카카오로그인 오류 발생");
       return res.redirect("/signin");
     }
@@ -213,4 +216,15 @@ export const noAccess = (req, res) => {
     message,
     redirectUrl,
   });
+};
+
+export const like = async (req, res) => {
+  const { user } = req;
+  try {
+    const gyms = await Gym.find({ like_users: { $in: String(user._id) } });
+    res.render("like", { title: "관심목록", gyms });
+  } catch (error) {
+    req.flash("서버 오류가 발생했습니다\n 불편함을 드려 죄송합니다");
+    return res.redirect("/");
+  }
 };

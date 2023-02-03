@@ -12,8 +12,9 @@ nav.wideContainer
                     i.fa-solid.fa-bars
                     +avatarBlock(user.avatarUrl)
                 .menuModal.hidden
-                    a(href=`/user/${user._id}`) 내 정보
+                    a(href=`/user/${user._id}`) 내정보
                     a(href="/conversation") 쪽지함
+                    a(href="/like") 관심목록
                     a(href="/logout") 로그아웃
             else
                 a(href="/signin") 로그인

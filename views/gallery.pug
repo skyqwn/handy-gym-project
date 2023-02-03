@@ -3,13 +3,19 @@ include mixins/galleryCardBlock
 
 block content
     .container.pageContainer
-        .pageHead
-            .btn.secondary#modalBtn 검색
-            a(href="/gallery/upload") 
-                .btn.primary 업로드
-        .galleryWrapper
-            each gallery in galleries 
-                +galleryCardBlock(gallery)  
+        if galleries.length > 0
+            .pageHead
+                div
+                a(href="/gallery/upload") 
+                    .btn.primary 업로드
+            .galleryWrapper
+                each gallery in galleries 
+                    +galleryCardBlock(gallery)  
+
+        else 
+            .noResult
+                .pageTitle 아직 게시글이 없습니다
+                a(href="/gallery/upload").btn.primary 업로드 하러가기
 
         div(id=totalPage class="jsPageContainer pagination")
 

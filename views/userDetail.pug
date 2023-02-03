@@ -14,7 +14,7 @@ block content
                             if user.avatarUrl
                                 img(src=`/${user.avatarUrl}`).avatarImg#fileBtn
                             else
-                                img(src="/static/images/noUser.png").avatarImg#fileBtn
+                                img(src="/static/images/noUser.webp").avatarImg#fileBtn
                             .deleteBtn#deleteBtn
                                 i.fa-solid.fa-xmark
 
@@ -23,17 +23,17 @@ block content
                         if user.avatarUrl
                             img(src=`/${user.avatarUrl}` id="originalImg"  hidden)
 
-                        img(src="/static/images/noUser.png" id="noUserImg" hidden)
+                        img(src="/static/images/noUser.webp" id="noUserImg" hidden)
 
                         input(type="file" name="avatar" hidden)
-                        input(type="file" id="fakeFileInput" hidden)
-                        input(type="submit", value="전송").btn.primary
+                        input(type="file" id="fakeFileInput" hidden )
+                        .btn.primary#jsSubmit 생성
                 else
                     form(action=`/message/create` method="post").userDetailMessage
                         div #{findUser.nickname}님에게 쪽지 보내기
                         input(type="text" name="to" value=findUser._id readOnly hidden )
                         textarea(name="message")
-                        button.btn.primary 쪽지보내기
+                        .btn.primary#jsSubmit 쪽지보내기
     .narrowContainer
         .userDetail
             .userDetail__item
@@ -90,3 +90,4 @@ block content
 
     script(src="/static/js/avatarPreview.js")
     script(src="/static/js/createModal.js") 
+    script(src="/static/js/validFrom.js")

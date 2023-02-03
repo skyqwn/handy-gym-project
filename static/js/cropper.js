@@ -33,7 +33,7 @@ var startLoading = function startLoading(ele) {
 
 var endLoading = function endLoading(ele) {
   ele.innerHTML = "";
-  ele.innerHTML = "<i class=\"fa-solid fa-plus\" ></i>";
+  ele.innerHTML = "<i class=\"fa-solid fa-camera\" ></i>";
   ele.disabled = false;
 };
 

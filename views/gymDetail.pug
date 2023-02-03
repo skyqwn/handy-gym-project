@@ -1,5 +1,6 @@
 extends includes/layout
 include mixins/categoryBlock
+include mixins/userBlock
 
 block content
     .viewMoreContainer
@@ -72,21 +73,12 @@ block content
                 #kakaoMap
                     #jsAddress #{gym.address}
                 
-            //- if `${user._id}`=== `${gym.creator._id}`
-            //-     .updateAndDeleteBtn
-            //-         a(href=`/gym/${gym._id}/update`)
-            //-             div.btn.primary 수정
-            //-         #deleteBtn.btn.secondary 삭제
             .gymDetail__section.gymDetail__bigSection
                 .commentsWrapper
                     h4 댓글 #{comments.length}
                     each comment in comments
                         .comment
-                            +userBlock({
-                                _id:comment.creator._id,
-                                nickname:comment.creator.nickname,
-                                avatarUrl:comment.creator.avatarUrl
-                            }, "40px")
+                            +userBlock(comment.creator, "40px")
                             p=comment.text
 
                             if `${comment.creator._id}`=== `${user._id}`
@@ -95,6 +87,11 @@ block content
                     +avatarBlock(user.avatarUrl, "70px")
                     textarea(name="text")
                     #commentBtn.primary 댓글달기
+        if `${user._id}`=== `${gym.creator._id}`
+            .updateAndDeleteBtn
+                a(href=`/gym/${gym._id}/update`)
+                    button 수정하기
+                button#deleteBtn 삭제하기
                     
     .modalContainer
         .modal

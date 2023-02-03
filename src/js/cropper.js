@@ -29,7 +29,7 @@ const startLoading = (ele) => {
 
 const endLoading = (ele) => {
   ele.innerHTML = "";
-  ele.innerHTML = `<i class="fa-solid fa-plus" ></i>`;
+  ele.innerHTML = `<i class="fa-solid fa-camera" ></i>`;
   ele.disabled = false;
 };
 

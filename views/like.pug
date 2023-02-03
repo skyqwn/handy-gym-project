@@ -1,0 +1,17 @@
+extends includes/layout
+include mixins/gymCardBlock
+
+block content 
+    .container.pageContainer
+        if gyms.length >0
+            .pageTitle 좋아요 한 체육관
+            .gymWrapper
+                each gym in gyms
+                    +gymCardBlock(gym)
+        else
+            .noResult
+                .pageTitle 좋아요 한 체육관이 없습니다
+                a(href="/gym").btn.secondary 체육관 보러가기
+
+
+    script(src="/static/js/likeFun.js")

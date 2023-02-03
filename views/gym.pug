@@ -19,14 +19,19 @@ block content
                     button.btn.primary 검색
                 //- a(href="/gym").btn.secondary 초기화
     .container.pageContainer
-        .pageHead
-            .btn.secondary#modalBtn 검색
-            a(href="/gym/upload") 
-                .btn.primary 업로드
-        .gymWrapper
-            each gym in gyms
-                +gymCardBlock(gym)
-        div(id=totalPage class="jsPageContainer pagination")
+        if gyms.length > 0
+            .pageHead
+                .btn.secondary#modalBtn 검색
+                a(href="/gym/upload") 
+                    .btn.primary 업로드
+            .gymWrapper
+                each gym in gyms
+                    +gymCardBlock(gym)
+            div(id=totalPage class="jsPageContainer pagination")
+        else
+            .noResult
+                .pageTitle 아직 게시글이 없습니다
+                a(href="/gym/upload").btn.primary 업로드 하러가기
 
 
     script(src="/static/js/pagination.js")

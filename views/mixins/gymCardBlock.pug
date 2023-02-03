@@ -18,7 +18,8 @@ mixin gymCardBlock(gym)
                 .emojiText
                     i.fa-regular.fa-heart.like
                     h1=gym.like_users.length
-        if gym.isLike
-            .likeBtn.fa-solid.fa-heart.like(id=`${gym._id}`)
-        else
-            .likeBtn.fa-regular.fa-heart(id=`${gym._id}`)
+        if user
+            if gym.like_users.includes(user._id)
+                .likeBtn.fa-solid.fa-heart.like(id=`${gym._id}`)
+            else
+                .likeBtn.fa-regular.fa-heart(id=`${gym._id}`)

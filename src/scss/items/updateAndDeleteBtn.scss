@@ -1,0 +1,30 @@
+@import "../config/variable";
+
+.updateAndDeleteBtn {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: fit-content;
+  padding: 14px 26px;
+  z-index: 150;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  box-shadow: $boxShadow;
+  background-color: $white;
+  border-radius: 50px;
+  button {
+    width: fit-content;
+    height: fit-content;
+    padding: 6px 10px;
+    border: none;
+    background-color: $accentColor;
+    color: $white;
+    cursor: pointer;
+  }
+  #deleteBtn {
+    background-color: $red;
+  }
+}
