@@ -36,13 +36,14 @@ export const update = (req, res) => {
 
 export const updatePost = async (req, res) => {
   const { body, file, user } = req;
+  console.log(file);
 
   try {
     await User.findByIdAndUpdate(
       user._id,
       {
         ...body,
-        avatarUrl: file ? file.path : "",
+        avatarUrl: file ? file.location : "",
       },
       {
         new: true,

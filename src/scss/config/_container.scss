@@ -1,4 +1,5 @@
 @import "_variable";
+@import "_mixins";
 
 .emojiContainer {
   display: flex;
@@ -6,14 +7,14 @@
 }
 .emojiText {
   display: flex;
-  gap: 4px;
+  gap: 3px;
   align-items: center;
   font-size: 14px;
 }
 .container {
   max-width: 1280px;
   width: 100%;
-  padding: 0 4px;
+  padding: 0 6px;
   margin: 0 auto;
 }
 
@@ -46,4 +47,32 @@
   display: flex;
   flex-direction: column;
   gap: 30px;
+}
+
+@include mobile {
+  .box {
+    padding: 6px;
+    margin: 0 auto;
+    border: none;
+  }
+  .paper {
+    padding: 6px;
+    margin: 0 auto;
+    border: none;
+  }
+  .uploadContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .emojiText {
+    display: flex;
+    gap: 1px;
+    align-items: center;
+    font-size: 10px;
+  }
+  .emojiContainer {
+    display: flex;
+    gap: 3px;
+  }
 }

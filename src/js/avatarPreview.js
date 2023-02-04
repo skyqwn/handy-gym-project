@@ -46,7 +46,7 @@ const compressFile = async (file) => {
   };
   try {
     let compressedBlob = await imageCompression(file, compressOption);
-    compressedBlob.name = `${file.name || "힙합"}_compressed`;
+    compressedBlob.name = `${file.name || "아무개"}__compressed`;
 
     const convertFile = convertBlobToFile(compressedBlob);
 

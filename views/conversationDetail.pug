@@ -11,16 +11,16 @@ block content
                         .createdAt=message.createdAt
                 else 
                     .message
-                        +userBlock(message.from, "30px")
+                        +userBlock(message.from)
                         p=message.message
                         .createdAt=message.createdAt
             #jsScrollPoint
         form(action=`/message/create` method="post")
             .commentInput
-                +avatarBlock(user.avatarUrl, "70px")
+                +avatarBlock(user.avatarUrl, "50px")
                 input(type="text" name="to" value=otherUserId readOnly hidden )
                 textarea(name="message" placeholder="쪽지 플레이스홀더")
-                button.primary#commentBtn 쪽지보내기
+                button.secondary#commentBtn 보내기
     
     script(src="/static/js/convertDate.js") 
     script(src="/static/js/scroll.js") 

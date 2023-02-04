@@ -21,15 +21,19 @@ block content
                     a(href="/post").btn.secondary 초기화
                     button.btn.primary 검색
     .container.pageContainer
-        .pageHead
-            .btn.secondary#modalBtn 검색
-            a(href="/post/upload") 
-                .btn.primary 업로드
-        .postWrapper
-            each post in posts
-                +postCardBlock(post)
-    
-        div(id=totalPage class="jsPageContainer pagination")
+        if posts.length > 0 
+            .pageHead
+                .btn.secondary#modalBtn 검색
+                a(href="/post/upload") 
+                    .btn.primary 업로드
+            div
+                each post in posts
+                    +postCardBlock(post)
+            div(id=totalPage class="jsPageContainer pagination")
+        else 
+            .noResult
+                .pageTitle 아직 게시글이 없습니다
+                a(href="/post/upload").btn.primary 업로드 하러가기
     
     script(src="/static/js/pagination.js") 
     script(src="/static/js/createModal.js") 

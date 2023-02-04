@@ -1,7 +1,9 @@
 @import "../config/variable";
+@import "../config/mixins";
 
 .home {
-  height: calc(100% - $navHeight);
+  // height: calc(100% - $navHeight);
+  min-height: calc(100% - $navHeight);
   .homeBox {
     display: flex;
     &:first-child {
@@ -65,8 +67,62 @@
   }
 }
 
-.photoDiv {
-  width: 250px;
-  height: 250px;
-  object-fit: cover;
+@include mobile {
+  .home {
+    height: fit-content;
+    .homeBox {
+      display: flex;
+      flex-direction: column;
+      &:first-child {
+        height: 500px;
+      }
+      &:last-child {
+        height: 500px;
+      }
+      &__item {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        padding: 20px 0;
+        &.row {
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 20px;
+          .homeBox__item__img {
+            height: 60%;
+            object-fit: scale-down;
+          }
+        }
+        &.column {
+          gap: 20px;
+          .homeBox__item__img {
+            height: 60%;
+            object-fit: scale-down;
+          }
+        }
+        &__text {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 20px;
+          p {
+            font-size: 20px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@include tablet {
+  .home {
+    .homeBox {
+      &__item__text {
+        p {
+          font-size: 24px;
+        }
+      }
+    }
+  }
 }

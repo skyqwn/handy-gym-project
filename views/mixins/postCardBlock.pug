@@ -6,11 +6,11 @@ mixin postCardBlock(post)
             div=post.category
         a(href=`/post/${post._id}`).post__item
             h1=post.title
+        .post__item
             if post.comments.length > 0
                 .emojiText
                     i.fa-regular.fa-comment
                     h1=post.comments.length
-        .post__item
             if post.like_users.length > 0
                 .emojiText
                     i.fa-regular.fa-thumbs-up

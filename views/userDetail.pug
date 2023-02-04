@@ -12,7 +12,7 @@ block content
                         input(type="hidden" name="_csrf" value=csrfToken)
                         .imgContainer
                             if user.avatarUrl
-                                img(src=`/${user.avatarUrl}`).avatarImg#fileBtn
+                                img(src=`${user.avatarUrl}`).avatarImg#fileBtn
                             else
                                 img(src="/static/images/noUser.webp").avatarImg#fileBtn
                             .deleteBtn#deleteBtn
@@ -21,7 +21,7 @@ block content
                         input(name="nickname" value=user.nickname)
 
                         if user.avatarUrl
-                            img(src=`/${user.avatarUrl}` id="originalImg"  hidden)
+                            img(src=`${user.avatarUrl}` id="originalImg"  hidden)
 
                         img(src="/static/images/noUser.webp" id="noUserImg" hidden)
 

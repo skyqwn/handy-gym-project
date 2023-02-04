@@ -15,7 +15,7 @@ block content
                 })
             h2.section=post.title
             .section
-                +userBlock(post.creator, "40px")
+                +userBlock(post.creator, "24px")
             p.desc.section=post.description
             .centerLikeBtn
                 if post.like_users.includes(String(user._id))
@@ -31,13 +31,13 @@ block content
                 h4 댓글 #{comments.length}
                 each comment in comments
                     .comment
-                        +userBlock(comment.creator, "40px")
+                        +userBlock(comment.creator, "24px")
                         p=comment.text
 
                         if `${comment.creator._id}`=== `${user._id}`
                             button.commentDeleteBtn(id=comment._id) 삭제
             .commentInput
-                +avatarBlock(user.avatarUrl, "70px")
+                +avatarBlock(user.avatarUrl, "40px")
                 textarea(name="text")
                 #commentBtn.primary 댓글달기
         .detailPage__item

@@ -8,6 +8,7 @@ html {
   font-size: 16px;
   line-height: 1.4rem;
   position: relative;
+  height: 100%;
   .bodyWrapper {
     height: auto;
     min-height: calc(100% - $navHeight);

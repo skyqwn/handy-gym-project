@@ -1,12 +1,15 @@
+@import "../config/variable";
+@import "../config/mixins";
+
 .post {
   display: flex;
+  border-bottom: 1px solid $borderColor;
+  align-items: center;
   &:first-child {
     border-top: 1px solid $borderColor;
   }
   &__item {
-    height: 50px;
     padding: 12px 0;
-    border-bottom: 1px solid $borderColor;
     display: flex;
     justify-content: center;
     &:nth-child(1) {
@@ -22,6 +25,8 @@
     }
     &:nth-child(3) {
       width: 100px;
+      display: flex;
+      gap: 8px;
     }
     &:nth-child(4) {
       width: 150px;
@@ -31,7 +36,49 @@
     }
     &:nth-child(5) {
       width: 100px;
-      text-align: center;
+    }
+  }
+}
+
+@include mobile {
+  .post {
+    display: flex;
+    border-bottom: 1px solid $borderColor;
+    gap: 4px;
+    &:first-child {
+      border-top: 1px solid $borderColor;
+    }
+    &__item {
+      padding: 8px 0;
+      display: flex;
+      justify-content: center;
+      &:nth-child(1) {
+        width: 50px;
+        justify-content: flex-start;
+        display: none;
+      }
+      &:nth-child(2) {
+        justify-content: flex-start;
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        flex: 1;
+      }
+      &:nth-child(3) {
+        width: fit-content;
+        gap: 4px;
+        font-size: 10px;
+      }
+      &:nth-child(4) {
+        width: 100px;
+        overflow: hidden;
+        white-space: nowrap;
+        justify-content: center;
+        font-size: 12px;
+      }
+      &:nth-child(5) {
+        display: none;
+      }
     }
   }
 }

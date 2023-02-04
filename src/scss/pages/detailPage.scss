@@ -1,4 +1,6 @@
 @import "../config/variable";
+@import "../config/mixins";
+
 .detailPage {
   display: flex;
   width: 100%;
@@ -11,9 +13,6 @@
   p {
     white-space: pre-wrap;
   }
-  .desc {
-    min-height: 200px;
-  }
   .head {
     display: flex;
     gap: 10px;
@@ -23,18 +22,22 @@
   .section {
     margin-bottom: 20px;
   }
+  .desc {
+    min-height: 250px;
+  }
 
   &__item {
     background-color: $white;
     box-shadow: $boxShadow;
     margin: 30px 0;
+
     &:first-child {
       width: 80%;
       padding: 30px;
       img {
         width: 100%;
-        aspect-ratio: 4 / 3;
         object-fit: cover;
+        aspect-ratio: 4 / 3;
       }
     }
     &:last-child {
@@ -56,6 +59,47 @@
             margin-right: 10px;
           }
         }
+      }
+    }
+  }
+}
+
+@include mobile {
+  .detailPage {
+    gap: 0px;
+    flex-direction: column-reverse;
+    h2 {
+      font-size: 22px;
+      line-height: 26px;
+      padding-bottom: 10px;
+    }
+    .head {
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .section {
+      margin-bottom: 8px;
+      .avatar {
+        width: 16px;
+        height: 16px;
+      }
+    }
+    .desc {
+      min-height: 150px;
+    }
+
+    &__item {
+      margin: 10px 0;
+
+      &:first-child {
+        width: 100%;
+        padding: 10px;
+      }
+      &:last-child {
+        width: 100%;
+        height: fit-content;
+        padding: 10px;
+        position: static;
       }
     }
   }

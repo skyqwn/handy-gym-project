@@ -1,3 +1,5 @@
+@import "../config/mixins";
+
 .userDetail {
   display: flex;
   gap: 50px;
@@ -91,6 +93,48 @@
     transition: all 0.1s ease-in-out;
     &:hover {
       background-color: $redHover;
+    }
+  }
+}
+
+@include mobile {
+  .userDetail {
+    gap: 20px;
+    margin: 20px auto;
+    flex-direction: column;
+    &__item {
+      &:first-child {
+        gap: 10px;
+        padding: 25px 40px;
+        .nickname {
+          margin-bottom: 10px;
+        }
+      }
+      .section {
+        border-bottom: 1px solid $borderColor;
+        padding-bottom: 12px;
+        margin-bottom: 12px;
+        a {
+          display: flex;
+          gap: 4px;
+          margin-bottom: 2px;
+          padding-left: 0px;
+          font-size: 14px;
+          span {
+            font-weight: 700;
+          }
+          &:hover {
+            div {
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+      .head {
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
     }
   }
 }

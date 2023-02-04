@@ -1,4 +1,5 @@
 @import "../config/variable";
+@import "../config/mixins";
 
 .updateAndDeleteBtn {
   position: fixed;
@@ -26,5 +27,17 @@
   }
   #deleteBtn {
     background-color: $red;
+  }
+}
+
+@include mobile {
+  .updateAndDeleteBtn {
+    bottom: 10px;
+    padding: 8px 20px;
+    z-index: 150;
+    gap: 10px;
+    button {
+      padding: 4px 6px;
+    }
   }
 }

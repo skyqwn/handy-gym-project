@@ -53,6 +53,7 @@ const cspOptions = {
       "*.kakaocdn.net",
       "*.googleusercontent.com",
       "data:",
+      "https://handygym-s3.s3.ap-northeast-2.amazonaws.com",
     ],
     "script-src": [
       "'self'",
@@ -101,22 +102,6 @@ app.use("/gallery", galleryRouter);
 app.use("/comment", commentRouter);
 app.use("/post", postRouter);
 app.use("/user", userRouter);
-
-// app.use((req, res) => {
-//   const redirect = req.flashRedirect || "/";
-
-//   const message =
-//     req.flashMessage || "서버 오류가 발생했습니다\n 불편함을 드려 죄송합니다";
-
-//   const type = req.flashType || "error";
-
-//   req.flashRedirect = "";
-//   req.flashMessage = "";
-//   req.flashType = "";
-
-//   req.flash(type, message);
-//   res.redirect(redirect);
-// });
 
 const handleListen = () => console.log(`✅서버가 ${port}에서 실행중입니다`);
 
