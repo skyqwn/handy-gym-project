@@ -1,6 +1,6 @@
 import express from "express";
 import { detail, updatePost } from "../controllers/userController.js";
-import { S3MulterUpload } from "../utils/fileUpload.js";
+import { s3AvatarUpload } from "../utils/fileUpload.js";
 import { onlyEmailVerified, onlyUser } from "../utils/protectAuth.js";
 import protectCSRFToken from "../utils/protectCSRFToken.js";
 import saveCurrentUrl from "../utils/saveCurrentUrl.js";
@@ -11,7 +11,7 @@ userRouter.post(
   onlyUser,
   onlyEmailVerified,
   // avatarUpload.single("avatar"),
-  S3MulterUpload.single("avatar"),
+  s3AvatarUpload.single("avatar"),
   protectCSRFToken,
   updatePost
 );
@@ -21,7 +21,7 @@ userRouter
   .get(
     onlyUser,
     onlyEmailVerified,
-    S3MulterUpload.single("file"),
+    s3AvatarUpload.single("file"),
     protectCSRFToken,
     saveCurrentUrl,
     detail

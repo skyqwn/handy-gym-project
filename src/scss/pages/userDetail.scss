@@ -1,5 +1,3 @@
-@import "../config/mixins";
-
 .userDetail {
   display: flex;
   gap: 50px;
@@ -14,6 +12,10 @@
       padding: 50px 40px;
       border-radius: 10px;
       height: fit-content;
+      min-width: fit-content;
+      // .btn {
+      //     width: fit-content;
+      // }
       .nickname {
         margin-bottom: 20px;
       }

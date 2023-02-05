@@ -10,7 +10,7 @@ import {
   uploadPost,
   fetchLikes,
 } from "../controllers/gymController.js";
-import { gymUpload } from "../utils/fileUpload.js";
+import { gymUpload, s3GymUpload } from "../utils/fileUpload.js";
 import { onlyEmailVerified, onlyUser } from "../utils/protectAuth.js";
 import protectCSRFToken from "../utils/protectCSRFToken.js";
 
@@ -22,7 +22,7 @@ gymRouter
   .route("/upload")
   .all(onlyUser, onlyEmailVerified)
   .get(protectCSRFToken, upload)
-  .post(gymUpload.array("gymPhotos", 10), protectCSRFToken, uploadPost);
+  .post(s3GymUpload.array("gymPhotos", 10), protectCSRFToken, uploadPost);
 
 gymRouter.route("/:gymId").all(onlyUser, onlyEmailVerified).get(detail);
 
@@ -32,7 +32,7 @@ gymRouter
   .route("/:gymId/update")
   .all(onlyUser, onlyEmailVerified)
   .get(protectCSRFToken, update)
-  .post(gymUpload.array("gymPhotos", 10), protectCSRFToken, updatePost);
+  .post(s3GymUpload.array("gymPhotos", 10), protectCSRFToken, updatePost);
 
 gymRouter.route("/:gymId/remove").all(onlyUser, onlyEmailVerified).get(remove);
 

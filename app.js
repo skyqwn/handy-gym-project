@@ -1,3 +1,4 @@
+import cors from "cors";
 import express from "express";
 import dotenv from "dotenv";
 dotenv.config();
@@ -67,12 +68,19 @@ const cspOptions = {
   },
 };
 
+const corsOption = {
+  origin: "https://handygym-s3.s3.ap-northeast-2.amazonaws.com",
+  credentials: true,
+};
+
 app.use(
   helmet({
     contentSecurityPolicy: cspOptions,
     crossOriginEmbedderPolicy: false,
   })
 );
+
+app.use(cors(corsOption));
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

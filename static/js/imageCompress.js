@@ -46,7 +46,7 @@ var compressFile = async function compressFile(file) {
     }
 
     var compressedBlob = await imageCompression(file, compressOption);
-    compressedBlob.name = (file.name || "힙합") + "_compressed";
+    compressedBlob.name = "" + (file.name || "힙합");
 
     var convertFile = convertBlobToFile(compressedBlob);
 

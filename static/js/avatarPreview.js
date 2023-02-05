@@ -42,13 +42,13 @@ var convertBlobToFile = function convertBlobToFile(blob) {
 var compressFile = async function compressFile(file) {
   var compressOption = {
     maxSizeMB: 1,
-    maxWidthOrHeight: 110,
-    initialQuality: 0.9,
+    maxWidthOrHeight: 120,
+    initialQuality: 1,
     useWebWorker: false
   };
   try {
     var compressedBlob = await imageCompression(file, compressOption);
-    compressedBlob.name = (file.name || "아무개") + "__compressed";
+    compressedBlob.name = "" + (file.name || "힙합");
 
     var convertFile = convertBlobToFile(compressedBlob);
 
@@ -76,7 +76,6 @@ var imgSrcToFile = async function imgSrcToFile(imageEle) {
   canvas.height = imageEle.naturalHeight;
   canvas.width = imageEle.naturalWidth;
   canvas.getContext("2d").drawImage(imageEle, 0, 0);
-  console.log(imageEle);
   try {
     var blob = await new Promise(function (resolve) {
       return canvas.toBlob(function (blob) {
@@ -85,7 +84,7 @@ var imgSrcToFile = async function imgSrcToFile(imageEle) {
     });
     return convertBlobToFile(blob);
   } catch (error) {
-    alert("서버 오류 발생");
+    alert("서버 오류발생");
     return;
   }
 };
@@ -105,10 +104,9 @@ var init = function init() {
     });
 
     fakeFileInput.addEventListener("change", fakeHandleFile);
-
     if (originalImg) {
-      var originalImgFile = await imgSrcToFile(originalImg);
-      addFile(originalImgFile);
+      var file = await imgSrcToFile(originalImg);
+      addFile(file);
     }
     var noUserImgFile = await imgSrcToFile(noUserImg);
     var noUserImgUrl = URL.createObjectURL(noUserImgFile);

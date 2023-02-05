@@ -6,7 +6,7 @@ block content
         input(type="hidden" name="location" value=gym.location)
         input(type="hidden" name="address" value=gym.address)
         each photo in gym.photos
-            img(src=`/${photo}` class="originalPreview" hidden)
+            img(src=`${photo}` class="originalPreview" crossorigin="Anonymous" hidden)
         h3.uploadHead 체육관 업데이트
         #validErrorMessage
         .uploadColumn

@@ -4,7 +4,7 @@ include userBlock
 mixin gymCardBlock(gym)
     .gymCard
         a(href=`/gym/${gym._id}` target="_blank")
-            img(src=`/${gym.photos[0]}`).thumbnail
+            img(src=`${gym.photos[0]}`).thumbnail
             h3.section=gym.name
             p.section=gym.location
         .gymCard__bottom.section

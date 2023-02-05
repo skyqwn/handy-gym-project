@@ -6,9 +6,21 @@ var viewMore = document.querySelector(".viewMore");
 var body = document.querySelector("body");
 var xBtn = document.getElementById("xBtn");
 
-var imgs = document.querySelectorAll(".gymImg");
-var nextBtn = document.getElementById("nextSlideBtn");
-var prevBtn = document.getElementById("prevSlideBtn");
+var imgs = void 0;
+var nextBtn = void 0;
+var prevBtn = void 0;
+
+var isPhone = Boolean(window.innerWidth < 758);
+
+if (isPhone) {
+  imgs = document.querySelectorAll(".phoneImg");
+  nextBtn = document.getElementById("phoneNextBtn");
+  prevBtn = document.getElementById("phonePrevBtn");
+} else {
+  imgs = document.querySelectorAll(".gymImg");
+  nextBtn = document.getElementById("nextSlideBtn");
+  prevBtn = document.getElementById("prevSlideBtn");
+}
 
 var SLIDE_INDEX = 0;
 
@@ -62,8 +74,6 @@ var init = function init() {
   nextBtn.addEventListener("click", handleNext);
   prevBtn.addEventListener("click", handlePrev);
 };
-
-console.log(viewMoreBtn);
 
 if (viewMoreBtn) {
   init();

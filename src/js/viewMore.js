@@ -4,9 +4,21 @@ const viewMore = document.querySelector(".viewMore");
 const body = document.querySelector("body");
 const xBtn = document.getElementById("xBtn");
 
-const imgs = document.querySelectorAll(".gymImg");
-const nextBtn = document.getElementById("nextSlideBtn");
-const prevBtn = document.getElementById("prevSlideBtn");
+let imgs;
+let nextBtn;
+let prevBtn;
+
+const isPhone = Boolean(window.innerWidth < 758);
+
+if (isPhone) {
+  imgs = document.querySelectorAll(".phoneImg");
+  nextBtn = document.getElementById("phoneNextBtn");
+  prevBtn = document.getElementById("phonePrevBtn");
+} else {
+  imgs = document.querySelectorAll(".gymImg");
+  nextBtn = document.getElementById("nextSlideBtn");
+  prevBtn = document.getElementById("prevSlideBtn");
+}
 
 let SLIDE_INDEX = 0;
 
@@ -60,8 +72,6 @@ const init = () => {
   nextBtn.addEventListener("click", handleNext);
   prevBtn.addEventListener("click", handlePrev);
 };
-
-console.log(viewMoreBtn);
 
 if (viewMoreBtn) {
   init();

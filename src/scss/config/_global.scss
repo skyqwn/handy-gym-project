@@ -1,4 +1,5 @@
 @import "variable";
+@import "mixins";
 
 body,
 html {
@@ -81,4 +82,19 @@ html {
 
 .like {
   color: $red;
+}
+
+@include mobile {
+  body,
+  html {
+    input,
+    button,
+    .btn,
+    select {
+      height: 36px;
+      padding: 0 8px;
+      border-radius: 2px;
+      font-size: 14px;
+    }
+  }
 }

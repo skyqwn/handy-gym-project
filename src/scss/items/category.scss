@@ -1,4 +1,5 @@
 @import "../config/variable";
+@import "../config/mixins";
 
 .category {
   display: flex;
@@ -9,5 +10,15 @@
     font-weight: 700;
     margin-left: 3px;
     color: $accentColor;
+  }
+}
+
+@include mobile {
+  .category {
+    gap: 3px;
+    font-size: 12px;
+    span {
+      margin-left: 1px;
+    }
   }
 }

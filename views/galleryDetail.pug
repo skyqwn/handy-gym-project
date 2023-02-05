@@ -17,7 +17,7 @@ block content
             .section   
                 each photoObj in gallery.photos
                     .detailPage__section
-                        img(src=`/${photoObj.photo}`)
+                        img(src=`${photoObj.photo}`)
                         p=photoObj.caption
             .centerLikeBtn
                 if gallery.like_users.includes(String(user._id))

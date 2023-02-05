@@ -40,13 +40,13 @@ const convertBlobToFile = (blob) => {
 const compressFile = async (file) => {
   const compressOption = {
     maxSizeMB: 1,
-    maxWidthOrHeight: 110,
-    initialQuality: 0.9,
+    maxWidthOrHeight: 120,
+    initialQuality: 1,
     useWebWorker: false,
   };
   try {
     let compressedBlob = await imageCompression(file, compressOption);
-    compressedBlob.name = `${file.name || "아무개"}__compressed`;
+    compressedBlob.name = `${file.name || "힙합"}`;
 
     const convertFile = convertBlobToFile(compressedBlob);
 
@@ -74,14 +74,13 @@ const imgSrcToFile = async (imageEle) => {
   canvas.height = imageEle.naturalHeight;
   canvas.width = imageEle.naturalWidth;
   canvas.getContext("2d").drawImage(imageEle, 0, 0);
-  console.log(imageEle);
   try {
     const blob = await new Promise((resolve) =>
       canvas.toBlob((blob) => resolve(blob))
     );
     return convertBlobToFile(blob);
   } catch (error) {
-    alert("서버 오류 발생");
+    alert("서버 오류발생");
     return;
   }
 };
@@ -101,10 +100,9 @@ const init = () => {
     });
 
     fakeFileInput.addEventListener("change", fakeHandleFile);
-
     if (originalImg) {
-      const originalImgFile = await imgSrcToFile(originalImg);
-      addFile(originalImgFile);
+      const file = await imgSrcToFile(originalImg);
+      addFile(file);
     }
     const noUserImgFile = await imgSrcToFile(noUserImg);
     const noUserImgUrl = URL.createObjectURL(noUserImgFile);

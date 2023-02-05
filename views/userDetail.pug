@@ -18,10 +18,10 @@ block content
                             .deleteBtn#deleteBtn
                                 i.fa-solid.fa-xmark
 
-                        input(name="nickname" value=user.nickname)
+                        input(name="nickname" value=user.nickname placeholder="닉네임")
 
                         if user.avatarUrl
-                            img(src=`${user.avatarUrl}` id="originalImg"  hidden)
+                            img(src=`${user.avatarUrl}` id="originalImg"  hidden crossorigin="Anonymous")
 
                         img(src="/static/images/noUser.webp" id="noUserImg" hidden)
 
@@ -37,7 +37,7 @@ block content
     .narrowContainer
         .userDetail
             .userDetail__item
-                +avatarBlock(findUser.avatarUrl, "120px")
+                +avatarBlock(findUser.avatarUrl, "80px")
                 if `${findUser._id}` === `${user._id}`
                     div.nickname #{user.nickname}(나)
                     .btn.primary#modalBtn 
@@ -88,6 +88,6 @@ block content
 
     script(type="text/javascript" src="https://cdn.jsdelivr.net/npm/browser-image-compression@1.0.15/dist/browser-image-compression.js")
 
-    script(src="/static/js/avatarPreview.js")
     script(src="/static/js/createModal.js") 
     script(src="/static/js/validFrom.js")
+    script(src="/static/js/avatarPreview.js")

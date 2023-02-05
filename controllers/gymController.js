@@ -77,12 +77,12 @@ export const upload = (req, res) => {
 export const uploadPost = async (req, res) => {
   const { body, files } = req;
   try {
-    const returnPath = files.map((file) => {
-      return file.path;
+    const returnLocation = files.map((file) => {
+      return file.location;
     });
     const newGym = new Gym({
       ...body,
-      photos: returnPath,
+      photos: returnLocation,
       creator: req.user,
     });
     await newGym.save();
@@ -144,13 +144,13 @@ export const updatePost = async (req, res) => {
   } = req;
   try {
     const gym = await Gym.findById(gymId);
-    const returnPath = files.map((file) => {
-      return file.path;
+    const returnLocation = files.map((file) => {
+      return file.location;
     });
 
     const updatedGym = await Gym.findByIdAndUpdate(gymId, {
       ...body,
-      photos: returnPath.length > 0 ? returnPath : gym.photos,
+      photos: returnLocation.length > 0 ? returnLocation : gym.photos,
     });
     return res.redirect(`/gym/${updatedGym._id}`);
   } catch (error) {
@@ -206,56 +206,3 @@ export const like = async (req, res) => {
     return res.redirect("/");
   }
 };
-
-// export const like2 = async (req, res) => {
-//   const {
-//     params: { gymId },
-//     user: { _id },
-//   } = req;
-//   const userId = String(_id);
-//   try {
-//     const currentUser = await User.findById(userId);
-//     const currentGym = await Gym.findById(gymId);
-//     const existsUser = currentGym.like_users.includes(userId);
-//     if (existsUser) {
-//       const deletedUserArr = currentGym.like_users.filter(
-//         (user) => user !== userId
-//       );
-//       const deletedGymArr = currentUser.like_gyms.filter(
-//         (gym) => String(gym._id) !== String(gymId)
-//       );
-//       currentGym.like_users = deletedUserArr;
-//       currentUser.like_gyms = deletedGymArr;
-//     } else {
-//       currentGym.like_users.push(String(userId));
-//       currentUser.like_gyms.push(currentGym._id);
-//     }
-//     await currentUser.save();
-//     await currentGym.save();
-//     return res.status(200).json();
-//   } catch (error) {}
-//   res.status(200).json({ message: `${req.params.gymId}로 좋아요 신청` });
-// };
-
-// export const search = async (req, res) => {
-//   const { query } = req;
-//   const searchQuery = new Object();
-//   if (query.searchTerm) {
-//     searchQuery.$or = [
-//       { name: { $regex: query.searchTerm } },
-//       { location: { $regex: query.searchTerm } },
-//     ];
-//   }
-//   if (query.oneday) {
-//     searchQuery.oneday = "가능";
-//   }
-//   if (query.yearRound) {
-//     searchQuery.yearRound = "네";
-//   }
-//   try {
-//     const searchedGym = await Gym.find(searchQuery).populate("creator");
-//     res.render("gym", { gyms: searchedGym });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };

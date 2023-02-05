@@ -49,7 +49,7 @@ export const uploadPost = async (req, res) => {
 
   try {
     const returnPhotosObj = files.map((__, index) => {
-      return { photo: files[index].path, caption: captionsArr[index] };
+      return { photo: files[index].location, caption: captionsArr[index] };
     });
 
     await Gallery.create({
@@ -147,7 +147,7 @@ export const updatePost = async (req, res) => {
   try {
     const returnPhotosObj = files.map((__, index) => {
       console.log(captions[index]);
-      return { photo: files[index].path, caption: captions[index] };
+      return { photo: files[index].location, caption: captions[index] };
     });
 
     const updatedGallery = await Gallery.findByIdAndUpdate(
