@@ -8,7 +8,7 @@ block content
     form(action=`/gallery/${gallery._id}/update` method="post" enctype="multipart/form-data").uploadContainer.narrowContainer.box
         input(type="hidden" name="_csrf" value=csrfToken)
         each photoObj in gallery.photos
-            img(src=`/${photoObj.photo}` hidden class="originalPhoto")
+            img(src=`${photoObj.photo}` hidden class="originalPhoto" crossorigin="Anonymous")
             textarea(hidden class="originalCaption")=photoObj.caption
         h3.uploadHead 사진 업데이트
         .uploadColumn

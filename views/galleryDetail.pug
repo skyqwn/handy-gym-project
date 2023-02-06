@@ -1,11 +1,13 @@
+
+
 extends includes/layout
 include mixins/userBlock
 include mixins/categoryBlock
 
 block content 
-    .container.detailPage
+    .container.detailPage 
         .detailPage__item
-            .section
+            .section.head
                 +categoryBlock({
                     views:gallery.views,
                     likes:gallery.like_users.length,
@@ -13,12 +15,11 @@ block content
                 })
             h2.section=gallery.title
             .section
-                +userBlock(gallery.creator, '40px')
-            .section   
+                +userBlock(gallery.creator,"24px")
+            .section 
                 each photoObj in gallery.photos
-                    .detailPage__section
-                        img(src=`${photoObj.photo}`)
-                        p=photoObj.caption
+                    img(src=`${photoObj.photo}`)
+                    p=photoObj.caption
             .centerLikeBtn
                 if gallery.like_users.includes(String(user._id))
                     i.likeBtn.fa-solid.fa-heart.like.fa-2xl(id=`${gallery._id}`)
@@ -30,31 +31,34 @@ block content
                 h4 댓글 #{comments.length}
                 each comment in comments
                     .comment
-                        +userBlock({
-                            _id:comment.creator._id,
-                            nickname:comment.creator.nickname,
-                            avatarUrl:comment.creator.avatarUrl
-                        }, "40px")
+                        +userBlock(comment.creator)
                         p=comment.text
 
                         if `${comment.creator._id}`=== `${user._id}`
                             button.commentDeleteBtn(id=comment._id) 삭제
             .commentInput
-                +avatarBlock(user.avatarUrl, "70px")
+                +avatarBlock(user.avatarUrl, "40px")
                 textarea(name="text")
                 #commentBtn.primary 댓글달기
         .detailPage__item
-            .head 이 달의 포토
+            .head 이 달의 인기사진
             each populateGallery, index in populateGalleries
-                a(href=`/gallery/${populateGallery._id}`)
+                a(href=`/post/${populateGallery._id}`)
                     p 
                         span.index #{index + 1}
                         span.title #{populateGallery.title}
-    if `${gallery.creator._id}` === `${user._id}`
-        .updateAndDeleteBtn
-            a(href=`/gallery/${gallery._id}/update`)
-                button 수정하기
-            button#deleteBtn 삭제하기
-    //- #deleteBtn.btn 글삭제
+        
+            
+            
+
+        if `${user._id}` === `${gallery.creator._id}`
+            .updateAndDeleteBtn
+                a(href=`/gallery/${gallery._id}/update`)
+                    button 수정하기
+                button#deleteBtn 삭제하기
+
     script(src="/static/js/comment.js")
     script(src="/static/js/likeFun.js")
+    script(src="/static/js/useConfirm.js")
+
+    

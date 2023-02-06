@@ -81,6 +81,7 @@ var handleClick = async function handleClick(e) {
 };
 
 var handleDelete = async function handleDelete(e) {
+  console.log(1);
   var commentId = e.target.id;
   var ok = confirm("정말 삭제하시겠습니까?");
   if (ok) {

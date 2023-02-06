@@ -76,6 +76,7 @@ const handleClick = async (e) => {
 };
 
 const handleDelete = async (e) => {
+  console.log(1);
   const commentId = e.target.id;
   const ok = confirm("정말 삭제하시겠습니까?");
   if (ok) {

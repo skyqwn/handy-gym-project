@@ -53,7 +53,8 @@ export const fetch = async (req, res) => {
       user,
     });
   } catch (error) {
-    console.log(error);
+    req.flash("error", "게시판을 불러오는 도중 서버 오류가 발생하였습니다.");
+    return res.redirect("/");
   }
 };
 
@@ -68,11 +69,11 @@ export const uploadPost = async (req, res) => {
       ...body,
       creator: req.user,
     });
-    console.log(newPost);
     await newPost.save();
     return res.redirect("/post");
   } catch (error) {
-    console.log(error);
+    req.flash("error", "게시판 업로드 도중 서버 오류가 발생하였습니다.");
+    return res.redirect("/");
   }
 };
 
@@ -94,7 +95,7 @@ export const like = async (req, res) => {
         $push: { like_users: userId },
       });
     }
-    res.status(200).json(postId); // 이거 왜보내는거징?
+    res.status(200).json(postId);
   } catch (error) {
     console.log(error);
   }
@@ -144,7 +145,8 @@ export const detail = async (req, res) => {
       populatePosts,
     });
   } catch (error) {
-    console.log(error);
+    req.flash("error", "게시판을 불러오는 도중 서버 오류가 발생하였습니다.");
+    return res.redirect("/post");
   }
 };
 
@@ -152,6 +154,7 @@ export const update = async (req, res) => {
   const {
     params: { postId },
   } = req;
+  console.log("업데이트하기");
   try {
     const post = await Post.findById(postId).populate("creator");
     return res.render("postUpdate", {
@@ -160,14 +163,12 @@ export const update = async (req, res) => {
       csrfToken: req.csrfToken(),
     });
   } catch (error) {
-    console.log(error);
+    req.flash(
+      "error",
+      "게시판 수정을 불러오는 도중 서버 오류가 발생하였습니다."
+    );
+    return res.redirect(`/post/${postId}`);
   }
-};
-
-export const views = async (req, res) => {
-  const {
-    params: { postId },
-  } = req;
 };
 
 export const updatePost = async (req, res) => {
@@ -175,15 +176,26 @@ export const updatePost = async (req, res) => {
     params: { postId },
     body,
   } = req;
+  console.log("업데이트성공!");
   try {
-    const post = await Post.findById(postId);
-    const updatedPost = await Post.findByIdAndUpdate(postId, {
-      ...body,
-    });
+    const post = await Post.findById(postId).populate("creator");
+    const updatedPost = await Post.findByIdAndUpdate(
+      postId,
+      {
+        ...body,
+      },
+      { new: true }
+    );
     return res.redirect(`/post/${updatedPost._id}`);
   } catch (error) {
-    console.log(error);
+    req.flash("error", "게시판 수정을 하는 도중 서버 오류가 발생하였습니다.");
+    return res.redirect("/post");
   }
+};
+export const views = async (req, res) => {
+  const {
+    params: { postId },
+  } = req;
 };
 
 export const remove = async (req, res) => {
