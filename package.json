@@ -6,7 +6,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev:server": "nodemon app.js --ignore",
+    "dev:server": "export NODE_ENV=developement1 && nodemon app.js --ignore",
     "dev:assets": "gulp dev"
   },
   "author": "",
