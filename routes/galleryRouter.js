@@ -9,7 +9,7 @@ import {
   remove,
   like,
 } from "../controllers/galleryController.js";
-import { galleryUpload, s3GalleryUpload } from "../utils/fileUpload.js";
+import { s3GalleryUpload } from "../utils/fileUpload.js";
 import { onlyEmailVerified, onlyUser } from "../utils/protectAuth.js";
 import protectCSRFToken from "../utils/protectCSRFToken.js";
 

@@ -46,6 +46,6 @@ export const s3GalleryUpload = multer({
   }),
 });
 
-export const gymUpload = multer({ dest: "uploads/gym" });
-export const galleryUpload = multer({ dest: "uploads/gallery" });
-export const avatarUpload = multer({ dest: "uploads/avatar" });
+// export const gymUpload = multer({ dest: "uploads/gym" });
+// export const galleryUpload = multer({ dest: "uploads/gallery" });
+// export const avatarUpload = multer({ dest: "uploads/avatar" });
