@@ -37,7 +37,6 @@ export default () => {
           return done(null, user);
         } catch (err) {
           console.log(err);
-          console.log("----유저000");
           return done(err);
         }
       }
