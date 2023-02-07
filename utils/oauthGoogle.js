@@ -6,13 +6,21 @@ dotenv.config();
 
 import User from "../models/User.js";
 
+let callbackURL;
+
+if (process.env.NODE_ENV === "Production") {
+  callbackURL = "https://handy-gym-project.vercel.app/auth/google/callback";
+} else {
+  callbackURL = "http://localhost:5050/auth/google/callback";
+}
+
 export default () => {
   passport.use(
     new GoogleStrategy(
       {
         clientID: process.env.GOOGLE_CLIENT,
         clientSecret: process.env.GOOGLE_SECRET,
-        callbackURL: "http://localhost:5050/auth/google/callback",
+        callbackURL,
         passReqToCallback: true,
       },
       async (req, authToken, refreshToken, profile, done) => {
