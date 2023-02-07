@@ -5,8 +5,8 @@
   "type": "module",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "dev:server": "export NODE_ENV=Developement && nodemon app.js --ignore",
+    "start": "node index.js",
+    "dev:server": "export NODE_ENV=Developement && nodemon index.js --ignore",
     "dev:assets": "gulp dev"
   },
   "author": "",
