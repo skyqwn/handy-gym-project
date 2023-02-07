@@ -8,6 +8,11 @@ import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import path from "path";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 import flash from "connect-flash";
 
 import globalRouter from "./routes/globalRouter.js";
@@ -26,9 +31,11 @@ let mongoUrl;
 const app = express();
 const port = process.env.PORT || 5000;
 
-if (process.env.NODE_ENV === "Developement") {
+if (process.env.NODE_ENV === "Development") {
   mongoUrl = process.env.DEV_MONGO_URL;
-} else {
+}
+
+if (process.env.NODE_ENV === "Production") {
   mongoUrl = process.env.PROD_MONGO_URL;
 }
 
@@ -41,8 +48,6 @@ const handleDBSuccess = () => console.log(`${mongoUrl}에서 ✅DB연결 성공`
 
 db.on("error", handleDBError);
 db.once("open", handleDBSuccess);
-
-app.set("view engine", "pug");
 
 const cspOptions = {
   directives: {
@@ -105,8 +110,12 @@ app.use(
 passportInit(app);
 
 app.use(flash());
-app.use("/static", express.static("static"));
-app.use("/uploads", express.static("uploads"));
+app.set("view engine", "pug");
+
+app.set("views", path.join(__dirname, "/views"));
+app.use("/static", express.static(__dirname + "/static"));
+// app.use("/static", express.static("static"));
+// app.use("/uploads", express.static("uploads"));
 app.use(setLocals);
 
 app.use("/", globalRouter);
