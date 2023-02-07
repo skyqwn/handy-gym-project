@@ -42,9 +42,11 @@ globalRouter.get("/logout", onlyUser, onlyEmailVerified, logout);
 
 globalRouter.get("/like", onlyUser, onlyEmailVerified, like);
 
-globalRouter.get("/verify", onlyPublic, verifyEmail);
+globalRouter.get("/verify", onlyUser, verifyEmail);
 
 globalRouter.get("/no-access", noAccess);
+
+globalRouter.get("/resend-email", resendEmail);
 
 // GOOGLE Login
 
