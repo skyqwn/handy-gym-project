@@ -6,12 +6,20 @@ dotenv.config();
 
 import User from "../models/User.js";
 
+let callbackURL;
+
+if (process.env.NODE_ENV === "Production") {
+  callbackURL = "https://handy-gym-project.vercel.app/auth/kakao/callback";
+} else {
+  callbackURL = "http://localhost:5050/auth/kakao/callback";
+}
+
 export default () => {
   passport.use(
     new KakaoStrategy(
       {
         clientID: process.env.KAKAO_CLIENT,
-        callbackURL: "http://localhost:5050/auth/kakao/callback",
+        callbackURL,
         passReqToCallback: true,
       },
       async (req, authToken, refreshToken, profile, done) => {

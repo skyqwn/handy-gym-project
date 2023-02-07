@@ -65,7 +65,6 @@ const formValid = () => {
             paintBtnError(searchAddressBtn);
             errorMessage = "주소를 입력해주세요";
             ok = false;
-            console.log("주소에러");
           }
         }
         if (name === "gymPhotos") {
@@ -76,7 +75,6 @@ const formValid = () => {
             paintBtnError(btn);
             errorMessage = "사진을 4장이상 넣어주세요";
             ok = false;
-            console.log("사진에러");
           }
         }
         if (name === "galleryPhotos") {
@@ -103,7 +101,6 @@ const formValid = () => {
             for (let i = 0; i < labels.length; i++) {
               paintBorderError(labels[i]);
             }
-            console.log("연중무휴에러");
           }
         }
         if (name === "oneday") {
@@ -120,7 +117,6 @@ const formValid = () => {
             for (let i = 0; i < labels.length; i++) {
               paintBorderError(labels[i]);
             }
-            console.log("일일권에러");
           }
         }
         if (name === "onedayPay") {
@@ -148,7 +144,6 @@ const formValid = () => {
           paintBorderError(ele);
           errorMessage = "필수항목을 입력하세요";
           ok = false;
-          console.log("필수항목에러");
         }
       }
     };
