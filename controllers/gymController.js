@@ -122,14 +122,22 @@ export const detail = async (req, res) => {
 export const update = async (req, res) => {
   const {
     params: { gymId },
+    user,
   } = req;
   try {
     const gym = await Gym.findById(gymId).populate("creator");
-    return res.render("gymUpdate", {
-      title: gym.name,
-      gym,
-      csrfToken: req.csrfToken(),
-    });
+
+    if (String(user._id) !== String(gym.creator._id)) {
+      req.flash("error", "사용자가 아닙니다!");
+      res.redirect(`/gym`);
+      return;
+    } else {
+      return res.render("gymUpdate", {
+        title: gym.name,
+        gym,
+        csrfToken: req.csrfToken(),
+      });
+    }
   } catch (error) {
     req.flash("error", "서버 오류 발생하였습니다 다시 시도해주세요.");
     return res.redirect("/");
@@ -141,6 +149,7 @@ export const updatePost = async (req, res) => {
     params: { gymId },
     body,
     files,
+    user,
   } = req;
   try {
     const gym = await Gym.findById(gymId);
@@ -148,11 +157,17 @@ export const updatePost = async (req, res) => {
       return file.location;
     });
 
-    const updatedGym = await Gym.findByIdAndUpdate(gymId, {
-      ...body,
-      photos: returnLocation.length > 0 ? returnLocation : gym.photos,
-    });
-    return res.redirect(`/gym/${updatedGym._id}`);
+    if (String(user._id) !== String(gym.creator._id)) {
+      req.flash("error", "사용자가 아닙니다!");
+      res.redirect(`/gym`);
+      return;
+    } else {
+      const updatedGym = await Gym.findByIdAndUpdate(gymId, {
+        ...body,
+        photos: returnLocation.length > 0 ? returnLocation : gym.photos,
+      });
+      return res.redirect(`/gym/${updatedGym._id}`);
+    }
   } catch (error) {
     req.flash("error", "서버 오류 발생하였습니다 다시 시도해주세요.");
     return res.redirect("/");
@@ -166,6 +181,7 @@ export const remove = async (req, res) => {
   } = req;
   try {
     const gym = await Gym.findById(gymId).populate("creator");
+
     if (String(user._id) !== String(gym.creator._id)) {
       req.flash("error", "사용자가 아닙니다!");
       res.redirect(`/gym`);

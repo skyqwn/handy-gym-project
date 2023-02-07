@@ -153,15 +153,20 @@ export const detail = async (req, res) => {
 export const update = async (req, res) => {
   const {
     params: { postId },
+    user,
   } = req;
-  console.log("업데이트하기");
   try {
     const post = await Post.findById(postId).populate("creator");
-    return res.render("postUpdate", {
-      title: post.name,
-      post,
-      csrfToken: req.csrfToken(),
-    });
+    if (String(user._id) !== String(post.creator._id)) {
+      req.flash("error", "사용자가 아닙니다");
+      res.redirect("/post");
+    } else {
+      return res.render("postUpdate", {
+        title: post.name,
+        post,
+        csrfToken: req.csrfToken(),
+      });
+    }
   } catch (error) {
     req.flash(
       "error",
@@ -175,18 +180,23 @@ export const updatePost = async (req, res) => {
   const {
     params: { postId },
     body,
+    user,
   } = req;
-  console.log("업데이트성공!");
   try {
     const post = await Post.findById(postId).populate("creator");
-    const updatedPost = await Post.findByIdAndUpdate(
-      postId,
-      {
-        ...body,
-      },
-      { new: true }
-    );
-    return res.redirect(`/post/${updatedPost._id}`);
+    if (String(user._id) !== String(post.creator._id)) {
+      req.flash("error", "사용자가 아닙니다");
+      res.redirect("/post");
+    } else {
+      const updatedPost = await Post.findByIdAndUpdate(
+        postId,
+        {
+          ...body,
+        },
+        { new: true }
+      );
+      return res.redirect(`/post/${updatedPost._id}`);
+    }
   } catch (error) {
     req.flash("error", "게시판 수정을 하는 도중 서버 오류가 발생하였습니다.");
     return res.redirect("/post");
@@ -214,6 +224,10 @@ export const remove = async (req, res) => {
       return res.redirect(`/post`);
     }
   } catch (error) {
-    console.log(error);
+    req.flash(
+      "error",
+      "포스트를 삭제도중 오류가 발생하였습니다. 다시 시도 해주세요."
+    );
+    return res.redirect(`/post/${postId}`);
   }
 };

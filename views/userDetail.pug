@@ -12,7 +12,7 @@ block content
                         input(type="hidden" name="_csrf" value=csrfToken)
                         .imgContainer
                             if user.avatarUrl
-                                img(src=`${user.avatarUrl}`).avatarImg#fileBtn
+                                img(src=`${user.avatarUrl}` crossorigin="Anonymous").avatarImg#fileBtn
                             else
                                 img(src="/static/images/noUser.webp").avatarImg#fileBtn
                             .deleteBtn#deleteBtn

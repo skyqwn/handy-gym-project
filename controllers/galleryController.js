@@ -26,7 +26,8 @@ export const upload = async (req, res) => {
   try {
     res.render("galleryUpload", { csrfToken: req.csrfToken() });
   } catch (error) {
-    console.log(error);
+    req.flash("error", "갤러리 업로드를 불러 오는 도중 오류가 발생하였습니다.");
+    return res.redirect("/");
   }
 };
 
@@ -121,14 +122,22 @@ export const detail = async (req, res) => {
 export const update = async (req, res) => {
   const {
     params: { galleryId },
+    user,
   } = req;
   try {
     const gallery = await Gallery.findById(galleryId).populate("creator");
-    return res.render("galleryUpdate", {
-      title: gallery.title,
-      gallery,
-      csrfToken: req.csrfToken(),
-    });
+
+    if (String(user._id) !== String(gallery.creator._id)) {
+      req.flash("error", "사용자가 아닙니다!");
+      res.redirect(`/gallery`);
+      return;
+    } else {
+      return res.render("galleryUpdate", {
+        title: gallery.title,
+        gallery,
+        csrfToken: req.csrfToken(),
+      });
+    }
   } catch (error) {
     req.flash(
       "error",
@@ -143,24 +152,31 @@ export const updatePost = async (req, res) => {
     params: { galleryId },
     body: { title, captions },
     files,
+    user,
   } = req;
   try {
     const returnPhotosObj = files.map((__, index) => {
-      console.log(captions[index]);
       return { photo: files[index].location, caption: captions[index] };
     });
+    const gallery = await Gallery.findById(galleryId).populate("creator");
 
-    const updatedGallery = await Gallery.findByIdAndUpdate(
-      galleryId,
-      {
-        title,
-        photos: returnPhotosObj,
-      },
-      {
-        new: true,
-      }
-    );
-    return res.redirect(`/gallery/${updatedGallery._id}`);
+    if (String(user._id) !== String(gallery.creator._id)) {
+      req.flash("error", "사용자가 아닙니다!");
+      res.redirect(`/gallery`);
+      return;
+    } else {
+      const updatedGallery = await Gallery.findByIdAndUpdate(
+        galleryId,
+        {
+          title,
+          photos: returnPhotosObj,
+        },
+        {
+          new: true,
+        }
+      );
+      return res.redirect(`/gallery/${updatedGallery._id}`);
+    }
   } catch (error) {
     req.flash(
       "error",

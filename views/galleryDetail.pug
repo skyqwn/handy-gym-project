@@ -1,5 +1,3 @@
-
-
 extends includes/layout
 include mixins/userBlock
 include mixins/categoryBlock
@@ -48,9 +46,6 @@ block content
                         span.index #{index + 1}
                         span.title #{populateGallery.title}
         
-            
-            
-
         if `${user._id}` === `${gallery.creator._id}`
             .updateAndDeleteBtn
                 a(href=`/gallery/${gallery._id}/update`)
