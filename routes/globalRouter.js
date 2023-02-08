@@ -42,7 +42,7 @@ globalRouter.get("/logout", onlyUser, logout);
 
 globalRouter.get("/like", onlyUser, onlyEmailVerified, like);
 
-globalRouter.get("/verify", onlyUser, verifyEmail);
+globalRouter.get("/verify", verifyEmail);
 
 globalRouter.get("/no-access", noAccess);
 
