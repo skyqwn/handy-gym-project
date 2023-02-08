@@ -34,7 +34,7 @@ const cookieSecure = Boolean(process.env.NODE_ENV === "Production");
 if (process.env.NODE_ENV === "Developement") {
   mongoUrl = process.env.DEV_MONGO_URL;
 }
-
+console.log(cookieSecure);
 if (process.env.NODE_ENV === "Production") {
   mongoUrl = process.env.PROD_MONGO_URL;
 }
@@ -108,7 +108,8 @@ app.use(
     store: MongoStore.create({ mongoUrl }),
     cookie: {
       maxAge: 3.6e6 * 24,
-      secure: cookieSecure,
+      httpOnly: true,
+      secure: true,
     }, // 24시간 유효
   })
 );

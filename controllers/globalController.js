@@ -3,8 +3,6 @@ import bcrypt from "bcrypt";
 import User from "../models/User.js";
 import sendMail from "../utils/sendMail.js";
 import Gym from "../models/Gym.js";
-import Post from "../models/Post.js";
-import Gallery from "../models/Gallery.js";
 
 export const home = (req, res) => {
   res.render("home");
