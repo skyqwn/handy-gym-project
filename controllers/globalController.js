@@ -89,7 +89,7 @@ export const signupPost = async (req, res) => {
       password: hashedPassword,
     });
 
-    sendMail(email, user.email_verify_string, user._id);
+    await sendMail(email, user.email_verify_string, user._id);
 
     await user.save();
 
