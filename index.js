@@ -97,6 +97,9 @@ app.use(cors(corsOption));
 if (process.env.NODE_ENV === "Developement") {
   app.use(morgan("dev"));
 }
+if (process.env.NODE_ENV === "Production") {
+  app.set("trust proxy", 1);
+}
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -104,12 +107,13 @@ app.use(
   session({
     secret: process.env.COOKIE_SECRET,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
+    proxy: true,
     store: MongoStore.create({ mongoUrl }),
     cookie: {
       maxAge: 3.6e6 * 24,
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "Production",
     }, // 24시간 유효
   })
 );
