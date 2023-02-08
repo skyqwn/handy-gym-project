@@ -34,7 +34,6 @@ const port = process.env.PORT || 5000;
 if (process.env.NODE_ENV === "Developement") {
   mongoUrl = process.env.DEV_MONGO_URL;
 }
-console.log(cookieSecure);
 if (process.env.NODE_ENV === "Production") {
   mongoUrl = process.env.PROD_MONGO_URL;
 }
