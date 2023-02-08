@@ -10,7 +10,7 @@ const openModal = () => {
 
 const closeModal = (e) => {
   if (e.target === modalContainer || e.target === modalWrapper) {
-    modalContainer.style.transform = "translateY(-100%)";
+    modalContainer.style.transform = "translateY(-150%)";
     body.style.overflowY = "scroll";
   }
 };

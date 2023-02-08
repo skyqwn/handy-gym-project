@@ -1,3 +1,1 @@
-"use strict";
-
-new FroalaEditor("textarea");
+"use strict";new FroalaEditor("textarea");
