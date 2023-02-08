@@ -38,11 +38,16 @@
     text-align: center;
   }
   #success {
-    background-color: #0c2461;
+    background-color: $accentColor;
     color: white;
   }
   #error {
-    background-color: #e74c3c;
+    background-color: $red;
+    color: white;
+  }
+
+  #info {
+    background-color: $blue;
     color: white;
   }
 }

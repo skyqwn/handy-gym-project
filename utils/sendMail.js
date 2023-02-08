@@ -5,7 +5,7 @@ dotenv.config();
 let mainUrl;
 
 if (process.env.NODE_ENV === "Production") {
-  mainUrl = "https://handy-gym-project.vercel.app";
+  mainUrl = "https://www.handygym.kr";
 } else {
   mainUrl = "http://localhost:5050";
 }

@@ -93,7 +93,7 @@ export const signupPost = async (req, res) => {
 
     await user.save();
 
-    req.flash("success", "회원가입 성공! 이메일 인증");
+    req.flash("success", "회원가입 성공! \n 이메일 인증을 해주세요!");
     if (redirectUrl) {
       return res.redirect(`/signin?redirectUrl=${redirectUrl}`);
     } else {
