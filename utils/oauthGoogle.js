@@ -9,7 +9,7 @@ import User from "../models/User.js";
 let callbackURL;
 
 if (process.env.NODE_ENV === "Production") {
-  callbackURL = "https://handygym-express.vercel.app/auth/google/callback";
+  callbackURL = "https://www.handygym.kr/auth/google/callback";
 } else {
   callbackURL = "http://localhost:5050/auth/google/callback";
 }
